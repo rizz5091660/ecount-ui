@@ -1,0 +1,54 @@
+.fdt-table{
+    line-height: 1.5em;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;
+}
+
+table thead tr th, table tbody tr td {
+    position: relative;
+    padding: 0.875rem 1.25rem;
+    border: 1px solid #ebeef2;
+    vertical-align: middle;
+}
+
+table thead tr th a {
+    font-family: Exo;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #2a2a2a;
+}
+
+.ng2-smart-action-add {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 1.75rem !important;
+    padding: 0.375rem 0.5rem;
+    background: #40dc7e;
+    color: #ffffff;
+    border-radius: 0.375rem;
+}
+
+
+.ng2-smart-action-edit {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 2rem !important;
+    color: #a4abb3;
+}

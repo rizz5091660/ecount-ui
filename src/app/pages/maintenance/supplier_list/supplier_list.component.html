@@ -1,0 +1,118 @@
+<nb-card>
+  <nb-card-header>
+    List of Supplier
+  </nb-card-header>
+  <nb-card-body>  
+    <table class="fdt-table">
+      <thead>
+        <tr><th><a class="ng2-smart-sort-link sort" href="#"> Action </a></th>
+          <th><a class="ng2-smart-sort-link sort" href="#"> Name</a></th>
+          <th><a class="ng2-smart-sort-link sort" href="#"> Phone</a></th>
+          <th><a class="ng2-smart-sort-link sort" href="#"> Email</a></th>
+          <th><a class="ng2-smart-sort-link sort" href="#"> Address</a></th>
+        </tr>
+        <tr>
+          <th>
+            <a class="ng2-smart-action-add" (click)="openModal(modal)">
+              <i class="nb-plus"></i>
+            </a>
+          </th>
+          <th><input type="text" class="form-control" name="name" placeholder="Name" /></th>
+          <th><input type="text" class="form-control" name="phone" placeholder="Phone" /></th>
+          <th><input type="text" class="form-control" name="email" placeholder="Email" /></th>
+          <th><input type="text" class="form-control" name="address" placeholder="Address" /></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let supp of listCustomerSupplier; let i = index">
+         <td class="ng2-smart-action-edit" style="width: 100px;">
+            <a class="ng2-smart-action ng2-smart-action-edit-edit" (click)="onEdit(modal,supp)"><i class="nb-edit"></i></a>
+            <a class="ng2-smart-action ng2-smart-action-delete-delete" (click)="onDelete(supp)"><i class="nb-trash"></i></a>
+        </td>  
+         <td>{{supp.name}}</td>
+         <td>{{supp.phone}}</td>
+         <td>{{supp.email}}</td>
+         <td>{{supp.address.city}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #modal let-c="close" let-d="dismiss">
+  <div class="row">
+    <div class="col-md-12">
+      <form (ngSubmit)="onSubmit();d('Cross click');" #suppCustForm="ngForm">
+        <nb-card>
+          <nb-card-header>Supplier</nb-card-header>
+          <nb-card-body>
+            <div class="form-group row">
+              <label for="nameId" class="col-sm-3 col-form-label">Name</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="nameId" placeholder="Name" [(ngModel)]="model.name" name="name">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="phoneId" class="col-sm-3 col-form-label">Phone</label>
+              <div class="col-sm-9">
+                <input type="phone" class="form-control" id="phoneId" placeholder="Phone" [(ngModel)]="model.phone" name="phone">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="phoneId" class="col-sm-3 col-form-label">Email</label>
+              <div class="col-sm-9">
+                <input type="phone" class="form-control" id="emailId" placeholder="Email" [(ngModel)]="model.email" name="email">
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+        <nb-card>
+          <nb-card-header>Address</nb-card-header>
+          <nb-card-body>
+            <div class="form-group row">
+              <label for="nameId" class="col-sm-3 col-form-label">Attention</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="attentionId" placeholder="Attention" [(ngModel)]="model.address.attention" name="attention">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="nameId" class="col-sm-3 col-form-label">Street</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="streetId" placeholder="Street" [(ngModel)]="model.address.street" name="street">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="nameId" class="col-sm-3 col-form-label">City</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="cityId" placeholder="City" [(ngModel)]="model.address.city" name="city">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="nameId" class="col-sm-3 col-form-label">State</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="stateId" placeholder="State" [(ngModel)]="model.address.state" name="state">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="nameId" class="col-sm-3 col-form-label">Postal Code</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="zipId" placeholder="Postal Code" [(ngModel)]="model.address.zip" name="zip">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="nameId" class="col-sm-3 col-form-label">Country</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="countryId" placeholder="Country" [(ngModel)]="model.address.country" name="country">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="offset-sm-3 col-sm-9">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+      </form>
+    </div>
+  </div>
+</ng-template>

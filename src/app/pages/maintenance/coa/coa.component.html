@@ -1,0 +1,174 @@
+<nb-card>
+  <nb-card-header>
+    Chart of Account
+  </nb-card-header>
+  <nb-card-body>
+    <div class="form-group row">
+      <div style="padding: 15px">
+        <button type="button" class="btn btn-primary">
+          <i class="nb-home"></i>
+          <span>Add Bank Account</span>
+        </button>
+      </div>
+      <div style="padding: 15px">
+        <button type="button" class="btn btn-primary">
+          <i class="nb-home"></i>
+          <span> Print PDF</span>
+        </button>
+      </div>
+      <div style="padding: 15px">
+        <button type="button" class="btn btn-primary">
+          <i class="nb-home"></i>
+          <span> Import </span>
+        </button>
+      </div>
+      <div style="padding: 15px">
+        <button type="button" class="btn btn-primary">
+          <i class="nb-home"></i>
+          <span> Export </span>
+        </button>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-12">
+          <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
+              <button type="button" (click)="onSelectTab('all')" class="btn btn-outline-primary">All Accounts</button>
+              <button type="button" (click)="onSelectTab('asset')" class="btn btn-outline-primary">Asset</button>
+              <button type="button" (click)="onSelectTab('liability')" class="btn btn-outline-primary">Liabilities</button>
+              <button type="button" (click)="onSelectTab('equity')" class="btn btn-outline-primary">Equity</button>
+              <button type="button" (click)="onSelectTab('expense')" class="btn btn-outline-primary">Expenses</button>
+              <button type="button" (click)="onSelectTab('revenue')" class="btn btn-outline-primary">Revenue</button>
+              <button type="button" (click)="onSelectTab('archive')" class="btn btn-outline-primary">Archive</button>
+          </div>
+      </div>
+    </div>
+    <table class="fdt-table">
+      <thead>
+        <tr>
+          <th><a class="ng2-smart-sort-link sort" href="#"> Action </a></th>
+          <th><a class="ng2-smart-sort-link sort" href="#"> Account Type</a></th>
+          <th><a class="ng2-smart-sort-link sort" href="#"> Code</a></th>
+          <th><a class="ng2-smart-sort-link sort" href="#">Name</a></th>
+          <th><a class="ng2-smart-sort-link sort" href="#"> Description</a></th>
+          <th> <a class="ng2-smart-sort-link sort" href="#"> Tax Type</a></th>
+        </tr>
+        <tr>
+          <th>
+            <a class="ng2-smart-action-add" (click)="openModal(modal)">
+              <i class="nb-plus"></i>
+            </a>
+          </th>
+          <th>
+            <input type="text" class="form-control" name="name" placeholder="Account Type" />
+          </th>
+          <th>
+            <input type="text" class="form-control" name="phone" placeholder="Code" />
+          </th>
+          <th>
+            <input type="text" class="form-control" name="phone" placeholder="Name" />
+          </th>
+          <th>
+            <input type="text" class="form-control" name="email" placeholder="Description" />
+          </th>
+          <th>
+            <input type="text" class="form-control" name="address" placeholder="Tax Type" />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let coa of coas; let i = index">
+          <td class="ng2-smart-action-edit" style="width: 100px;">
+            <a class="ng2-smart-action ng2-smart-action-edit-edit" (click)="onEdit(modal,coa)">
+              <i class="nb-edit"></i>
+            </a>
+            <a class="ng2-smart-action ng2-smart-action-delete-delete" (click)="onDelete(coa.id)">
+              <i class="nb-trash"></i>
+            </a>
+          </td>
+          <!--<td>{{coa.l1AccountTypGrp}}</td>-->
+          <td>{{coa.l1AccountTypName}}</td>
+          <td>{{coa.coaCd}}</td>
+          <td>{{coa.name}}</td>
+          <td>{{coa.description}}</td>
+          <td>{{coa.taxName}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>
+<ng-template #modal let-c="close" let-d="dismiss">
+  <div class="row">
+    <div class="col-md-12">
+      <form (ngSubmit)="onSubmit();d('Cross click');" #coaForm="ngForm">
+        <nb-card>
+          <nb-card-header>Chat of Accout</nb-card-header>
+          <nb-card-body>
+            <div class="form-group row">
+              <label for="l1AccountType" class="col-sm-3 col-form-label">Account Type</label>
+              <div class="col-sm-9">
+                  <select [(ngModel)]="model.l1AccountType" name="l1AccountType" (ngModelChange)="onChange($event)" class="form-control">
+                      <option *ngFor="let accTyp of modelDD.accountTypes" [ngValue]="accTyp.id"> {{accTyp.name}} </option>
+                    </select>
+              </div>
+            </div>
+            <div class="form-group row">
+                <label for="l2Branch" class="col-sm-3 col-form-label">Branch</label>
+                <div class="col-sm-9">
+                    <select [(ngModel)]="model.l2Branch" name="l2Branch"  (ngModelChange)="onChange($event)" class="form-control">
+                        <option *ngFor="let br of modelDD.branches" [ngValue]="br.id"> {{br.name}} </option>
+                      </select>
+                </div>
+              </div>
+            <div class="form-group row">
+              <label for="l3CustSupp" class="col-sm-3 col-form-label">Customer/Supplier</label>
+              <div class="col-sm-9">
+                  <select [(ngModel)]="model.l3CustSupp"  name="l3CustSupp" (ngModelChange)="onChange($event)" class="form-control">
+                      <option *ngFor="let cs of modelDD.custSupps" [ngValue]="cs.id"> {{cs.name}} </option>
+                    </select>
+              </div>
+            </div>  
+            <div class="form-group row">
+                <label for="l4Division" class="col-sm-3 col-form-label">Division</label>
+                <div class="col-sm-9">
+                    <select [(ngModel)]="model.l4Division" name="l4Division" (ngModelChange)="onChange($event)" class="form-control">
+                        <option *ngFor="let dv of modelDD.divisions" [ngValue]="dv.id"> {{dv.name}} </option>
+                      </select>
+                </div>
+              </div>  
+              <div class="form-group row">
+                <label for="l4Division" class="col-sm-3 col-form-label">Taxes</label>
+                <div class="col-sm-9">
+                    <select [(ngModel)]="model.tax" name="tax" (ngModelChange)="onChange($event)" class="form-control">
+                        <option *ngFor="let tax of modelDD.taxes" [ngValue]="tax.id"> {{tax.name}} </option>
+                      </select>
+                </div>
+              </div>  
+            <div class="form-group row">
+              <label for="coaCd" class="col-sm-3 col-form-label">Code</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="coaCd" placeholder="Code" [(ngModel)]="model.coaCd" name="coaCd">
+              </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-3 col-form-label">Name</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="name" placeholder="Name" [(ngModel)]="model.name" name="name">
+                </div>
+              </div>
+              <div class="form-group row">
+                  <label for="description" class="col-sm-3 col-form-label">Description</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="description" placeholder="Description" [(ngModel)]="model.description" name="description">
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-sm-3 col-sm-9">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+          </nb-card-body>
+        </nb-card>
+      </form>
+    </div>
+  </div>
+</ng-template>
