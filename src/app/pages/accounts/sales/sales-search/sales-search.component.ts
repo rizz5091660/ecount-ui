@@ -13,9 +13,9 @@ import { HttpResponseWS } from '../../../../class/htt_response_ws';
 })
 export class SalesSearchComponent implements OnInit {
   type:string;
-  stage:string;
+  stageId:string;
   saless:SalesOrder[];
-  salessUpd:SalesOrder[]; 
+  salessUpdId:number[]; 
   sales:SalesOrder;
   obsSo:Observable<SalesOrder>;
   obsSos:Observable<SalesOrder[]>;
@@ -31,28 +31,31 @@ export class SalesSearchComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
-      this.type=params.get('type'))
+      this.type=params.get('type')
+      ),switchMap((params: ParamMap) =>
+     this.stageId=params.get('stage')
+      ),
     );
-    this.loadSearch();
-    console.log("Typeee "+this.type);
+    console.log("Type: "+this.type+" Stage: "+this.stageId);
+    this.loadSearch(3);
   }
 
-  loadSearch(){
-    this.obsSos=this.salesService.getSalesOrderAll('draft','invoice'); 
+  loadSearch(stageId:number){
+    this.obsSos=this.salesService.getSalesOrderAll(stageId,'invoice'); 
     this.obsSos.subscribe((obsSos) => {
       this.saless = obsSos;
     });
   }
 
-  onApprove(){
-    this.salessUpd = [];
+  onUpdateStage(stageId:number){
+    this.salessUpdId = [];
     for(var i=0; i<this.saless.length; i++){
         if(this.saless[i].selected){
           let so:SalesOrder = this.saless[i];
-          this.salessUpd.push(so);
+          this.salessUpdId.push(so.id);
         }
     }
-    this.obsHttpWS=this.salesService.updateSalesOrderStage(this.salessUpd);
+    this.obsHttpWS=this.salesService.updateSalesOrderStage(this.salessUpdId,stageId);
     this.obsHttpWS.subscribe((obsHttpWS)=>{
       this.httpResponseWS=obsHttpWS;
     });

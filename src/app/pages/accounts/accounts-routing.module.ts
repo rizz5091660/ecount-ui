@@ -4,6 +4,7 @@ import { Account } from '../../class/account';
 import { AccountsComponent } from './accounts.component';
 import { SalesDashboardComponent } from './sales/sales-dashboard/sales-dashboard.component';
 import { SalesSearchComponent } from './sales/sales-search/sales-search.component';
+import { SalesFormComponent } from './sales/sales-form/sales-form.component';
 
 const routes: Routes = [{
     path: '',
@@ -16,6 +17,10 @@ const routes: Routes = [{
         {
             path: 'sales/sales-search',
             component: SalesSearchComponent
+        },
+        {
+            path: 'sales/sales-form',
+            component: SalesFormComponent
         },
     ]
 

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ThemeModule } from '../../@theme/theme.module';
 import {AccountsRoutingModule,routedComponents} from './accounts-routing.module';
 import { SalesService } from '../../service/sales.service';
+import { SalesFormComponent } from './sales/sales-form/sales-form.component';
 
 
 
@@ -11,6 +12,6 @@ import { SalesService } from '../../service/sales.service';
     CommonModule,AccountsRoutingModule,ThemeModule
   ],
   providers: [SalesService],
-  declarations: [...routedComponents]
+  declarations: [...routedComponents, SalesFormComponent]
 })
 export class AccountsModule { }

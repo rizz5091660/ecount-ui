@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { SalesOrder } from '../../../../class/sales_order';
 import { SalesService } from '../../../../service/sales.service';
 import { Router } from '@angular/router';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'sales-dashboard',
@@ -14,18 +16,24 @@ export class SalesDashboardComponent implements OnInit {
   quoteRadio="all";
   observable:Observable<SalesOrder>;
   model:SalesOrder;
+  ngbDateStruct: NgbDateStruct;
+  date: {year: number, month: number};
 
-  constructor(private service:SalesService,private router: Router) { }
+  constructor(private service:SalesService,private router: Router,private calendar: NgbCalendar) { }
 
   ngOnInit() {
     this.model = new SalesOrder();
     this.loadDashboard();
   }
 
+  selectToday() {
+    this.ngbDateStruct = this.calendar.getToday();
+  }
+
   onSelectTab(type,stage){
     console.log("Type: "+type+" Stage: "+stage);
-    this.router.navigate(["../sales-search"] );
-    //this.router.navigate(["../../sales/sales-search"],{ queryParams: { type: type, stage: stage } });
+    //this.router.navigate(["../sales-search"] );
+    this.router.navigate(["../sales-search"],{ queryParams: { type: type, stage: stage } });
   }
 
   loadDashboard(){

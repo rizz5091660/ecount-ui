@@ -9,7 +9,8 @@
           <button type="button" class="btn btn-primary">New</button>
           <button type="button" class="btn btn-primary" ngbDropdownToggle></button>
           <ul class="dropdown-menu" ngbDropdownMenu>
-            <li class="dropdown-item">Invoice</li>
+            <li class="dropdown-item">
+                <a [routerLink]="['../../sales/sales-form']">Invoice</a></li>
             <li class="dropdown-item">Quote</li>
             <li class="dropdown-item">Repeating Invoice</li>
           </ul>
@@ -40,10 +41,14 @@
     <div class="form-group row">
       <div class="col-md-12">
         <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
-          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'invoice',stage:'draft'}">Draft <br> {{model.nDraft}}</a>
-          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'invoice',stage:'approval'}">Awaiting Approval <br>{{model.nAwApproval}}</a>
-          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'invoice',stage:'payment'}">Awaiting Payment <br>{{model.nAwPayment}}</a>
-          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'invoice',stage:'overdue'}"> Overdue <br> {{model.overdue}} </a>
+          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'invoice',stage:'1'}">Draft
+            <br> {{model.nDraft}}</a>
+          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'invoice',stage:'2'}">Awaiting
+            Approval <br>{{model.nAwApproval}}</a>
+          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'invoice',stage:'3'}">Awaiting
+            Payment <br>{{model.nAwPayment}}</a>
+          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'invoice',stage:'4'}">
+            Overdue <br> {{model.overdue}} </a>
         </div>
       </div>
     </div>
@@ -52,14 +57,17 @@
     </div>
     <div class="form-group row">
       <div class="col-md-12">
-          <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
-              <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'quote',stage:'draft'}">Draft <br> {{model.nDraft}}</a>
-              <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'quote',stage:'sent'}">Sent <br>{{model.nAwApproval}}</a>
-              <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'quote',stage:'accept'}">Accept <br>{{model.nAwPayment}}</a>
-              <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'quote',stage:'expired'}"> Overdue <br> {{model.overdue}} </a>
-            </div>
+        <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
+          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'quote',stage:'1'}">Draft
+            <br> {{model.nDraft}}</a>
+          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'quote',stage:'2'}">Sent
+            <br>{{model.nAwApproval}}</a>
+          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'quote',stage:'3'}">Accept
+            <br>{{model.nAwPayment}}</a>
+          <a [routerLink]="['../../sales/sales-search']" class="btn btn-outline-primary" [queryParams]="{type: 'quote',stage:'4'}">
+            Overdue <br> {{model.overdue}} </a>
+        </div>
       </div>
     </div>
-
   </nb-card-body>
 </nb-card>
