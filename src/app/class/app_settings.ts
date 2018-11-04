@@ -17,7 +17,7 @@ export class AppSettings{
 
     public static get_so_group_stage= AppSettings.getEcountWSURL()+"/so/dashboard";
     public static get_so_all= AppSettings.getEcountWSURL()+"/so/search?";
-    public static update_so_stage= AppSettings.getEcountWSURL+"/so/update_stg"
+    public static update_so_stage= AppSettings.getEcountWSURL()+"/so/update_stg"
 
 
     private static getEcountWSURL() {

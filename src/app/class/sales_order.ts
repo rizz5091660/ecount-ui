@@ -19,4 +19,5 @@ export class SalesOrder extends Model{
     referrence:string;
     selected:boolean;
     stage:Stage;
+    salesIds:number[];    
 }   
