@@ -1,7 +1,10 @@
 import { DropDownModel } from "./drop_down";
 import { Model } from "./model";
 
-export class Coa extends Model{
+export class Coa{
+    id:number;
+    name:string;
+    description:string; 
     l1AccountType:number;
     l2Branch:number;
     l3CustSupp:number;
