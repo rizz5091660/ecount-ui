@@ -13,10 +13,10 @@ export class SalesService {
 
   constructor(private http:HttpClient) { }
     getSalesOrderByStage():Observable<SalesOrder>{
-      return this.http.get<SalesOrder>(AppSettings.get_so_group_stage);
+      return this.http.get<SalesOrder>(AppSettings.get_so_group_stage_path);
     }
     getSalesOrderAll(stageId:number,type:string):Observable<SalesOrder[]>{ 
-      return this.http.get<SalesOrder[]>(AppSettings.get_so_all+"stg="+stageId+"&typ="+type);
+      return this.http.get<SalesOrder[]>(AppSettings.get_so_all_path+"stg="+stageId+"&typ="+type);
     }
     updateSalesOrderStage(salessId:number[],stageId:number):Observable<HttpResponseWS>{
       let so:SalesOrder = new SalesOrder();
@@ -24,6 +24,9 @@ export class SalesService {
       stg.id = stageId;
       so.salesIds = salessId;
       so.stage=stg;
-      return this.http.post<HttpResponseWS>(AppSettings.update_so_stage,so);
+      return this.http.post<HttpResponseWS>(AppSettings.update_so_stage_path,so);
+    }
+    create(so:SalesOrder): Observable<HttpResponseWS>{
+      return this.http.post<HttpResponseWS>(AppSettings.create_so_path,so);
     }
 }

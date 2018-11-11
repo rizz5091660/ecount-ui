@@ -17,7 +17,7 @@ export class CoaComponent implements OnInit {
   radioModel  = 'all';
   observables : Observable<Coa[]>;
   observable : Observable<Coa>;
-  coas : Coa[]
+  coas : Coa[];
   accountType:number;
   model:Coa = new Coa();
   modelDD:Coa = new Coa();

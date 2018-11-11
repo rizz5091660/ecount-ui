@@ -15,9 +15,10 @@ export class AppSettings{
     public static update_coa_path = AppSettings.getEcountWSURL()+"/coa/update";
     public static delete_coa_path = AppSettings.getEcountWSURL()+"/coa/delete?";
 
-    public static get_so_group_stage= AppSettings.getEcountWSURL()+"/so/dashboard";
-    public static get_so_all= AppSettings.getEcountWSURL()+"/so/search?";
-    public static update_so_stage= AppSettings.getEcountWSURL()+"/so/update_stg"
+    public static get_so_group_stage_path= AppSettings.getEcountWSURL()+"/so/dashboard";
+    public static get_so_all_path= AppSettings.getEcountWSURL()+"/so/search?";
+    public static update_so_stage_path= AppSettings.getEcountWSURL()+"/so/update_stg"
+    public static create_so_path = AppSettings.getEcountWSURL() + "/so/create";
 
 
     private static getEcountWSURL() {
