@@ -5,6 +5,7 @@ import { SalesOrder } from '../../../../class/sales_order';
 import { Observable } from 'rxjs';
 import { SalesService } from '../../../../service/sales.service';
 import { HttpResponseWS } from '../../../../class/htt_response_ws';
+import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
   selector: 'sales-search',
@@ -21,6 +22,7 @@ export class SalesSearchComponent implements OnInit {
   obsSos:Observable<SalesOrder[]>;
   obsHttpWS:Observable<HttpResponseWS>;
   httpResponseWS:HttpResponseWS;
+  source:LocalDataSource= new LocalDataSource();
 
   constructor(
     private route: ActivatedRoute,
@@ -28,6 +30,48 @@ export class SalesSearchComponent implements OnInit {
     private salesService:SalesService
   ) {}
 
+  settings = {
+    add: {
+      addButtonContent: '<i class="nb-plus"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+    },
+    edit: {
+      editButtonContent: '<i class="nb-edit"></i>',
+      saveButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: true,
+    },    
+    columns: {
+      soCode: {
+        title: 'Number',
+        type: 'string',
+      },
+    referrence: {
+        title: 'Referrence',
+        type: 'string',
+      },
+      custName: {
+        title: 'To',
+        type: 'string',
+      },
+      trxnDate: {
+        title: 'Date',
+        type: 'date',
+      },
+      estDeliveryDate: {
+        title: 'Due Date',
+        type: 'date',
+      },
+      totalAmount: {
+        title: 'Amount',
+        type: 'number',
+      },
+    },
+  };
   ngOnInit() {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
@@ -44,6 +88,7 @@ export class SalesSearchComponent implements OnInit {
     this.obsSos=this.salesService.getSalesOrderAll(stageId,'invoice'); 
     this.obsSos.subscribe((obsSos) => {
       this.saless = obsSos;
+      this.source.load(this.saless);
     });
   }
 
@@ -59,6 +104,14 @@ export class SalesSearchComponent implements OnInit {
     this.obsHttpWS.subscribe((obsHttpWS)=>{
       this.httpResponseWS=obsHttpWS;
     });
+  }
+
+  onDeleteConfirm(event): void {
+    if (window.confirm('Are you sure you want to delete?')) {
+      event.confirm.resolve();
+    } else {
+      event.confirm.reject();
+    }
   }
 
   onSelectAll(event:any){

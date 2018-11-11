@@ -65,10 +65,10 @@
             <input class="form-control" id="sodp{{i}}" placeholder="Price" [(ngModel)]="sod.unitPrice" name="soDetails{{i}}.unitPrice"> 
         </div>
         <div class="col-sm-2">
-            <input class="form-control" id="soda{{i}}" placeholder="Tax" [(ngModel)]="sod.taxAmount" name="soDetails{{i}}.trxnAmount" (keyup)="onCalculateTotalTrxn()"> 
+            <input class="form-control" type="number" id="soda{{i}}" placeholder="Tax" [(ngModel)]="sod.taxAmount" name="soDetails{{i}}.trxnAmount"> 
         </div>
         <div class="col-sm-2">
-          <input class="form-control" id="soda{{i}}" placeholder="Amount" [(ngModel)]="sod.trxnAmount" name="soDetails{{i}}.trxnAmount" (keyup)="onCalculateTotalTrxn()"> 
+          <input class="form-control"  type="number" id="soda{{i}}" placeholder="Amount" [(ngModel)]="sod.trxnAmount" name="soDetails{{i}}.trxnAmount" (blur)="onCalculateTrxn()"> 
       </div>
       </div>
       <div class="form-group row">
@@ -76,11 +76,11 @@
         <div class="col-sm-2">
           <p>Sub Total</p>
           <p>Tax</p>
-          <h4>Total: {{model.totalAmount}}</h4>
+          <h4>Total</h4>
         </div>
         <div class="col-sm-3" style="float:left">
-            <p>: 1000000</p>
-            <p>: 500</p>
+            <p>: {{subTotal}}</p>
+            <p>: {{model.totalTaxAmount}}</p>
             <h4>: {{model.totalAmount}}</h4>
         </div>
       </div> 

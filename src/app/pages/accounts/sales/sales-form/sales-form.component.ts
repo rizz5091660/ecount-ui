@@ -12,7 +12,7 @@ export class SalesFormComponent implements OnInit {
   model:SalesOrder;
   trxnDtNgb: NgbDateStruct;
   dueDtNgb: NgbDateStruct;
-  
+  subTotal:number=0;  
   constructor() { }
 
   ngOnInit() {
@@ -59,11 +59,19 @@ export class SalesFormComponent implements OnInit {
     this.model.salesOrderDetails.push(sod);
   }
 
-  onCalculateTotalTrxn(){
-    this.model.totalAmount=0;
-    this.model.totalAmount= this.model.salesOrderDetails.filter((sod) =>sod.trxnAmount)
-    .map((sod) => +sod.trxnAmount)
-    .reduce((sum, current) => sum + current);
-  }
+  onCalculateTrxn(){
+    this.subTotal=0;
+    let subTotalTemp:number=0;
+    let taxTotal:number=0;
+    this.model.salesOrderDetails.forEach(function(sod){
+      if(sod.taxAmount!=null){
+        taxTotal= taxTotal + (sod.taxAmount/100 * sod.trxnAmount);
+        subTotalTemp=subTotalTemp+sod.trxnAmount;
 
+      }
+    });
+    this.model.totalTaxAmount=taxTotal;
+    this.subTotal=subTotalTemp*1  ;
+    this.model.totalAmount=(this.model.totalTaxAmount + this.subTotal)*1;
+  }
 }
