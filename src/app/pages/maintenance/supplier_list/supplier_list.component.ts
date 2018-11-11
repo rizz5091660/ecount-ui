@@ -10,6 +10,7 @@ import { Address } from '../../../class/address';
 import { ModalComponent } from '../../shares/modals/modal/modal.component';
 import { HttpResponseWS } from '../../../class/htt_response_ws';
 
+
 @Component({ 
   selector: 'list',
   templateUrl: './supplier_list.component.html',
@@ -17,10 +18,11 @@ import { HttpResponseWS } from '../../../class/htt_response_ws';
 })
 export class SupplierListComponent implements OnInit {
   listObservable: Observable<CustomerSupplier[]>;
-  listCustomerSupplier: CustomerSupplier[];
+  customerSuppliers: CustomerSupplier[];
   closeResult: string;
-  model = new CustomerSupplier();
+  model:CustomerSupplier = new CustomerSupplier();
   httpRespObservable:Observable<HttpResponseWS>;
+  source:LocalDataSource = new LocalDataSource();
 
   ngOnInit() {
     this.model.address = new Address();
@@ -30,20 +32,47 @@ export class SupplierListComponent implements OnInit {
     this.loadListSupplier();
   }
 
+  settings = {
+    add: {
+      addButtonContent: '<i class="nb-plus"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+    },
+    edit: {
+      editButtonContent: '<i class="nb-edit"></i>',
+      saveButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: true,
+    },    
+    columns: {
+      name: {
+        title: 'Name',
+        type: 'string',
+      },
+      phone: {
+        title: 'Phone',
+        type: 'string',
+      },
+      email: {
+        title: 'Phone',
+        type: 'string',
+      },
+      city: {
+        title: 'City',
+        type: 'string',
+      },
+    },
+  };
+
   loadListSupplier() {
     this.listObservable = this.service.getSupplierAll('0');
     this.listObservable.subscribe((listObservable) => {
-      this.listCustomerSupplier = listObservable;
+      this.customerSuppliers = listObservable;
+      this.source.load(this.customerSuppliers);
     })
-  }
-
-
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
   }
 
   onSubmit() {
@@ -73,7 +102,9 @@ export class SupplierListComponent implements OnInit {
   onCreate(){
     this.httpRespObservable = this.supplierService.create(this.model);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      console.log(httpRespObservable.status);
+     // console.log(httpRespObservable.status);
+     this.customerSuppliers.push(this.model);
+     this.source.load(this.customerSuppliers);
     });
 
   }
@@ -85,10 +116,21 @@ export class SupplierListComponent implements OnInit {
    }); 
   }
   
+  onDeleteConfirm(event): void {
+    if (window.confirm('Are you sure you want to delete?')) {
+      this.onDelete(event.data);
+      event.confirm.resolve();
+    } else {
+      event.confirm.reject();
+    }
+  }
+
   onDelete(model: CustomerSupplier){
     this.httpRespObservable = this.supplierService.delete(model);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      console.log(httpRespObservable.status);
+      //console.log(httpRespObservable.status);
+      this.customerSuppliers.splice(this.customerSuppliers.indexOf(model),1);
+      this.source.load(this.customerSuppliers);
     });
   }
 

@@ -2,40 +2,17 @@
   <nb-card-header>
     List of Supplier
   </nb-card-header>
-  <nb-card-body>  
-    <table class="fdt-table">
-      <thead>
-        <tr><th><a class="ng2-smart-sort-link sort" href="#"> Action </a></th>
-          <th><a class="ng2-smart-sort-link sort" href="#"> Name</a></th>
-          <th><a class="ng2-smart-sort-link sort" href="#"> Phone</a></th>
-          <th><a class="ng2-smart-sort-link sort" href="#"> Email</a></th>
-          <th><a class="ng2-smart-sort-link sort" href="#"> Address</a></th>
-        </tr>
-        <tr>
-          <th>
-            <a class="ng2-smart-action-add" (click)="openModal(modal)">
-              <i class="nb-plus"></i>
-            </a>
-          </th>
-          <th><input type="text" class="form-control" name="name" placeholder="Name" /></th>
-          <th><input type="text" class="form-control" name="phone" placeholder="Phone" /></th>
-          <th><input type="text" class="form-control" name="email" placeholder="Email" /></th>
-          <th><input type="text" class="form-control" name="address" placeholder="Address" /></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let supp of listCustomerSupplier; let i = index">
-         <td class="ng2-smart-action-edit" style="width: 100px;">
-            <a class="ng2-smart-action ng2-smart-action-edit-edit" (click)="onEdit(modal,supp)"><i class="nb-edit"></i></a>
-            <a class="ng2-smart-action ng2-smart-action-delete-delete" (click)="onDelete(supp)"><i class="nb-trash"></i></a>
-        </td>  
-         <td>{{supp.name}}</td>
-         <td>{{supp.phone}}</td>
-         <td>{{supp.email}}</td>
-         <td>{{supp.address.city}}</td>
-        </tr>
-      </tbody>
-    </table>
+  <nb-card-body>
+    <div class="form-group row">
+      <div style="padding: 15px">
+        <button type="button" class="btn btn-primary" (click)="openModal(modal)">
+          <i class="nb-home"></i>
+          <span>New</span>
+        </button>
+      </div>
+    </div>
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
   </nb-card-body>
 </nb-card>
 
@@ -55,13 +32,15 @@
             <div class="form-group row">
               <label for="phoneId" class="col-sm-3 col-form-label">Phone</label>
               <div class="col-sm-9">
-                <input type="phone" class="form-control" id="phoneId" placeholder="Phone" [(ngModel)]="model.phone" name="phone">
+                <input type="phone" class="form-control" id="phoneId" placeholder="Phone" [(ngModel)]="model.phone"
+                  name="phone">
               </div>
             </div>
             <div class="form-group row">
               <label for="phoneId" class="col-sm-3 col-form-label">Email</label>
               <div class="col-sm-9">
-                <input type="phone" class="form-control" id="emailId" placeholder="Email" [(ngModel)]="model.email" name="email">
+                <input type="phone" class="form-control" id="emailId" placeholder="Email" [(ngModel)]="model.email"
+                  name="email">
               </div>
             </div>
           </nb-card-body>
@@ -72,7 +51,8 @@
             <div class="form-group row">
               <label for="nameId" class="col-sm-3 col-form-label">Attention</label>
               <div class="col-sm-9">
-                <input class="form-control" id="attentionId" placeholder="Attention" [(ngModel)]="model.address.attention" name="attention">
+                <input class="form-control" id="attentionId" placeholder="Attention" [(ngModel)]="model.address.attention"
+                  name="attention">
               </div>
             </div>
             <div class="form-group row">
@@ -102,7 +82,8 @@
             <div class="form-group row">
               <label for="nameId" class="col-sm-3 col-form-label">Country</label>
               <div class="col-sm-9">
-                <input class="form-control" id="countryId" placeholder="Country" [(ngModel)]="model.address.country" name="country">
+                <input class="form-control" id="countryId" placeholder="Country" [(ngModel)]="model.address.country"
+                  name="country">
               </div>
             </div>
             <div class="form-group row">
