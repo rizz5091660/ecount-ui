@@ -5,6 +5,7 @@ import { SalesOrderDetail } from '../../../../class/sales_order_detail';
 import { SalesService } from '../../../../service/sales.service';
 import { Observable } from 'rxjs/Observable';
 import { HttpResponseWS } from '../../../../class/htt_response_ws';
+import { Stage } from '../../../../class/stage';
 
 @Component({
   selector: 'sales-form',
@@ -21,7 +22,7 @@ export class SalesFormComponent implements OnInit {
 
   ngOnInit() {
     this.model = new SalesOrder();
-    this.model.salesOrderDetails=[
+    this.model.sods=[
       {
         id:null,
         name:null,
@@ -29,7 +30,7 @@ export class SalesFormComponent implements OnInit {
         quantity:null,
         unitPrice:null,
         taxAmount:null,
-        trxnAmount:null,
+        txnAmount:null,
         discount:null,
         inventoryId:null
       },
@@ -40,7 +41,7 @@ export class SalesFormComponent implements OnInit {
         quantity:null,
         unitPrice:null,
         taxAmount:null,
-        trxnAmount:null,
+        txnAmount:null,
         discount:null,
         inventoryId:null
       },
@@ -51,7 +52,7 @@ export class SalesFormComponent implements OnInit {
         quantity:null,
         unitPrice:null,
         taxAmount:null,
-        trxnAmount:null,
+        txnAmount:null,
         discount:null,
         inventoryId:null
       }];
@@ -60,11 +61,11 @@ export class SalesFormComponent implements OnInit {
 
   onAddSalesDetail(){
     let sod = new SalesOrderDetail();
-    this.model.salesOrderDetails.push(sod);
+    this.model.sods.push(sod);
   }
 
   onRemoveSalesDetail(sod:SalesOrderDetail){
-    this.model.salesOrderDetails.splice(this.model.salesOrderDetails.indexOf(sod),1);
+    this.model.sods.splice(this.model.sods.indexOf(sod),1);
     this.onCalculateTrxn();
   }
 
@@ -72,14 +73,14 @@ export class SalesFormComponent implements OnInit {
     this.subTotal=0;
     let subTotalTemp:number=0;
     let taxTotal:number=0;
-    this.model.salesOrderDetails.forEach(function(sod){
+    this.model.sods.forEach(function(sod){
       if(sod.unitPrice!=null && sod.quantity!=null){
-        sod.trxnAmount=sod.unitPrice * sod.quantity;
+        sod.txnAmount=sod.unitPrice * sod.quantity;
       }
-      if(sod.trxnAmount!=null){
-        subTotalTemp=subTotalTemp+sod.trxnAmount;
+      if(sod.txnAmount!=null){
+        subTotalTemp=subTotalTemp+sod.txnAmount;
         if(sod.taxAmount!=null){
-          taxTotal= taxTotal + (sod.taxAmount/100 * sod.trxnAmount);
+          taxTotal= taxTotal + (sod.taxAmount/100 * sod.txnAmount);
         }
       }
     });
@@ -88,7 +89,14 @@ export class SalesFormComponent implements OnInit {
     this.model.totalAmount=(this.model.totalTaxAmount + this.subTotal);
   }
 
-  onCreate(){
+  onApprove(){
+    this.onCreate(2);
+  }
+  onSave(){
+    this.onCreate(1);
+  }
+
+  onCreate(stageId:number){
     this.model.trxnDate = new Date();
     this.model.trxnDate.setDate(this.trxnDtNgb.day);
     this.model.trxnDate.setMonth(this.trxnDtNgb.month);
@@ -99,23 +107,16 @@ export class SalesFormComponent implements OnInit {
     this.model.estDeliveryDate.setMonth(this.dueDtNgb.month);
     this.model.estDeliveryDate.setFullYear(this.dueDtNgb.year);
 
-    // let sods=this.model.salesOrderDetails.map(
-    //   function(sod){
-    //     if(sod!=null && sod.name!=null){
-    //       return sod;
-    //     }
-    //   }
-    // );
-
-    //this.model.salesOrderDetails  = sods;
-     this.model.salesOrderDetails.forEach(function(sod){
-        console.log(sod.name);
-          // if(sod.name==null){
-          //   this.model.salesOrderDetails.splice(this.model.salesOrderDetails.indexOf(sod),1);
-          // }
+    this.model.stage = new Stage();
+    this.model.stage.id=stageId;
+    let sods=[];
+     this.model.sods.forEach(function(sod){
+          if(sod.name!=null){
+            sods.push(sod);
+          }
        }
      );
-
+    this.model.sods = sods;
     this.obHttp=this.service.create(this.model);
     this.obHttp.subscribe((observable) =>{
       //this.model= observable;

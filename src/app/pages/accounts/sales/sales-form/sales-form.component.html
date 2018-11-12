@@ -41,7 +41,7 @@
             Invoice Detail
           </div>
       </div>
-      <div class="form-group row" *ngFor="let sod of model.salesOrderDetails;let i = index;" >
+      <div class="form-group row" *ngFor="let sod of model.sods;let i = index;" >
         <div class="col-sm-2">
             <input class="form-control" id="sodn{{i}}" placeholder="Name" [(ngModel)]="sod.name" name="soDetails{{i}}.name"> 
         </div>
@@ -52,11 +52,11 @@
             <input class="form-control" type="number"   id="sodp{{i}}" placeholder="Price" [(ngModel)]="sod.unitPrice" name="soDetails{{i}}.unitPrice" (blur)="onCalculateTrxn()"> 
         </div>
         <div class="col-sm-2">
-            <input class="form-control" type="number" id="soda{{i}}" placeholder="Tax" [(ngModel)]="sod.taxAmount" name="soDetails{{i}}.trxnAmount" (blur)="onCalculateTrxn()"> 
+            <input class="form-control" type="number" id="soda{{i}}" placeholder="Tax" [(ngModel)]="sod.taxAmount" name="soDetails{{i}}.taxAmount" (blur)="onCalculateTrxn()"> 
         </div>
         <div class="col-sm-3">
             <div class="input-group">
-                <input class="form-control"  type="number" id="soda{{i}}" placeholder="Amount" [(ngModel)]="sod.trxnAmount" name="soDetails{{i}}.trxnAmount" readonly> 
+                <input class="form-control"  type="number" id="soda{{i}}" placeholder="Amount" [(ngModel)]="sod.txnAmount" name="soDetails{{i}}.txnAmount" readonly> 
                 <span class="input-group-append">
                   <button class="btn btn-danger input-group-text" (click)="onRemoveSalesDetail(sod)">
                       <i class="ion-close-round"></i>
@@ -81,7 +81,7 @@
         </div>
       </div>  
       <div class="form-group row">
-          <div style="padding: 15px"><button class="btn btn-primary" (click)="onCreate()">Save</button></div>
+          <div style="padding: 15px"><button class="btn btn-primary" (click)="onSave()">Save</button></div>
           <div style="padding: 15px">
               <div class="dropdown btn-group" ngbDropdown>
                 <button type="button" class="btn btn-primary">Approve</button>

@@ -7,7 +7,7 @@ export class SalesOrderDetail extends Model{
     quantity:number;
     unitPrice:number;
     taxAmount:number;
-    trxnAmount:number;
+    txnAmount:number;
     discount:number;
     inventoryId:number;
 }

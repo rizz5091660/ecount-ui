@@ -11,7 +11,7 @@ export class SalesOrder extends Model{
     shippingCost:number;
     custId:number;
     custName:string;
-    salesOrderDetails:SalesOrderDetail[];
+    sods:SalesOrderDetail[];
     nDraft:number;
     nAwApproval:number;
     nAwPayment:number;
