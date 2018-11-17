@@ -7,7 +7,8 @@
       <div class="form-group row">
         <div class="col-sm-3">
           <label for="custId" class="col-form-label">To</label><br />
-          <input class="form-control" id="custId" placeholder="Name" [(ngModel)]="model.custId" name="custId">
+          <ngx-select-dropdown [config]="config" [options]="model.custSupps" 
+          [(value)]="custDD" [multiple]="false" (change)="selectionChanged($event,'cust',0)" ></ngx-select-dropdown>
         </div>
         <div class="col-sm-3">
             <label for="trxnDate" class="col-form-label">Date</label><br />
@@ -33,7 +34,7 @@
         </div>
         <div class="col-sm-2">
           <label for="soCode" class="col-form-label">Invoice #</label><br />
-          <input class="form-control" id="soCode" placeholder="Invoice" [(ngModel)]="model.soCode" name="soCode">
+          <input class="form-control" id="soCode" [(ngModel)]="model.soCode" name="soCode">
         </div>
       </div>
       <div class="form-group row">
@@ -42,19 +43,20 @@
           </div>
       </div>
       <div class="form-group row" *ngFor="let sod of model.sods;let i = index;" >
-        <div class="col-sm-2">
-            <input class="form-control" id="sodn{{i}}" placeholder="Name" [(ngModel)]="sod.name" name="soDetails{{i}}.name"> 
-        </div>
-        <div class="col-sm-2">
+        <div class="col-sm-2" style="padding-right:0px">
+            <ngx-select-dropdown [config]="config" [options]="model.inventories" 
+             [multiple]="false" (change)="selectionChanged($event,'inv',i)" ></ngx-select-dropdown>
+          </div>
+        <div class="col-sm-2" style="padding-right:0px">
             <input class="form-control" type="number" id="sodq{{i}}" placeholder="Qty" [(ngModel)]="sod.quantity" name="soDetails{{i}}.quantity"> 
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-2" style="padding-right:0px">
             <input class="form-control" type="number"   id="sodp{{i}}" placeholder="Price" [(ngModel)]="sod.unitPrice" name="soDetails{{i}}.unitPrice" (blur)="onCalculateTrxn()"> 
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-2" style="padding-right:0px">
             <input class="form-control" type="number" id="soda{{i}}" placeholder="Tax" [(ngModel)]="sod.taxAmount" name="soDetails{{i}}.taxAmount" (blur)="onCalculateTrxn()"> 
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3" style="padding-right:0px">
             <div class="input-group">
                 <input class="form-control"  type="number" id="soda{{i}}" placeholder="Amount" [(ngModel)]="sod.txnAmount" name="soDetails{{i}}.txnAmount" readonly> 
                 <span class="input-group-append">
@@ -67,7 +69,6 @@
       </div>
       <div class="row">
         <div class="col-sm-6">
-            <button  class="btn btn-primary"  (click)="onAddSalesDetail()">New Details</button>
         </div>
         <div class="col-sm-2">
           <b>Sub Total</b><br/>
@@ -81,13 +82,14 @@
         </div>
       </div>  
       <div class="form-group row">
-          <div style="padding: 15px"><button class="btn btn-primary" (click)="onSave()">Save</button></div>
+          <div style="padding: 15px"><button  class="btn btn-primary"  (click)="onAddSalesDetail()">New Details</button></div>
           <div style="padding: 15px">
               <div class="dropdown btn-group" ngbDropdown>
-                <button type="button" class="btn btn-primary">Approve</button>
+                <button type="button" class="btn btn-primary">Create</button>
                 <button type="button" class="btn btn-primary" ngbDropdownToggle></button>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                  <li class="dropdown-item">Approve</li>
+                  <li class="dropdown-item" (click)="onSave()">Save</li>
+                  <li class="dropdown-item" (click)="onApprove()">Approve</li>
                   <li class="dropdown-item">Approve & Add New</li>
                  </ul> 
                 </div> 
