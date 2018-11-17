@@ -19,7 +19,7 @@ export class AppSettings{
     public static get_so_all_path= AppSettings.getEcountWSURL()+"/so/search?";
     public static update_so_stage_path= AppSettings.getEcountWSURL()+"/so/update_stg"
     public static create_so_path = AppSettings.getEcountWSURL() + "/so/create";
-
+    public static init_so_path = AppSettings.getEcountWSURL() + "/so/init";
 
     private static getEcountWSURL() {
         return this.fotuna_ws_url;

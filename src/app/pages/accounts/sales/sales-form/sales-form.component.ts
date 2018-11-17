@@ -6,6 +6,10 @@ import { SalesService } from '../../../../service/sales.service';
 import { Observable } from 'rxjs/Observable';
 import { HttpResponseWS } from '../../../../class/htt_response_ws';
 import { Stage } from '../../../../class/stage';
+import { CustomerSupplier } from '../../../../class/supplier_customer';
+import { DropDownModel } from '../../../../class/drop_down';
+import { Router, ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'sales-form',
@@ -13,15 +17,24 @@ import { Stage } from '../../../../class/stage';
   styleUrls: ['./sales-form.component.scss']
 })
 export class SalesFormComponent implements OnInit {
-  model:SalesOrder;
+  model:SalesOrder = new SalesOrder();
   trxnDtNgb: NgbDateStruct;
   dueDtNgb: NgbDateStruct;
   subTotal:number;  
   obHttp:Observable<HttpResponseWS>;
-  constructor(private service:SalesService) { }
+  obSo:Observable<SalesOrder>;
+  custDD:DropDownModel=new DropDownModel();
+  obSalesTyp:Observable<string>;
+  salesTyp:string;
+  constructor(private service:SalesService,private route: ActivatedRoute) { }
+
+  config = {
+    displayKey:"name", //if objects array passed which key to be displayed defaults to description,
+    search:true, //enables the search plugin to search in the list
+    multiple:false
+    };
 
   ngOnInit() {
-    this.model = new SalesOrder();
     this.model.sods=[
       {
         id:null,
@@ -56,6 +69,17 @@ export class SalesFormComponent implements OnInit {
         discount:null,
         inventoryId:null
       }];
+
+      this.obSo=this.service.init();
+      this.obSo.subscribe((observable) =>{
+        this.model.custSupps=observable.custSupps;
+        this.model.inventories=observable.inventories;
+      });
+
+      this.obSalesTyp = this.route.queryParamMap.pipe(map(params => params.get('type')));
+      this.obSalesTyp.subscribe((obSalesTyp) => {
+        this.salesTyp= obSalesTyp.toString();
+      });
   }
 
 
@@ -90,12 +114,12 @@ export class SalesFormComponent implements OnInit {
   }
 
   onApprove(){
-    this.onCreate(2);
+   this.onCreate(2);
   }
+
   onSave(){
     this.onCreate(1);
   }
-
   onCreate(stageId:number){
     this.model.trxnDate = new Date();
     this.model.trxnDate.setDate(this.trxnDtNgb.day);
@@ -109,17 +133,20 @@ export class SalesFormComponent implements OnInit {
 
     this.model.stage = new Stage();
     this.model.stage.id=stageId;
-    let sods=[];
-     this.model.sods.forEach(function(sod){
-          if(sod.name!=null){
-            sods.push(sod);
-          }
-       }
-     );
-    this.model.sods = sods;
-    this.obHttp=this.service.create(this.model);
+     console.log(this.model.sods);
+   this.obHttp=this.service.create(this.model);
     this.obHttp.subscribe((observable) =>{
       //this.model= observable;
     });
+  }
+
+  selectionChanged(event:any,type:string,index:number){
+    console.log(event.value);
+    if(type=='cust' && event.value[0]!=null){
+      this.model.custId=event.value[0].id;
+    }
+    else if(type=='inv' && event.value[0]!=null){
+      this.model.sods[index].inventoryId=event.value[0].id;
+    }
   }
 }

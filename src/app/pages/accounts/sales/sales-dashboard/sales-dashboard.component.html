@@ -9,10 +9,8 @@
           <button type="button" class="btn btn-primary">New</button>
           <button type="button" class="btn btn-primary" ngbDropdownToggle></button>
           <ul class="dropdown-menu" ngbDropdownMenu>
-            <li class="dropdown-item">
-                <a [routerLink]="['../../sales/sales-form']">Invoice</a></li>
-            <li class="dropdown-item">Quote</li>
-            <li class="dropdown-item">Repeating Invoice</li>
+            <li class="dropdown-item" (click)="onAddNew('invoice')">Invoice</li>
+            <li class="dropdown-item" (click)="onAddNew('quote')">Quote</li>
           </ul>
         </div>
       </div>

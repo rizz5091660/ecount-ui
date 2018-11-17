@@ -29,4 +29,7 @@ export class SalesService {
     create(so:SalesOrder): Observable<HttpResponseWS>{
       return this.http.post<HttpResponseWS>(AppSettings.create_so_path,so);
     }
+    init():Observable<SalesOrder>{
+      return this.http.get<SalesOrder>(AppSettings.init_so_path);
+    }
 }

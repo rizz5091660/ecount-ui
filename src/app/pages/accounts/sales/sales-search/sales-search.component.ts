@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { SalesOrder } from '../../../../class/sales_order';
 import { Observable } from 'rxjs';
 import { SalesService } from '../../../../service/sales.service';
@@ -14,12 +14,13 @@ import { LocalDataSource } from 'ng2-smart-table';
 })
 export class SalesSearchComponent implements OnInit {
   type:string;
-  stageId:string;
+  stageId:number;
   saless:SalesOrder[];
   salessUpdId:number[]; 
   sales:SalesOrder;
   obsSo:Observable<SalesOrder>;
   obsSos:Observable<SalesOrder[]>;
+  obString:Observable<String>;
   obsHttpWS:Observable<HttpResponseWS>;
   httpResponseWS:HttpResponseWS;
   source:LocalDataSource= new LocalDataSource();
@@ -73,15 +74,17 @@ export class SalesSearchComponent implements OnInit {
     },
   };
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap((params: ParamMap) =>
-      this.type=params.get('type')
-      ),switchMap((params: ParamMap) =>
-     this.stageId=params.get('stage')
-      ),
-    );
-    console.log("Type: "+this.type+" Stage: "+this.stageId);
-    this.loadSearch(3);
+ 
+    this.obString = this.route.queryParamMap.pipe(map(params => params.get('type')));
+    this.obString.subscribe((obString) => {
+      this.type= obString.toString();
+    });
+
+    this.obString = this.route.queryParamMap.pipe(map(params => params.get('stage')));
+    this.obString.subscribe((obString) => {
+      this.stageId= parseInt(obString.toString());
+    });
+    this.loadSearch(this.stageId);
   }
 
   loadSearch(stageId:number){
