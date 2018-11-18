@@ -4,13 +4,10 @@
     <div class="form-group row">
       <div class="col-md-12"> <a href="#">Paid</a><br />
         <b>Invoice</b>
-        <nb-tabset fullWidth>
-          <nb-tab id="all" tabTitle="All"></nb-tab>
-          <nb-tab id="draft" tabTitle="Draft"></nb-tab>
-          <nb-tab id="awApprove" tabTitle="Awaiting Approval"></nb-tab>
-          <nb-tab id="awPay" tabTitle="Awaiting Payment"></nb-tab>
-          <nb-tab id="paid" tabTitle="Paid"></nb-tab>
-        </nb-tabset>
+        <nb-tabset fullWidth (changeTab)="onTabChange($event)">
+            <nb-tab  *ngFor="let tab of tabs" [tabTitle]="tab.title" [active]="tab.active">
+             </nb-tab>
+        </nb-tabset> <br/>
       </div>
     </div>
 
@@ -23,7 +20,7 @@
       </div>
     </div>
 
-    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (custom)="onCustomAction()" (userRowSelect)="onRowSelected($event)">
       </ng2-smart-table>
   </nb-card-body>
 </nb-card>

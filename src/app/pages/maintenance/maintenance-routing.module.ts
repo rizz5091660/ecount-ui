@@ -6,7 +6,7 @@ import { CoaComponent } from './coa/coa.component';
 
 const routes: Routes=[{
     path:'',
-    component:CoaComponent,
+    component:MaintenanceComponent,
     children:[
         {
             path:'supplier_list',
