@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SmartTableService } from '../../../@core/data/smart-table.service';
@@ -17,6 +17,7 @@ import { HttpResponseWS } from '../../../class/htt_response_ws';
   styleUrls: ['./supplier_list.component.scss']
 })
 export class SupplierListComponent implements OnInit {
+  @ViewChild('modal') dialog: ElementRef;
   listObservable: Observable<CustomerSupplier[]>;
   customerSuppliers: CustomerSupplier[];
   closeResult: string;
@@ -33,8 +34,11 @@ export class SupplierListComponent implements OnInit {
   }
 
   settings = {
+    mode : 'external',
     actions: {
-      //custom: [{ name: 'customAction', title: '<i class="ion-document"></i>' }],
+      edit: false,
+      delete: false,
+      custom: [{ name: 'onEdit', title: '<i class="nb-edit"></i>' },{ name: 'onDelete', title: '<i class="nb-trash"></i>' }],
     },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -135,6 +139,16 @@ export class SupplierListComponent implements OnInit {
       this.customerSuppliers.splice(this.customerSuppliers.indexOf(model),1);
       this.source.load(this.customerSuppliers);
     });
+  }
+
+  onCustom(event:any){
+    this.model=event.data;
+    if(event.action=="onEdit"){
+      this.onEdit(this.dialog,this.model);
+    }
+    else if(event.action=="onDelete"){
+
+    }
   }
 
   private getDismissReason(reason: any): string {
