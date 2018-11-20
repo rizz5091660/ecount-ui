@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SalesOrder } from '../../../../class/sales_order';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SalesOrderDetail } from '../../../../class/sales_order_detail';
 import { SalesService } from '../../../../service/sales.service';
 import { Observable } from 'rxjs/Observable';
@@ -10,6 +10,9 @@ import { CustomerSupplier } from '../../../../class/supplier_customer';
 import { DropDownModel } from '../../../../class/drop_down';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { LocalDataSource } from 'ng2-smart-table';
+import * as $ from "jquery";
+import { Address } from '../../../../class/address';
 
 @Component({
   selector: 'sales-form',
@@ -17,7 +20,9 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./sales-form.component.scss']
 })
 export class SalesFormComponent implements OnInit {
+  @ViewChild('modal') modal: ElementRef;
   model:SalesOrder = new SalesOrder();
+  modelSod:SalesOrderDetail = new SalesOrderDetail();
   trxnDtNgb: NgbDateStruct;
   dueDtNgb: NgbDateStruct;
   subTotal:number;  
@@ -26,7 +31,10 @@ export class SalesFormComponent implements OnInit {
   custDD:DropDownModel=new DropDownModel();
   obSalesTyp:Observable<string>;
   salesTyp:string;
-  constructor(private service:SalesService,private route: ActivatedRoute) { }
+  source:LocalDataSource = new LocalDataSource();
+  closeResult:string;
+
+  constructor(private service:SalesService,private route: ActivatedRoute, private modalService: NgbModal) { }
 
   config = {
     displayKey:"name", //if objects array passed which key to be displayed defaults to description,
@@ -34,41 +42,62 @@ export class SalesFormComponent implements OnInit {
     multiple:false
     };
 
+    settings = {
+      mode : 'external',
+      actions: {
+        edit: false,
+        delete: false,
+        custom: [{ name: 'onEdit', title: '<i class="nb-edit"></i>' },{ name: 'onDelete', title: '<i class="nb-trash"></i>' }],
+        position : 'right',
+      },
+      add: {
+        addButtonContent: '<i class="nb-plus"></i>',
+        createButtonContent: '<i class="nb-checkmark"></i>',
+        cancelButtonContent: '<i class="nb-close"></i>',
+      },
+      edit: {
+        editButtonContent: '<i class="nb-edit"></i>',
+        saveButtonContent: '<i class="nb-checkmark"></i>',
+        cancelButtonContent: '<i class="nb-close"></i>',
+      },
+      delete: {
+        deleteButtonContent: '<i class="nb-trash"></i>',
+        confirmDelete: true,
+      },    
+      columns: {
+        name: {
+          title: 'Name',
+          type: 'string',
+        },
+        quantity: {
+          title: 'Quantity',
+          type: 'number',
+        },
+        unitPrice: {
+          title: 'Price',
+          type: 'number',
+        },
+        taxAmount: {
+          title: 'Tax',
+          type: 'number',
+        },
+        txnAmount: {
+          title: 'Amount',
+          type: 'number',
+        },
+      },
+    };
+
   ngOnInit() {
-    this.model.sods=[
-      {
-        id:null,
-        name:null,
-        description:null,
-        quantity:null,
-        unitPrice:null,
-        taxAmount:null,
-        txnAmount:null,
-        discount:null,
-        inventoryId:null
-      },
-      {
-        id:null,
-        name:null,
-        description:null,
-        quantity:null,
-        unitPrice:null,
-        taxAmount:null,
-        txnAmount:null,
-        discount:null,
-        inventoryId:null
-      },
-      {
-        id:null,
-        name:null,
-        description:null,
-        quantity:null,
-        unitPrice:null,
-        taxAmount:null,
-        txnAmount:null,
-        discount:null,
-        inventoryId:null
-      }];
+
+    $(document).ready(function(){
+      $(".ng2-smart-action-add-add").click(function(){
+            $("#newBtn").click();  
+          });
+      });
+      this.modelSod = new SalesOrderDetail();
+      this.model.sods=[];
+      this.source.load(this.model.sods);      
 
       this.obSo=this.service.init();
       this.obSo.subscribe((observable) =>{
@@ -84,8 +113,8 @@ export class SalesFormComponent implements OnInit {
 
 
   onAddSalesDetail(){
-    let sod = new SalesOrderDetail();
-    this.model.sods.push(sod);
+    this.model.sods.push(this.modelSod);
+    this.source.load(this.model.sods);
   }
 
   onRemoveSalesDetail(sod:SalesOrderDetail){
@@ -97,17 +126,16 @@ export class SalesFormComponent implements OnInit {
     this.subTotal=0;
     let subTotalTemp:number=0;
     let taxTotal:number=0;
-    this.model.sods.forEach(function(sod){
-      if(sod.unitPrice!=null && sod.quantity!=null){
-        sod.txnAmount=sod.unitPrice * sod.quantity;
+    this.modelSod.txnAmount=this.modelSod.unitPrice * this.modelSod.quantity;
+    if(this.modelSod.unitPrice!=null && this.modelSod.quantity!=null){
+      this.modelSod.txnAmount=this.modelSod.unitPrice * this.modelSod.quantity;
+    }
+    if(this.modelSod.txnAmount!=null){
+      subTotalTemp=subTotalTemp+this.modelSod.txnAmount;
+      if(this.modelSod.taxAmount!=null){
+        taxTotal= taxTotal + (this.modelSod.taxAmount/100 * this.modelSod.txnAmount);
       }
-      if(sod.txnAmount!=null){
-        subTotalTemp=subTotalTemp+sod.txnAmount;
-        if(sod.taxAmount!=null){
-          taxTotal= taxTotal + (sod.taxAmount/100 * sod.txnAmount);
-        }
-      }
-    });
+    }
     this.model.totalTaxAmount=taxTotal;
     this.subTotal=subTotalTemp;
     this.model.totalAmount=(this.model.totalTaxAmount + this.subTotal);
@@ -140,13 +168,27 @@ export class SalesFormComponent implements OnInit {
     });
   }
 
-  selectionChanged(event:any,type:string,index:number){
+  selectionChanged(event:any,type:string){
     console.log(event.value);
     if(type=='cust' && event.value[0]!=null){
       this.model.custId=event.value[0].id;
     }
     else if(type=='inv' && event.value[0]!=null){
-      this.model.sods[index].inventoryId=event.value[0].id;
+      this.modelSod.inventoryId=event.value[0].id;
     }
+  }
+
+  openModalAdd(){
+    this.openModal(this.modal);
+  }
+
+  openModal(modal){
+    //this.model = new CustomerSupplier();
+   // this.model.address = new Address();
+    this.modalService.open(modal).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+    });
   }
 }

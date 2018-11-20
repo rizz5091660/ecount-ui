@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SmartTableService } from '../../../@core/data/smart-table.service';
 import { SupplierService } from '../../../service/supplier.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
@@ -9,6 +8,7 @@ import { CustomerSupplier } from '../../../class/supplier_customer';
 import { Address } from '../../../class/address';
 import { ModalComponent } from '../../shares/modals/modal/modal.component';
 import { HttpResponseWS } from '../../../class/htt_response_ws';
+import * as $ from "jquery";
 
 
 @Component({ 
@@ -17,7 +17,7 @@ import { HttpResponseWS } from '../../../class/htt_response_ws';
   styleUrls: ['./supplier_list.component.scss']
 })
 export class SupplierListComponent implements OnInit {
-  @ViewChild('modal') dialog: ElementRef;
+  @ViewChild('modal') modal: ElementRef;
   listObservable: Observable<CustomerSupplier[]>;
   customerSuppliers: CustomerSupplier[];
   closeResult: string;
@@ -26,12 +26,16 @@ export class SupplierListComponent implements OnInit {
   source:LocalDataSource = new LocalDataSource();
 
   ngOnInit() {
+    $(document).ready(function(){
+    $(".ng2-smart-action-add-add").click(function(){
+          $("#newBtn").click();  
+        });
+    });
     this.model.address = new Address();
-  }
-
-  constructor(private router: Router, private service: SupplierService, private modalService: NgbModal, private supplierService: SupplierService) {
     this.loadListSupplier();
   }
+
+  constructor(private router: Router, private service: SupplierService, private modalService: NgbModal, private supplierService: SupplierService) {}
 
   settings = {
     mode : 'external',
@@ -39,6 +43,7 @@ export class SupplierListComponent implements OnInit {
       edit: false,
       delete: false,
       custom: [{ name: 'onEdit', title: '<i class="nb-edit"></i>' },{ name: 'onDelete', title: '<i class="nb-trash"></i>' }],
+      position : 'right',
     },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -91,7 +96,11 @@ export class SupplierListComponent implements OnInit {
     this.loadListSupplier();
   }
 
-  openModal(modal) {
+  openModalAdd(){
+    this.openModal(this.modal);
+  }
+
+  openModal(modal){
     this.model = new CustomerSupplier();
     this.model.address = new Address();
     this.modalService.open(modal).result.then((result) => {
@@ -144,10 +153,10 @@ export class SupplierListComponent implements OnInit {
   onCustom(event:any){
     this.model=event.data;
     if(event.action=="onEdit"){
-      this.onEdit(this.dialog,this.model);
+      this.onEdit(this.modal,this.model);
     }
     else if(event.action=="onDelete"){
-
+      this.onDelete(this.model);
     }
   }
 

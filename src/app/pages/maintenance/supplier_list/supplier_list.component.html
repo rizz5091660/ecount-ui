@@ -3,14 +3,8 @@
     List of Supplier
   </nb-card-header>
   <nb-card-body>
-    <div class="form-group row">
-      <div style="padding: 15px">
-        <button type="button" class="btn btn-primary" (click)="openModal(modal)">
-          <i class="nb-home"></i>
-          <span>New</span>
+      <button type="button" class="btn btn" (click)="openModalAdd()" id="newBtn" style="display: none" >
         </button>
-      </div>
-    </div>
     <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (custom)="onCustom($event)" >
     </ng2-smart-table>
   </nb-card-body>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Observable } from 'rxjs';
@@ -7,6 +7,7 @@ import { CoaService } from '../../../service/coa.service';
 import { HttpResponseWS } from '../../../class/htt_response_ws';
 import { DropDownModel } from '../../../class/drop_down';
 import { LocalDataSource } from 'ng2-smart-table';
+import * as $ from "jquery";
 
 @Component({
   selector: 'coa',
@@ -14,6 +15,7 @@ import { LocalDataSource } from 'ng2-smart-table';
   styleUrls: ['./coa.component.scss']
 })
 export class CoaComponent implements OnInit {
+  @ViewChild('modal') modal: ElementRef;
   radioModel  = 'all';
   observables : Observable<Coa[]>;
   observable : Observable<Coa>;
@@ -29,6 +31,13 @@ export class CoaComponent implements OnInit {
   constructor(private modalService : NgbModal, private service : CoaService ) { }
 
   settings = {
+    mode : 'external',
+    actions: {
+      edit: false,
+      delete: false,
+      custom: [{ name: 'onEdit', title: '<i class="nb-edit"></i>' },{ name: 'onDelete', title: '<i class="nb-trash"></i>' }],
+      position : 'right',
+    },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -68,6 +77,11 @@ export class CoaComponent implements OnInit {
   };
 
   ngOnInit() {
+    $(document).ready(function(){
+      $(".ng2-smart-action-add-add").click(function(){
+            $("#newBtn").click();  
+          });
+      });
     this.loadListCoa('all','');  
     this.loadCoaDD();
   }
@@ -146,6 +160,10 @@ export class CoaComponent implements OnInit {
 
   onSelectTab(val){
     this.loadListCoa(val,'');
+  }
+
+  openModalAdd(){
+    this.openModal(this.modal);
   }
 
   openModal(modal) {
