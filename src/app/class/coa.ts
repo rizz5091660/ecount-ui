@@ -6,11 +6,16 @@ export class Coa{
     name:string;
     description:string; 
     l1AccountType:number;
+    l1AccountTypeDD:DropDownModel;
     l2Branch:number;
     l3CustSupp:number;
+    l3CustSuppDD:DropDownModel;
     l4Division:number;
+    l4DivisionDD:DropDownModel;
     l5Custom:number;
+    l5CustomDD:DropDownModel;
     tax:number;
+    taxDD:DropDownModel;
     taxName:string;
     coaCd:string;
     favorite:string;

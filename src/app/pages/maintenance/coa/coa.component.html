@@ -3,50 +3,54 @@
     Chart of Account
   </nb-card-header>
   <nb-card-body>
-    <div class="form-group row">
-        <button type="button" style="display:none" (click)="openModalAdd()" id="newBtn"></button>
-      <div style="padding: 15px">
-        <button type="button" class="btn btn-primary">
-          <i class="nb-home"></i>
-          <span>Add Bank Account</span>
-        </button>
-      </div>
-      <div style="padding: 15px">
-        <button type="button" class="btn btn-primary">
-          <i class="nb-home"></i>
-          <span> Print PDF</span>
-        </button>
-      </div>
-      <div style="padding: 15px">
-        <button type="button" class="btn btn-primary">
-          <i class="nb-home"></i>
-          <span> Import </span>
-        </button>
-      </div>
-      <div style="padding: 15px">
-        <button type="button" class="btn btn-primary">
-          <i class="nb-home"></i>
-          <span> Export </span>
-        </button>
-      </div>
-    </div>
+      <div class="form-group row">
+          <div class="col-md-12">
+            <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
+              <button type="button" (click)="onSelectTab('all')" class="btn btn-outline-primary">All Accounts</button>
+              <button type="button" (click)="onSelectTab('asset')" class="btn btn-outline-primary">Asset</button>
+              <button type="button" (click)="onSelectTab('liability')" class="btn btn-outline-primary">Liabilities</button>
+              <button type="button" (click)="onSelectTab('equity')" class="btn btn-outline-primary">Equity</button>
+              <button type="button" (click)="onSelectTab('expense')" class="btn btn-outline-primary">Expenses</button>
+              <button type="button" (click)="onSelectTab('revenue')" class="btn btn-outline-primary">Revenue</button>
+              <button type="button" (click)="onSelectTab('archive')" class="btn btn-outline-primary">Archive</button>
+            </div>
+          </div>
+        </div>
     <div class="form-group row">
       <div class="col-md-12">
-        <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
-          <button type="button" (click)="onSelectTab('all')" class="btn btn-outline-primary">All Accounts</button>
-          <button type="button" (click)="onSelectTab('asset')" class="btn btn-outline-primary">Asset</button>
-          <button type="button" (click)="onSelectTab('liability')" class="btn btn-outline-primary">Liabilities</button>
-          <button type="button" (click)="onSelectTab('equity')" class="btn btn-outline-primary">Equity</button>
-          <button type="button" (click)="onSelectTab('expense')" class="btn btn-outline-primary">Expenses</button>
-          <button type="button" (click)="onSelectTab('revenue')" class="btn btn-outline-primary">Revenue</button>
-          <button type="button" (click)="onSelectTab('archive')" class="btn btn-outline-primary">Archive</button>
-        </div>
+        <ng2-smart-table [settings]="settings" [source]="source" (custom)="onCustom($event)">
+        </ng2-smart-table>
       </div>
     </div>
-    <nb-card-body>
-      <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
-      </ng2-smart-table>
-    </nb-card-body>
+
+    <div class="form-group row">
+        <button type="button" style="display:none" (click)="openModalAdd()" id="newBtn"></button>
+        <div style="padding-right:5px;padding-left:15px">
+          <button type="button" class="btn btn-primary">
+            <i class="nb-home"></i>
+            <span>Add Bank Account</span>
+          </button>
+        </div>
+        <div style="padding-right:5px">
+          <button type="button" class="btn btn-primary">
+            <i class="nb-home"></i>
+            <span> Print PDF</span>
+          </button>
+        </div>
+        <div style="padding-right:5px">
+          <button type="button" class="btn btn-primary">
+            <i class="nb-home"></i>
+            <span> Import </span>
+          </button>
+        </div>
+        <div style="padding-right:5px">
+          <button type="button" class="btn btn-primary">
+            <i class="nb-home"></i>
+            <span> Export </span>
+          </button>
+        </div>
+      </div>
+   
   </nb-card-body>
 </nb-card>
 <ng-template #modal let-c="close" let-d="dismiss">
@@ -59,41 +63,31 @@
             <div class="form-group row">
               <label for="l1AccountType" class="col-sm-3 col-form-label">Account Type</label>
               <div class="col-sm-9">
-                <select [(ngModel)]="model.l1AccountType" name="l1AccountType" class="form-control">
-                  <option *ngFor="let accTyp of modelDD.accountTypes" [ngValue]="accTyp.id"> {{accTyp.name}} </option>
-                </select>
+                  <ngx-select-dropdown [config]="config" [options]="modelDD.accountTypes" [multiple]="false" (change)="selectionChanged($event,'l1AccountType')"></ngx-select-dropdown>
               </div>
             </div>
             <div class="form-group row">
               <label for="l2Branch" class="col-sm-3 col-form-label">Branch</label>
               <div class="col-sm-9">
-                <select [(ngModel)]="model.l2Branch" name="l2Branch" class="form-control">
-                  <option *ngFor="let br of modelDD.branches" [ngValue]="br.id"> {{br.name}} </option>
-                </select>
+                <ngx-select-dropdown [config]="config" [options]="modelDD.branches" [multiple]="false" (change)="selectionChanged($event,'l2Branch')"></ngx-select-dropdown>
               </div>
             </div>
             <div class="form-group row">
               <label for="l3CustSupp" class="col-sm-3 col-form-label">Customer/Supplier</label>
               <div class="col-sm-9">
-                <select [(ngModel)]="model.l3CustSupp" name="l3CustSupp" class="form-control">
-                  <option *ngFor="let cs of modelDD.custSupps" [ngValue]="cs.id"> {{cs.name}} </option>
-                </select>
+                <ngx-select-dropdown [config]="config" [options]="modelDD.custSupps" [multiple]="false" (change)="selectionChanged($event,'l3CustSupp')"></ngx-select-dropdown>
               </div>
             </div>
             <div class="form-group row">
               <label for="l4Division" class="col-sm-3 col-form-label">Division</label>
               <div class="col-sm-9">
-                <select [(ngModel)]="model.l4Division" name="l4Division" class="form-control">
-                  <option *ngFor="let dv of modelDD.divisions" [ngValue]="dv.id"> {{dv.name}} </option>
-                </select>
+                <ngx-select-dropdown [config]="config" [options]="modelDD.divisions" [multiple]="false" (change)="selectionChanged($event,'l4Division')"></ngx-select-dropdown>
               </div>
             </div>
             <div class="form-group row">
-              <label for="l4Division" class="col-sm-3 col-form-label">Taxes</label>
+              <label for="tax" class="col-sm-3 col-form-label">Taxes</label>
               <div class="col-sm-9">
-                <select [(ngModel)]="model.tax" name="tax" class="form-control">
-                  <option *ngFor="let tax of modelDD.taxes" [ngValue]="tax.id"> {{tax.name}} </option>
-                </select>
+                  <ngx-select-dropdown  [(value)]="model.taxDD" [config]="config" [options]="modelDD.taxes" [multiple]="false" (change)="selectionChanged($event,'tax')"></ngx-select-dropdown>
               </div>
             </div>
             <div class="form-group row">
@@ -116,8 +110,8 @@
               </div>
             </div>
             <div class="form-group row">
-              <div class="offset-sm-3 col-sm-9">
-                <button type="submit" class="btn btn-primary">Submit</button>
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
               </div>
             </div>
           </nb-card-body>

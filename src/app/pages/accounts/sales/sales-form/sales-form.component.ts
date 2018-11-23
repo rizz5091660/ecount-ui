@@ -30,9 +30,10 @@ export class SalesFormComponent implements OnInit {
   obSo:Observable<SalesOrder>;
   custDD:DropDownModel=new DropDownModel();
   obSalesTyp:Observable<string>;
-  salesTyp:string;
   source:LocalDataSource = new LocalDataSource();
   closeResult:string;
+  mode:string;
+  soFormTitle:string;
 
   constructor(private service:SalesService,private route: ActivatedRoute, private modalService: NgbModal) { }
 
@@ -107,21 +108,39 @@ export class SalesFormComponent implements OnInit {
 
       this.obSalesTyp = this.route.queryParamMap.pipe(map(params => params.get('type')));
       this.obSalesTyp.subscribe((obSalesTyp) => {
-        this.salesTyp= obSalesTyp.toString();
+        this.model.soType= obSalesTyp;
+        if("I"==this.model.soType){
+          this.soFormTitle="Invoice";
+        }else if("Q"==this.model.soType){
+          this.soFormTitle="Quotation";
+        }
       });
   }
-
-
-  onAddSalesDetail(){
-    this.model.sods.push(this.modelSod);
-    this.source.load(this.model.sods);
+  onAddSod(){
+    this.mode="add";
+    this.modelSod = new SalesOrderDetail();
+    this.openModal();
   }
-
+  onEdit(modelSod) {
+    this.mode="edit";
+    this.modelSod = modelSod;
+    this.openModal();
+  }
+  onSubmitSod(){
+    if(this.mode=="add"){
+      this.modelSod.id=this.model.sods.length+1;
+      this.model.sods.push(this.modelSod);
+      this.source.load(this.model.sods);
+    }else if(this.mode=="edit"){
+      let sod:SalesOrderDetail=this.model.sods.find(sod=>sod.id==this.modelSod.id,1);
+      sod = this.modelSod;
+      this.source.load(this.model.sods);
+    }
+  }
   onRemoveSalesDetail(sod:SalesOrderDetail){
     this.model.sods.splice(this.model.sods.indexOf(sod),1);
     this.onCalculateTrxn();
   }
-
   onCalculateTrxn(){
     this.subTotal=0;
     let subTotalTemp:number=0;
@@ -141,9 +160,19 @@ export class SalesFormComponent implements OnInit {
     this.model.totalAmount=(this.model.totalTaxAmount + this.subTotal);
   }
 
-  onApprove(){
-   this.onCreate(2);
+  onAwaitApprove(){
+    this.onCreate(2);
   }
+
+  onApprove(){
+   this.onCreate(3);
+  }
+  
+  onApproveNew(){
+    this.onCreate(3);
+    this.modelSod = new SalesOrderDetail();
+    this.model.sods=[];
+   }
 
   onSave(){
     this.onCreate(1);
@@ -169,23 +198,27 @@ export class SalesFormComponent implements OnInit {
   }
 
   selectionChanged(event:any,type:string){
-    console.log(event.value);
     if(type=='cust' && event.value[0]!=null){
       this.model.custId=event.value[0].id;
     }
     else if(type=='inv' && event.value[0]!=null){
       this.modelSod.inventoryId=event.value[0].id;
+      this.modelSod.name=event.value[0].name;
     }
   }
 
-  openModalAdd(){
-    this.openModal(this.modal);
+  onCustom(event:any){
+    this.modelSod=event.data;
+    if(event.action=="onEdit"){
+      this.onEdit(this.modelSod);
+    }
+    else if(event.action=="onDelete"){
+      //this.onDelete(this.model);
+    }
   }
 
-  openModal(modal){
-    //this.model = new CustomerSupplier();
-   // this.model.address = new Address();
-    this.modalService.open(modal).result.then((result) => {
+  openModal(){
+    this.modalService.open(this.modal).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed`;

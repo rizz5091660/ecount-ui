@@ -17,11 +17,18 @@ export class SalesOrder extends Model{
     nDraft:number;
     nAwApproval:number;
     nAwPayment:number;
+    nPaid:number;
     nOverdue:number;
+    nDraftQ:number;
+    nAwApprovalQ:number;
+    nAwPaymentQ:number;
+    nOverdueQ:number;
+    nPaidQ:number;
     referrence:string;
     selected:boolean;
     stage:Stage;
     salesIds:number[];    
     custSupps:DropDownModel[];
     inventories:DropDownModel[];
+    soType:string;
 }   

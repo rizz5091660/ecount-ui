@@ -103,11 +103,11 @@ export class SalesSearchComponent implements OnInit {
     this.obString.subscribe((obString) => {
       this.stageId = parseInt(obString.toString());
     });
-    this.loadSearch(this.stageId);
+    this.loadSearch(this.stageId, this.type);
   }
 
-  loadSearch(stageId: number) {
-    this.obsSos = this.salesService.getSalesOrderAll(stageId, 'invoice');
+  loadSearch(stageId: number,type: string) {
+    this.obsSos = this.salesService.getSalesOrderAll(stageId, type);
     this.obsSos.subscribe((obsSos) => {
       this.saless = obsSos;
       this.source.load(this.saless);
@@ -187,6 +187,6 @@ export class SalesSearchComponent implements OnInit {
     else if (event.tabTitle == "Paid") {
       stqgedId = 4;
     }
-    this.loadSearch(stqgedId);
+    this.loadSearch(stqgedId,this.type);
   }
 }
