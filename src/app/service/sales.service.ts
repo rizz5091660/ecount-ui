@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { SalesOrder } from '../class/sales_order';
-import { AppSettings } from '../class/app_settings';
+import { environment } from '../../environments/environment';
 import { HttpResponseWS } from '../class/htt_response_ws';
 import { Stage } from '../class/stage';
 
@@ -13,10 +13,10 @@ export class SalesService {
 
   constructor(private http:HttpClient) { }
     getSalesOrderByStage():Observable<SalesOrder>{
-      return this.http.get<SalesOrder>(AppSettings.get_so_group_stage_path);
+      return this.http.get<SalesOrder>(environment.get_so_group_stage_path);
     }
     getSalesOrderAll(stageId:number,type:string):Observable<SalesOrder[]>{ 
-      return this.http.get<SalesOrder[]>(AppSettings.get_so_all_path+"stg="+stageId+"&typ="+type);
+      return this.http.get<SalesOrder[]>(environment.get_so_all_path+"stg="+stageId+"&typ="+type);
     }
     updateSalesOrderStage(salessId:number[],stageId:number):Observable<HttpResponseWS>{
       let so:SalesOrder = new SalesOrder();
@@ -24,12 +24,12 @@ export class SalesService {
       stg.id = stageId;
       so.salesIds = salessId;
       so.stage=stg;
-      return this.http.post<HttpResponseWS>(AppSettings.update_so_stage_path,so);
+      return this.http.post<HttpResponseWS>(environment.update_so_stage_path,so);
     }
     create(so:SalesOrder): Observable<HttpResponseWS>{
-      return this.http.post<HttpResponseWS>(AppSettings.create_so_path,so);
+      return this.http.post<HttpResponseWS>(environment.create_so_path,so);
     }
     init():Observable<SalesOrder>{
-      return this.http.get<SalesOrder>(AppSettings.init_so_path);
+      return this.http.get<SalesOrder>(environment.init_so_path);
     }
 }

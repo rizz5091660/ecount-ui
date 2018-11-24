@@ -5,6 +5,7 @@ import { SalesService } from '../../../../service/sales.service';
 import { Router } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'sales-dashboard',
@@ -18,6 +19,7 @@ export class SalesDashboardComponent implements OnInit {
   model:SalesOrder;
   ngbDateStruct: NgbDateStruct;
   date: {year: number, month: number};
+  environment = environment;
 
   constructor(private service:SalesService,private router: Router,private calendar: NgbCalendar) { }
 

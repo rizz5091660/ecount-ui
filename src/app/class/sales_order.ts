@@ -31,4 +31,12 @@ export class SalesOrder extends Model{
     custSupps:DropDownModel[];
     inventories:DropDownModel[];
     soType:string;
+    totalAmtDraft:number;
+    totalAmtAwApproval:number;
+    totalAmtAwPayment:number;
+    totalAmtPaid:number;
+    totalAmtDraftQ:number;
+    totalAmtAwApprovalQ:number;
+    totalAmtAwPaymentQ:number;
+    totalAmtPaidQ:number;
 }   

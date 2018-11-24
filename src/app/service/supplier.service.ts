@@ -5,7 +5,7 @@ import { CustomerSupplier } from '../class/supplier_customer';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { HttpResponseWS } from '../class/htt_response_ws';
-import { AppSettings } from '../class/app_settings';
+import { environment } from '../../environments/environment';
 
 
 const httpOptions = {
@@ -23,22 +23,22 @@ export class SupplierService {
     
      /** GET: fetch list of supplier from database */
     getSupplierAll(isCustomer:string):Observable<CustomerSupplier[]>{
-        return this.http.get<CustomerSupplier[]>(AppSettings.get_customer_supplier_path+"isc="+isCustomer);
+        return this.http.get<CustomerSupplier[]>(environment.get_customer_supplier_path+"isc="+isCustomer);
     }
 
      /** GET: supplier based on id from database */
      getSupplierById(id:number):Observable<CustomerSupplier>{
-        return this.http.get<CustomerSupplier>(AppSettings.get_customer_supplier_byid+"id="+id);
+        return this.http.get<CustomerSupplier>(environment.get_customer_supplier_byid+"id="+id);
      }
 
      /** PUT:  modify supplier from database*/
      update(suppCust:CustomerSupplier):Observable<HttpResponseWS>{
-        return this.http.post<HttpResponseWS>(AppSettings.update_customer_supplier_path,suppCust);
+        return this.http.post<HttpResponseWS>(environment.update_customer_supplier_path,suppCust);
      }
 
     /** POST: add a new supplier to the database */
     create(suppCust: CustomerSupplier): Observable<HttpResponseWS> {
-        return this.http.post<HttpResponseWS>(AppSettings.create_customer_supplier_path, suppCust);
+        return this.http.post<HttpResponseWS>(environment.create_customer_supplier_path, suppCust);
             // .pipe(
             //     catchError(this.handleError('addHero', suppCust))
             // );
@@ -46,7 +46,7 @@ export class SupplierService {
 
     /** DELETE: delete supplier from database */
     delete(suppCust: CustomerSupplier):Observable<HttpResponseWS>{
-        return this.http.post<HttpResponseWS>(AppSettings.delete_customer_supplier,suppCust);
+        return this.http.post<HttpResponseWS>(environment.delete_customer_supplier,suppCust);
     }
 
 
