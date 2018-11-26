@@ -13,6 +13,9 @@ import { map } from 'rxjs/operators';
 import { LocalDataSource } from 'ng2-smart-table';
 import * as $ from "jquery";
 import { Address } from '../../../../class/address';
+import { Car } from '../../../../class/car';
+import { SelectItem } from '../../../../class/selectitem';
+import { City } from '../../../../class/city';
 
 @Component({
   selector: 'sales-form',
@@ -21,163 +24,237 @@ import { Address } from '../../../../class/address';
 })
 export class SalesFormComponent implements OnInit {
   @ViewChild('modal') modal: ElementRef;
-  model:SalesOrder = new SalesOrder();
-  modelSod:SalesOrderDetail = new SalesOrderDetail();
+  model: SalesOrder = new SalesOrder();
+  modelSod: SalesOrderDetail = new SalesOrderDetail();
   trxnDtNgb: NgbDateStruct;
   dueDtNgb: NgbDateStruct;
-  subTotal:number;  
-  obHttp:Observable<HttpResponseWS>;
-  obSo:Observable<SalesOrder>;
-  custDD:DropDownModel=new DropDownModel();
-  obSalesTyp:Observable<string>;
-  source:LocalDataSource = new LocalDataSource();
-  closeResult:string;
-  mode:string;
-  soFormTitle:string;
-
-  constructor(private service:SalesService,private route: ActivatedRoute, private modalService: NgbModal) { }
+  subTotal: number;
+  obHttp: Observable<HttpResponseWS>;
+  obSo: Observable<SalesOrder>;
+  obSalesTyp: Observable<string>;
+  source: LocalDataSource = new LocalDataSource();
+  closeResult: string;
+  mode: string;
+  soFormTitle: string;
+  cols: any[];
+  constructor(private service: SalesService, private route: ActivatedRoute, private modalService: NgbModal) {
+  }
 
   config = {
-    displayKey:"name", //if objects array passed which key to be displayed defaults to description,
-    search:true, //enables the search plugin to search in the list
-    multiple:false
-    };
+    displayKey: "name", //if objects array passed which key to be displayed defaults to description,
+    search: true, //enables the search plugin to search in the list
+    multiple: false
+  };
 
-    settings = {
-      mode : 'external',
-      actions: {
-        edit: false,
-        delete: false,
-        custom: [{ name: 'onEdit', title: '<i class="nb-edit"></i>' },{ name: 'onDelete', title: '<i class="nb-trash"></i>' }],
-        position : 'right',
+  settings = {
+    //mode : 'external',
+    actions: {
+      add: true,
+      //    edit: false,
+      //    delete: false,
+      // custom: [{ name: 'onEdit', title: '<i class="nb-edit"></i>' },{ name: 'onDelete', title: '<i class="nb-trash"></i>' }],
+      position: 'right',
+    },
+    add: {
+      addButtonContent: '<i class="nb-plus"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+    },
+    edit: {
+      editButtonContent: '<i class="nb-edit"></i>',
+      saveButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: true,
+    },
+    columns: {
+      name: {
+        title: 'Name',
+        type: 'string',
       },
-      add: {
-        addButtonContent: '<i class="nb-plus"></i>',
-        createButtonContent: '<i class="nb-checkmark"></i>',
-        cancelButtonContent: '<i class="nb-close"></i>',
+      quantity: {
+        title: 'Quantity',
+        type: 'number',
       },
-      edit: {
-        editButtonContent: '<i class="nb-edit"></i>',
-        saveButtonContent: '<i class="nb-checkmark"></i>',
-        cancelButtonContent: '<i class="nb-close"></i>',
+      unitPrice: {
+        title: 'Price',
+        type: 'number',
       },
-      delete: {
-        deleteButtonContent: '<i class="nb-trash"></i>',
-        confirmDelete: true,
-      },    
-      columns: {
-        name: {
-          title: 'Name',
-          type: 'string',
-        },
-        quantity: {
-          title: 'Quantity',
-          type: 'number',
-        },
-        unitPrice: {
-          title: 'Price',
-          type: 'number',
-        },
-        taxAmount: {
-          title: 'Tax',
-          type: 'number',
-        },
-        txnAmount: {
-          title: 'Amount',
-          type: 'number',
-        },
+      coaId: {
+        title: 'Account',
+        type: 'number',
       },
-    };
+      taxAmount: {
+        title: 'Tax',
+        type: 'number',
+      },
+      txnAmount: {
+        title: 'Amount',
+        type: 'number',
+      },
+    },
+  };
 
   ngOnInit() {
 
-    $(document).ready(function(){
-      $(".ng2-smart-action-add-add").click(function(){
-            $("#newBtn").click();  
-          });
-      });
-      this.modelSod = new SalesOrderDetail();
-      this.model.sods=[];
-      this.source.load(this.model.sods);      
+    this.modelSod = new SalesOrderDetail();
+    this.model.sods = [
+      {
+        id:null,
+        name:null,
+        description:null,   
+        quantity:null,
+        unitPrice:null,
+        taxAmount:null,
+        txnAmount:null,
+        discount:null,
+        inventoryId:null,
+        coaId:null,
+      },{
+        id:null,
+        name:null,
+        description:null,   
+        quantity:null,
+        unitPrice:null,
+        taxAmount:null,
+        txnAmount:null,
+        discount:null,
+        inventoryId:null,
+        coaId:null,
+      },
+      {
+        id:null,
+        name:null,
+        description:null,   
+        quantity:null,
+        unitPrice:null,
+        taxAmount:null,
+        txnAmount:null,
+        discount:null,
+        inventoryId:null,
+        coaId:null,
+      },
+      {
+        id:null,
+        name:null,
+        description:null,   
+        quantity:null,
+        unitPrice:null,
+        taxAmount:null,
+        txnAmount:null,
+        discount:null,
+        inventoryId:null,
+        coaId:null,
+      },
+    ];
+    this.source.load(this.model.sods);
 
-      this.obSo=this.service.init();
-      this.obSo.subscribe((observable) =>{
-        this.model.custSupps=observable.custSupps;
-        this.model.inventories=observable.inventories;
-      });
+    this.obSo = this.service.init();
+    this.obSo.subscribe((observable) => {
+      this.model.custSupps = observable.custSupps;
+      this.model.inventories = observable.inventories;
+      this.model.coas = observable.coas;
+    });
 
-      this.obSalesTyp = this.route.queryParamMap.pipe(map(params => params.get('type')));
-      this.obSalesTyp.subscribe((obSalesTyp) => {
-        this.model.soType= obSalesTyp;
-        if("I"==this.model.soType){
-          this.soFormTitle="Invoice";
-        }else if("Q"==this.model.soType){
-          this.soFormTitle="Quotation";
-        }
-      });
+    this.cols = [
+      { field: 'name', header: 'Name' },
+      { field: 'quantity', header: 'Quantity' },
+      { field: 'unitPrice', header: 'Price' },
+      { field: 'coaId', header: 'Account' },
+      { field: 'taxAmount', header: 'Tax' },
+      { field: 'txnAmount', header: 'Ammount' },
+      { field: '', header: 'Action' },
+    ];
+
+    this.brands = [
+      { label: 'Audi', value: 'Audi' },
+      { label: 'BMW', value: 'BMW' },
+      { label: 'Fiat', value: 'Fiat' },
+      { label: 'Ford', value: 'Ford' },
+      { label: 'Honda', value: 'Honda' },
+      { label: 'Jaguar', value: 'Jaguar' },
+      { label: 'Mercedes', value: 'Mercedes' },
+      { label: 'Renault', value: 'Renault' },
+      { label: 'VW', value: 'VW' },
+      { label: 'Volvo', value: 'Volvo' }
+    ];
+
+
+    this.model.custId = 16;
+    this.obSalesTyp = this.route.queryParamMap.pipe(map(params => params.get('type')));
+    this.obSalesTyp.subscribe((obSalesTyp) => {
+      this.model.soType = obSalesTyp;
+      if ("I" == this.model.soType) {
+        this.soFormTitle = "Invoice";
+      } else if ("Q" == this.model.soType) {
+        this.soFormTitle = "Quotation";
+      }
+    });
   }
-  onAddSod(){
-    this.mode="add";
+  onAddSod() {
+    this.mode = "add";
     this.modelSod = new SalesOrderDetail();
     this.openModal();
   }
   onEdit(modelSod) {
-    this.mode="edit";
+    this.mode = "edit";
     this.modelSod = modelSod;
     this.openModal();
   }
-  onSubmitSod(){
-    if(this.mode=="add"){
-      this.modelSod.id=this.model.sods.length+1;
+  onSubmitSod() {
+    if (this.mode == "add") {
+      this.modelSod.id = this.model.sods.length + 1;
       this.model.sods.push(this.modelSod);
       this.source.load(this.model.sods);
-    }else if(this.mode=="edit"){
-      let sod:SalesOrderDetail=this.model.sods.find(sod=>sod.id==this.modelSod.id,1);
+    } else if (this.mode == "edit") {
+      let sod: SalesOrderDetail = this.model.sods.find(sod => sod.id == this.modelSod.id, 1);
       sod = this.modelSod;
       this.source.load(this.model.sods);
     }
   }
-  onRemoveSalesDetail(sod:SalesOrderDetail){
-    this.model.sods.splice(this.model.sods.indexOf(sod),1);
+  onRemoveSalesDetail(sod: SalesOrderDetail) {
+    this.model.sods.splice(this.model.sods.indexOf(sod), 1);
     this.onCalculateTrxn();
   }
-  onCalculateTrxn(){
-    this.subTotal=0;
-    let subTotalTemp:number=0;
-    let taxTotal:number=0;
-    this.modelSod.txnAmount=this.modelSod.unitPrice * this.modelSod.quantity;
-    if(this.modelSod.unitPrice!=null && this.modelSod.quantity!=null){
-      this.modelSod.txnAmount=this.modelSod.unitPrice * this.modelSod.quantity;
+  onCalculateTrxn() {
+    this.subTotal = 0;
+    let subTotalTemp: number = 0;
+    let taxTotal: number = 0;
+    this.modelSod.txnAmount = this.modelSod.unitPrice * this.modelSod.quantity;
+    if (this.modelSod.unitPrice != null && this.modelSod.quantity != null) {
+      this.modelSod.txnAmount = this.modelSod.unitPrice * this.modelSod.quantity;
     }
-    if(this.modelSod.txnAmount!=null){
-      subTotalTemp=subTotalTemp+this.modelSod.txnAmount;
-      if(this.modelSod.taxAmount!=null){
-        taxTotal= taxTotal + (this.modelSod.taxAmount/100 * this.modelSod.txnAmount);
+    if (this.modelSod.txnAmount != null) {
+      subTotalTemp = subTotalTemp + this.modelSod.txnAmount;
+      if (this.modelSod.taxAmount != null) {
+        taxTotal = taxTotal + (this.modelSod.taxAmount / 100 * this.modelSod.txnAmount);
       }
     }
-    this.model.totalTaxAmount=taxTotal;
-    this.subTotal=subTotalTemp;
-    this.model.totalAmount=(this.model.totalTaxAmount + this.subTotal);
+    this.model.totalTaxAmount = taxTotal;
+    this.subTotal = subTotalTemp;
+    this.model.totalAmount = (this.model.totalTaxAmount + this.subTotal);
   }
 
-  onAwaitApprove(){
+  onAwaitApprove() {
     this.onCreate(2);
   }
 
-  onApprove(){
-   this.onCreate(3);
+  onApprove() {
+    this.onCreate(3);
   }
-  
-  onApproveNew(){
+
+  onApproveNew() {
     this.onCreate(3);
     this.modelSod = new SalesOrderDetail();
-    this.model.sods=[];
-   }
+    this.model.sods = [];
+  }
 
-  onSave(){
+  onSave() {
     this.onCreate(1);
   }
-  onCreate(stageId:number){
+  onCreate(stageId: number) {
     this.model.trxnDate = new Date();
     this.model.trxnDate.setDate(this.trxnDtNgb.day);
     this.model.trxnDate.setMonth(this.trxnDtNgb.month);
@@ -189,35 +266,35 @@ export class SalesFormComponent implements OnInit {
     this.model.estDeliveryDate.setFullYear(this.dueDtNgb.year);
 
     this.model.stage = new Stage();
-    this.model.stage.id=stageId;
-     console.log(this.model.sods);
-   this.obHttp=this.service.create(this.model);
-    this.obHttp.subscribe((observable) =>{
+    this.model.stage.id = stageId;
+    console.log(this.model.sods);
+    this.obHttp = this.service.create(this.model);
+    this.obHttp.subscribe((observable) => {
       //this.model= observable;
     });
   }
 
-  selectionChanged(event:any,type:string){
-    if(type=='cust' && event.value[0]!=null){
-      this.model.custId=event.value[0].id;
+  selectionChanged(event: any, type: string) {
+    if (type == 'cust' && event.value[0] != null) {
+      this.model.custId = event.value[0].id;
     }
-    else if(type=='inv' && event.value[0]!=null){
-      this.modelSod.inventoryId=event.value[0].id;
-      this.modelSod.name=event.value[0].name;
+    else if (type == 'inv' && event.value[0] != null) {
+      this.modelSod.inventoryId = event.value[0].id;
+      this.modelSod.name = event.value[0].name;
     }
   }
 
-  onCustom(event:any){
-    this.modelSod=event.data;
-    if(event.action=="onEdit"){
+  onCustom(event: any) {
+    this.modelSod = event.data;
+    if (event.action == "onEdit") {
       this.onEdit(this.modelSod);
     }
-    else if(event.action=="onDelete"){
+    else if (event.action == "onDelete") {
       //this.onDelete(this.model);
     }
   }
 
-  openModal(){
+  openModal() {
     this.modalService.open(this.modal).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

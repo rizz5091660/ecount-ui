@@ -8,10 +8,9 @@ import { ModalComponent } from '../shares/modals/modal/modal.component';
 import { SharesModule } from '../shares/shares.module';
 import { CoaService } from '../../service/coa.service';
 import { TaxComponent } from './tax/tax.component';
-import { SelectDropDownModule } from 'ngx-select-dropdown';
 
 @NgModule({
-    imports:[MaintenanceRoutingModule,ThemeModule,Ng2SmartTableModule,SharesModule,SelectDropDownModule], 
+    imports:[MaintenanceRoutingModule,ThemeModule,Ng2SmartTableModule,SharesModule], 
     declarations:[...routedComponents, TaxComponent],
     providers: [SupplierService,CoaService,SmartTableService],
     entryComponents: [

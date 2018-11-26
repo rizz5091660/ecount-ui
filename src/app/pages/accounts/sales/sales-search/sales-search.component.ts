@@ -121,17 +121,17 @@ export class SalesSearchComponent implements OnInit {
 
   onUpdateStage(stageId: number) {
     this.salessUpdId = [];
-    console.log(this.saless);
     for (var i = 0; i < this.saless.length; i++) {
       if (this.saless[i].selected) {
         let so: SalesOrder = this.saless[i];
         this.salessUpdId.push(so.id);
       }
     }
-    // this.obsHttpWS = this.salesService.updateSalesOrderStage(this.salessUpdId, stageId);
-    // this.obsHttpWS.subscribe((obsHttpWS) => {
-    //   this.httpResponseWS = obsHttpWS;
-    // });
+     this.obsHttpWS = this.salesService.updateSalesOrderStage(this.salessUpdId, stageId);
+     this.obsHttpWS.subscribe((obsHttpWS) => {
+       this.httpResponseWS = obsHttpWS;
+       this.loadSearch(this.stageId, this.type);
+     });
   }
 
   onDeleteConfirm(event): void {
@@ -170,23 +170,21 @@ export class SalesSearchComponent implements OnInit {
   }
 
   onTabChange(event: any) {
-    console.log("Change tab " + event.tabTitle);
-    let stqgedId: number;
     if (event.tabTitle == "All") {
-      stqgedId = 0;
+      this.stageId = 0;
     }
     else if (event.tabTitle == "Draft") {
-      stqgedId = 1;
+      this.stageId = 1;
     }
     else if (event.tabTitle == "Awaiting Approval") {
-      stqgedId = 2;
+      this.stageId = 2;
     }
     else if (event.tabTitle == "Awaiting Payment") {
-      stqgedId = 3;
+      this.stageId = 3;
     }
     else if (event.tabTitle == "Paid") {
-      stqgedId = 4;
+      this.stageId = 4;
     }
-    this.loadSearch(stqgedId,this.type);
+    this.loadSearch(this.stageId,this.type);
   }
 }

@@ -18,12 +18,18 @@
       </div>
     </div>
     <div class="form-group row">
-      <div class="col-sm-2">
-        <button type="button" (click)="onUpdateStage(2)" class="btn btn-primary">Approve</button>
+      <div style="padding: 5px;padding-left: 15px">
+          <button type="button" (click)="onUpdateStage(1)" class="btn btn-primary btn-rectangle">Draft</button>
       </div>
-      <div class="col-sm-2">
-        <button type="button" (click)="onUpdateStage(3)" class="btn btn-primary">Receive Payment</button>
+      <div style="padding: 5px;">
+          <button type="button" (click)="onUpdateStage(2)" class="btn btn-primary btn-rectangle">Submit fo Approval</button>
       </div>
-    </div>
+      <div style="padding: 5px">
+          <button type="button" (click)="onUpdateStage(3)" class="btn btn-primary btn-rectangle">Approve</button>
+      </div>
+      <div style="padding: 5px">
+          <button type="button" (click)="onUpdateStage(4)" class="btn btn-primary btn-rectangle">Receive Payment</button>
+      </div>
+  </div>
   </nb-card-body>
 </nb-card>

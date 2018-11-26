@@ -1,4 +1,5 @@
 import { Model } from "./model";
+import { SelectItem } from "./selectitem";
 
 export class SalesOrderDetail extends Model{
     id:number;
@@ -10,4 +11,6 @@ export class SalesOrderDetail extends Model{
     txnAmount:number;
     discount:number;
     inventoryId:number;
+    coaId:number;
+    coaCd:string;
 }
