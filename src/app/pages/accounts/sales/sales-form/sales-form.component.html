@@ -61,20 +61,24 @@
               <p-table [columns]="cols" [value]="model.sods" [paginator]="true" [rows]="10">
                   <ng-template pTemplate="header" let-columns>
                       <tr>
-                          <th *ngFor="let col of columns"> 
-                              {{col.header}}
-                          </th> 
+                          <th style="width:25%">Name</th> 
+                          <th>Quantity</th> 
+                          <th>Price</th> 
+                          <th>Account</th> 
+                          <th>Tax</th> 
+                          <th>Ammount</th>
+                          <th style="width:100px">Action</th> 
                       </tr>
                       <tr>
                           <th *ngFor="let col of columns" [ngSwitch]="col.type">
                               <input  *ngSwitchCase="'txt'"  pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" style="width:100%">
-                              <button *ngSwitchCase="'btn'" type="button" pButton icon="fa fa-plus" (click)="onAddSod()" label="Add"></button>
+                              <button *ngSwitchCase="'btn'" type="button" pButton icon="nb-plus" (click)="onAddSod()" style="width:100%"></button>
                           </th>
                       </tr>
                   </ng-template>
                   <ng-template pTemplate="body" let-sod let-columns="columns">
-                      <tr style="height: 25px">
-                          <td pEditableColumn>
+                      <tr style="height: 20px">
+                          <td pEditableColumn style="width:20%">
                               <p-cellEditor>
                                   <ng-template pTemplate="input">
                                       <input pInputText type="text" [(ngModel)]="sod.name" name="sod.name">
@@ -143,17 +147,12 @@
                                   </ng-template>
                               </p-cellEditor>
                           </td>
-                          <td pEditableColumn>
-                              <p-cellEditor>
-                                  <ng-template pTemplate="input">
-                                      <input pInputText type="text" [(ngModel)]="sod.txnAmount" name="sod.txnAmount">
-                                  </ng-template>
-                                  <ng-template pTemplate="output">
-                                      {{sod.txnAmount}}
-                                  </ng-template>
-                              </p-cellEditor>
+                          <td pEditableColumn class="td-action">      
+                              <div class="div-action">                       
+                                <a class="a-action"  href="#"><i class="nb-edit"></i></a>
+                                <a class="a-action" href="#"><i class="nb-trash"></i></a>
+                             </div>  
                           </td>
-
                       </tr>
                   </ng-template>
               </p-table>

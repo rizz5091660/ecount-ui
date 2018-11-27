@@ -7,15 +7,11 @@ import { Observable } from 'rxjs/Observable';
 import { HttpResponseWS } from '../../../../class/htt_response_ws';
 import { Stage } from '../../../../class/stage';
 import { CustomerSupplier } from '../../../../class/supplier_customer';
-import { DropDownModel } from '../../../../class/drop_down';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { LocalDataSource } from 'ng2-smart-table';
-import * as $ from "jquery";
 import { Address } from '../../../../class/address';
-import { Car } from '../../../../class/car';
 import { SelectItem } from '../../../../class/selectitem';
-import { City } from '../../../../class/city';
 
 @Component({
   selector: 'sales-form',

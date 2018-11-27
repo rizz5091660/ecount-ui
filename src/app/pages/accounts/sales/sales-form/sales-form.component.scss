@@ -9,3 +9,41 @@
   }
 
 
+
+  .a-action {
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 2rem !important;
+    color: #a4abb3;
+}
+
+.nb-edit .nb-trash {
+  font-family: nebular;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.td-action{
+  position: relative;
+    padding: 0.875rem 1.25rem;
+    border: 1px solid #cdd5dc;
+    vertical-align: middle;
+}
+
+.div-action{
+  display: flex;
+    height: 100%;
+}
