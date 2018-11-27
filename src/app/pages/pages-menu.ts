@@ -10,8 +10,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/accounts/sales/sales-dashboard',
       }, 
       {
-        title: 'Purchases',
-        link: '/pages/accounts/purchases',
+        title: 'Purchase',
+        link: '/pages/accounts/purchase/purchase-dashboard',
       }, 
       {
         title: 'Inventory',

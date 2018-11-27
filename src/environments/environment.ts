@@ -29,6 +29,12 @@ export const environment = {
   create_so_path: ecount_ws_url  + "/so/create",
   init_so_path: ecount_ws_url + "/so/init",
 
+  get_po_group_stage_path: ecount_ws_url +"/po/dashboard",
+  get_po_all_path: ecount_ws_url +"/po/search?",
+  update_po_stage_path:ecount_ws_url +"/po/update_stg",
+  create_po_path: ecount_ws_url  + "/po/create",
+  init_po_path: ecount_ws_url + "/po/init",
+
   currency:"USD",
  
 };

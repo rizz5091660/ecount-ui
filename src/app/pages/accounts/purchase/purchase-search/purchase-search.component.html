@@ -1,0 +1,26 @@
+<nb-card>
+  <nb-card-header></nb-card-header>
+  <nb-card-body>
+    <div class="form-group row">
+      <div class="col-md-12"> <a href="#">Paid</a><br />
+        <b>Invoice</b>
+        <nb-tabset fullWidth (changeTab)="onTabChange($event)">
+            <nb-tab  *ngFor="let tab of tabs" [tabTitle]="tab.title" [active]="tab.active">
+             </nb-tab>
+        </nb-tabset> <br/>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div style="padding: 15px">
+        <button type="button" (click)="onUpdateStage(2)" class="btn btn-primary">Approve</button>
+      </div>
+      <div style="padding: 15px">
+        <button type="button" (click)="onUpdateStage(3)" class="btn btn-primary">Receive Payment</button>
+      </div>
+    </div>
+
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (custom)="onCustomAction()" (userRowSelect)="onRowSelected($event)">
+      </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

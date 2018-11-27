@@ -5,6 +5,9 @@ import { AccountsComponent } from './accounts.component';
 import { SalesDashboardComponent } from './sales/sales-dashboard/sales-dashboard.component';
 import { SalesSearchComponent } from './sales/sales-search/sales-search.component';
 import { SalesFormComponent } from './sales/sales-form/sales-form.component';
+import { PurchaseDashboardComponent } from './purchase/purchase-dashboard/purchase-dashboard.component';
+import { PurchaseSearchComponent } from './purchase/purchase-search/purchase-search.component';
+import { PurchaseFormComponent } from './purchase/purchase-form/purchase-form.component';
 
 const routes: Routes = [{
     path: '',
@@ -22,6 +25,18 @@ const routes: Routes = [{
             path: 'sales/sales-form',
             component: SalesFormComponent
         },
+        {
+            path: 'purchase/purchase-dashboard',
+            component: PurchaseDashboardComponent
+        },
+        {
+            path: 'purchase/purchase-search',
+            component: PurchaseSearchComponent
+        },
+        {
+            path: 'purchase/purchase-form',
+            component: PurchaseFormComponent
+        }
     ]
 
 }]
@@ -39,5 +54,5 @@ export class AccountsRoutingModule{
 }
 
 export const routedComponents=[
-    AccountsComponent,SalesDashboardComponent,SalesSearchComponent
+    AccountsComponent,SalesDashboardComponent,SalesSearchComponent,PurchaseDashboardComponent,PurchaseSearchComponent
 ]

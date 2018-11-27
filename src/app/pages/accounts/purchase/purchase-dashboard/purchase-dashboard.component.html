@@ -1,0 +1,63 @@
+<nb-card>
+  <nb-card-header>
+    Purchase
+  </nb-card-header>
+  <nb-card-body>
+    <div class="form-group row">
+      <div style="padding: 5px">
+        <div class="dropdown btn-group" ngbDropdown>
+          <button type="button" class="btn btn-primary">New</button>
+          <button type="button" class="btn btn-primary" ngbDropdownToggle></button>
+          <ul class="dropdown-menu" ngbDropdownMenu>
+            <li class="dropdown-item" (click)="onAddNew('bill')">Bill</li>
+            <li class="dropdown-item" (click)="onAddNew('po')">Purchase Order</li>
+          </ul>
+        </div>
+      </div>
+      <div style="padding: 5px">
+        <button type="button" class="btn btn-primary">
+          <i class="nb-home"></i>
+          <span>import</span>
+        </button>
+      </div>
+      <div style="padding: 5px">
+        <button type="button" class="btn btn-primary">
+          <i class="nb-home"></i>
+          <span>Search</span>
+        </button>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-12"> <b>Bills</b> | <a href="#">Paid</a> | <a href="#">See all</a></div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-12">
+        <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
+          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'bill',stage:'1'}">Draft
+            <br> {{model.nDraft}}</a>
+          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'bill',stage:'2'}">Awaiting
+            Approval <br>{{model.nAwApproval}}</a>
+          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'bill',stage:'3'}">Awaiting
+            Payment <br>{{model.nAwPayment}}</a>
+          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'bill',stage:'4'}">
+            Overdue <br> {{model.nOverdue}} </a>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-12"> <b>Purchase Orders</b> | <a href="#">Billed</a> | <a href="#">See all</a></div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-12">
+        <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
+          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'po',stage:'1'}">Draft
+            <br> {{model.nDraft}}</a>
+          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'po',stage:'2'}">Awaiting Approval
+            <br>{{model.nAwApproval}}</a>
+          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'po',stage:'3'}">Approved
+            <br>{{model.nAwPayment}}</a>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
