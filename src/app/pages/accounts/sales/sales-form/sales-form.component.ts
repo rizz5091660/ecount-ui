@@ -168,20 +168,6 @@ export class SalesFormComponent implements OnInit {
       { field: '', header: 'Action' },
     ];
 
-    this.brands = [
-      { label: 'Audi', value: 'Audi' },
-      { label: 'BMW', value: 'BMW' },
-      { label: 'Fiat', value: 'Fiat' },
-      { label: 'Ford', value: 'Ford' },
-      { label: 'Honda', value: 'Honda' },
-      { label: 'Jaguar', value: 'Jaguar' },
-      { label: 'Mercedes', value: 'Mercedes' },
-      { label: 'Renault', value: 'Renault' },
-      { label: 'VW', value: 'VW' },
-      { label: 'Volvo', value: 'Volvo' }
-    ];
-
-
     this.model.custId = 16;
     this.obSalesTyp = this.route.queryParamMap.pipe(map(params => params.get('type')));
     this.obSalesTyp.subscribe((obSalesTyp) => {

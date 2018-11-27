@@ -11,7 +11,7 @@ import { Stage } from '../class/stage';
 })
 export class PurchaseService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient) { } 
     getPurchaseOrderByStage():Observable<PurchaseOrder>{
       return this.http.get<PurchaseOrder>(environment.get_po_group_stage_path);
     }

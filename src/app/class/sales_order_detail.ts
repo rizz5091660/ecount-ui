@@ -12,5 +12,4 @@ export class SalesOrderDetail extends Model{
     discount:number;
     inventoryId:number;
     coaId:number;
-    coaCd:string;
 }
