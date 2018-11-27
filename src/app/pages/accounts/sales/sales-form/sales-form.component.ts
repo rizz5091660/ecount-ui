@@ -159,13 +159,13 @@ export class SalesFormComponent implements OnInit {
     });
 
     this.cols = [
-      { field: 'name', header: 'Name' },
-      { field: 'quantity', header: 'Quantity' },
-      { field: 'unitPrice', header: 'Price' },
-      { field: 'coaId', header: 'Account' },
-      { field: 'taxAmount', header: 'Tax' },
-      { field: 'txnAmount', header: 'Ammount' },
-      { field: '', header: 'Action' },
+      { field: 'name', header: 'Name', type:'txt' },
+      { field: 'quantity', header: 'Quantity', type:'txt' },
+      { field: 'unitPrice', header: 'Price', type:'txt' },
+      { field: 'coaId', header: 'Account', type:'txt' },
+      { field: 'taxAmount', header: 'Tax', type:'txt'},
+      { field: 'txnAmount', header: 'Ammount', type:'txt' },
+      { field: '', header: 'Action', type:'btn' },
     ];
 
     this.model.custId = 16;

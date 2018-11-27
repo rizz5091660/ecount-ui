@@ -66,8 +66,9 @@
                           </th> 
                       </tr>
                       <tr>
-                          <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                              <input pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" size="10">
+                          <th *ngFor="let col of columns" [ngSwitch]="col.type">
+                              <input  *ngSwitchCase="'txt'"  pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" style="width:100%">
+                              <button *ngSwitchCase="'btn'" type="button" pButton icon="fa fa-plus" (click)="onAddSod()" label="Add"></button>
                           </th>
                       </tr>
                   </ng-template>
