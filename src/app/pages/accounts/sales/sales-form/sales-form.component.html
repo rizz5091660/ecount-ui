@@ -57,7 +57,7 @@
         <div class="col-sm-2 nb-card-header">Invoice Detail</div>
       </div>
       <div class="row">
-          <div class="content-section implementation ui-fluid">
+          <div class="col-md-12">
               <p-table [columns]="cols" [value]="model.sods" [paginator]="true" [rows]="10">
                   <ng-template pTemplate="header" let-columns>
                       <tr>
@@ -150,9 +150,17 @@
                           <td pEditableColumn class="td-action">      
                               <div class="div-action">                       
                                 <a class="a-action"  href="#"><i class="nb-edit"></i></a>
-                                <a class="a-action" href="#"><i class="nb-trash"></i></a>
+                                <a class="a-action" (click)="onRemoveSod()"><i class="nb-trash"></i></a>
                              </div>  
                           </td>
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="footer" let-columns>
+                      <tr>
+                          <td colspan="4" align="right">Total :</td>
+                          <td>{{subTotal}}</td>
+                          <td>{{model.totalTaxAmount}}</td>
+                          <td>{{model.totalAmount}}</td>
                       </tr>
                   </ng-template>
               </p-table>
@@ -160,23 +168,10 @@
       </div>
       <div class="form-group row">
         <div class="col-sm-12">
+          <!--
           <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (custom)="onCustom($event)">
           </ng2-smart-table>
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <div class="col-sm-6">
-        </div>
-        <div class="col-sm-2">
-          <b>Sub Total</b><br />
-          <b>Tax</b><br />
-          <b>Total</b><br />
-        </div>
-        <div class="col-sm-4" style="float:left">
-          <b>: {{subTotal}}</b><br />
-          <b>: {{model.totalTaxAmount}}</b><br />
-          <b>: {{model.totalAmount}}</b><br />
+          -->
         </div>
       </div>
       <div class="form-group row">

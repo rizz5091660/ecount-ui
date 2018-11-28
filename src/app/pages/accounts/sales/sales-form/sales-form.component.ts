@@ -96,6 +96,8 @@ export class SalesFormComponent implements OnInit {
   ngOnInit() {
 
     this.modelSod = new SalesOrderDetail();
+    this.model.sods =[];
+    /*
     this.model.sods = [
       {
         id:null,
@@ -145,7 +147,9 @@ export class SalesFormComponent implements OnInit {
         coaId:null,
       },
     ];
+    
     this.source.load(this.model.sods);
+    */
 
     this.obSo = this.service.init();
     this.obSo.subscribe((observable) => {
@@ -175,11 +179,18 @@ export class SalesFormComponent implements OnInit {
       }
     });
   }
+  /*
   onAddSod() {
     this.mode = "add";
     this.modelSod = new SalesOrderDetail();
     this.openModal();
+  }*/
+  onAddSod(){
+    let sod:SalesOrderDetail = new SalesOrderDetail();
+    this.model.sods.push(sod);
   }
+
+
   onEdit(modelSod) {
     this.mode = "edit";
     this.modelSod = modelSod;
@@ -196,9 +207,9 @@ export class SalesFormComponent implements OnInit {
       this.source.load(this.model.sods);
     }
   }
-  onRemoveSalesDetail(sod: SalesOrderDetail) {
+  onRemoveSod(sod: SalesOrderDetail) {
     this.model.sods.splice(this.model.sods.indexOf(sod), 1);
-    this.onCalculateTrxn();
+    //this.onCalculateTrxn();
   }
   onCalculateTrxn() {
     this.subTotal = 0;
