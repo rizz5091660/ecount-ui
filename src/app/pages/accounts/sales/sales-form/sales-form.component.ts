@@ -22,8 +22,6 @@ export class SalesFormComponent implements OnInit {
   @ViewChild('modal') modal: ElementRef;
   model: SalesOrder = new SalesOrder();
   modelSod: SalesOrderDetail = new SalesOrderDetail();
-  trxnDtNgb: NgbDateStruct;
-  dueDtNgb: NgbDateStruct;
   subTotal: number;
   obHttp: Observable<HttpResponseWS>;
   obSo: Observable<SalesOrder>;
@@ -248,6 +246,7 @@ export class SalesFormComponent implements OnInit {
     this.onCreate(1);
   }
   onCreate(stageId: number) {
+    /*
     this.model.trxnDate = new Date();
     this.model.trxnDate.setDate(this.trxnDtNgb.day);
     this.model.trxnDate.setMonth(this.trxnDtNgb.month);
@@ -257,6 +256,7 @@ export class SalesFormComponent implements OnInit {
     this.model.estDeliveryDate.setDate(this.dueDtNgb.day);
     this.model.estDeliveryDate.setMonth(this.dueDtNgb.month);
     this.model.estDeliveryDate.setFullYear(this.dueDtNgb.year);
+    */
 
     this.model.stage = new Stage();
     this.model.stage.id = stageId;

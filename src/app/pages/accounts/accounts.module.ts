@@ -11,12 +11,14 @@ import { SmartTableService } from '../../@core/data/smart-table.service';
 import { TableModule } from '../../components/table/table';
 import { DropdownModule } from '../../components/dropdown/dropdown';
 import { ButtonModule } from '../../components/button/button';
+import { CalendarModule } from '../../components/calendar/calendar';
+import { InputTextModule } from '../../components/inputtext/inputtext';
 
 
 @NgModule({
   imports: [ 
     CommonModule,AccountsRoutingModule,ThemeModule,Ng2SmartTableModule,
-    TableModule,DropdownModule,ButtonModule
+    TableModule,DropdownModule,ButtonModule,CalendarModule,InputTextModule
   ],
   providers: [SalesService,PurchaseService,SmartTableService],
   declarations: [...routedComponents, SalesFormComponent, PurchaseFormComponent],
