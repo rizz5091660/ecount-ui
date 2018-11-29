@@ -22,7 +22,7 @@ export class SalesFormComponent implements OnInit {
   @ViewChild('modal') modal: ElementRef;
   model: SalesOrder = new SalesOrder();
   modelSod: SalesOrderDetail = new SalesOrderDetail();
-  subTotal: number;
+  subTotal: number=0;
   obHttp: Observable<HttpResponseWS>;
   obSo: Observable<SalesOrder>;
   obSalesTyp: Observable<string>;
@@ -154,6 +154,7 @@ export class SalesFormComponent implements OnInit {
       this.model.custSupps = observable.custSupps;
       this.model.inventories = observable.inventories;
       this.model.coas = observable.coas;
+      this.model.taxes= observable.taxes;
     });
 
     this.cols = [
@@ -185,9 +186,21 @@ export class SalesFormComponent implements OnInit {
   }*/
   onAddSod(){
     let sod:SalesOrderDetail = new SalesOrderDetail();
+    sod.coaDD=new SelectItem();
+    sod.invDD=new SelectItem();
+    sod.taxDD=new SelectItem();
     this.model.sods.push(sod);
   }
 
+  onChangeDD(option:SelectItem,sod:SalesOrderDetail,type:string){
+    if(type=="inventory"){
+      sod.invDD=option;
+    }else if(type=="coa"){
+      sod.coaDD=option;
+    }else if(type=="tax"){
+      sod.taxDD=option;
+    }
+  }
 
   onEdit(modelSod) {
     this.mode = "edit";
@@ -208,6 +221,13 @@ export class SalesFormComponent implements OnInit {
   onRemoveSod(sod: SalesOrderDetail) {
     this.model.sods.splice(this.model.sods.indexOf(sod), 1);
     //this.onCalculateTrxn();
+  }
+
+  onCalculate(sod: SalesOrderDetail){
+    sod.txnAmount=sod.unitPrice * sod.quantity;
+    this.subTotal = this.subTotal+sod.txnAmount;
+    
+
   }
   onCalculateTrxn() {
     this.subTotal = 0;
@@ -265,16 +285,6 @@ export class SalesFormComponent implements OnInit {
     this.obHttp.subscribe((observable) => {
       //this.model= observable;
     });
-  }
-
-  selectionChanged(event: any, type: string) {
-    if (type == 'cust' && event.value[0] != null) {
-      this.model.custId = event.value[0].id;
-    }
-    else if (type == 'inv' && event.value[0] != null) {
-      this.modelSod.inventoryId = event.value[0].id;
-      this.modelSod.name = event.value[0].name;
-    }
   }
 
   onCustom(event: any) {

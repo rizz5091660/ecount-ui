@@ -10,6 +10,8 @@ export class SalesOrderDetail extends Model{
     taxAmount:number;
     txnAmount:number;
     discount:number;
-    inventoryId:number;
-    coaId:number;
+    invDD:SelectItem;
+    coaDD:SelectItem;
+    taxDD:SelectItem;
+
 }

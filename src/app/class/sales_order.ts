@@ -32,6 +32,7 @@ export class SalesOrder extends Model{
     custSupps:SelectItem[];
     inventories:SelectItem[];
     coas:SelectItem[];
+    taxes:SelectItem[];
     soType:string;
     totalAmtDraft:number;
     totalAmtAwApproval:number;
