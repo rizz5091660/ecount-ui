@@ -1,253 +1,186 @@
-<nb-card style="height:100%">
-  <nb-card-header>
-    New {{soFormTitle}}
-  </nb-card-header>
-  <nb-card-body>
-    <form #salesForm="ngForm">
-      <div class="row">
-        <div class="col-sm-2">
-          <label for="custId" class="col-form-label">To</label><br />
-          <p-dropdown [options]="model.custSupps" [(ngModel)]="model.custId" [style]="{'width':'100%'}" filter="true" name="model.custId">
-              <ng-template let-item pTemplate="selectedItem">
+  <p-panel header="New {{soFormTitle}}">
+          <p-messages [(value)]="msgs"></p-messages>
+        <form #salesForm="ngForm">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="custId" class="col-form-label">To</label><br />
+              <p-dropdown [options]="model.custSupps" [(ngModel)]="model.custId" [style]="{'width':'100%'}" filter="true"
+                name="model.custId">
+                <ng-template let-item pTemplate="selectedItem">
                   <span>{{item.label}}</span>
-              </ng-template>
-              <ng-template let-cust pTemplate="item">
+                </ng-template>
+                <ng-template let-cust pTemplate="item">
                   <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                      <div style="font-size:14px;float:left;margin-top:4px">{{cust.label}}</div>
+                    <div style="font-size:14px;float:left;margin-top:4px">{{cust.label}}</div>
                   </div>
-              </ng-template>
-          </p-dropdown>
-        </div>
-        <div class="col-sm-2">
-          <label for="soCode" class="col-form-label">{{soFormTitle}} #</label><br />
-          <input type="text" pInputText [(ngModel)]="model.soCode" style="width:100%" name="model.soCode"/>
-        </div>
-        <div class="col-sm-2">
-            <label for="referrence" class="col-form-label">Referrence</label><br />
-            <input type="text" pInputText [(ngModel)]="model.referrence" style="width:100%"  name="model.referrence"/>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            <div class="col-sm-4">
+              <label for="soCode" class="col-form-label">{{soFormTitle}} #</label><br />
+              <input type="text" pInputText [(ngModel)]="model.soCode" style="width:100%" name="model.soCode" />
+            </div>
+            <div class="col-sm-4">
+                <label for="referrence" class="col-form-label">Referrence</label><br />
+                <input type="text" pInputText [(ngModel)]="model.referrence" style="width:100%" name="model.referrence" />
+              </div>
           </div>
-        <div class="col-sm-2">
-          <label for="trxnDate" class="col-form-label">Date</label><br />
-          <div class="form-group">
-            <div class="input-group">
-              <p-calendar [(ngModel)]="model.trxnDate" showButtonBar="true" [style]="{'width':'100%'}" name="model.trxnDate"></p-calendar>
+    
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="trxnDate" class="col-form-label">Date</label><br />
+              <div class="form-group">
+                <div class="input-group">
+                  <p-calendar [(ngModel)]="model.trxnDate" showButtonBar="true" name="model.trxnDate"></p-calendar>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <label for="dueDate" class="col-form-label">Due Date</label><br />
+              <div class="form-group">
+                <div class="input-group">
+                  <p-calendar [(ngModel)]="model.estDeliveryDate" showButtonBar="true" name="model.estDeliveryDate"></p-calendar>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-sm-2">
-          <label for="dueDate" class="col-form-label">Due Date</label><br />
-          <div class="form-group">
-            <div class="input-group">
-                <p-calendar [(ngModel)]="model.estDeliveryDate" showButtonBar="true" [style]="{'width':'100%'}" name="model.estDeliveryDate"></p-calendar>
-            </div>
+          <div class="form-group row">
+            <div class="col-sm-2 col-form-label">Invoice Detail</div>
           </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <div class="col-sm-2 nb-card-header">Invoice Detail</div>
-      </div>
-      <div class="row">
-          <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
               <p-table [columns]="cols" [value]="model.sods" [paginator]="true" [rows]="10">
-                  <ng-template pTemplate="header" let-columns>
-                      <tr>
-                          <th style="width:20%">Name</th> 
-                          <th>Quantity</th> 
-                          <th>Price</th> 
-                          <th>Account</th> 
-                          <th>Tax</th> 
-                          <th>Ammount</th>
-                          <th style="width:100px">Action</th> 
-                      </tr>
-                      <tr>
-                          <th *ngFor="let col of columns" [ngSwitch]="col.type">
-                              <input  *ngSwitchCase="'txt'"  pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)" style="width:100%">
-                              <button *ngSwitchCase="'btn'" type="button" pButton icon="nb-plus" (click)="onAddSod()" style="width:100%"></button>
-                          </th>
-                      </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-sod let-columns="columns">
-                      <tr style="height: 20px">
-                          <td pEditableColumn style="width:20%">
-                              <p-cellEditor>
-                                  <ng-template pTemplate="input">
-                                      <p-dropdown [options]="model.inventories" [(ngModel)]="sod.invDD.value" [style]="{'width':'100%'}" filter="true" name="sod.invDD.value">
-                                          <ng-template let-item pTemplate="selectedItem">
-                                              <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
-                                          </ng-template>
-                                          <ng-template let-lbl pTemplate="item">
-                                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                                                  <div style="font-size:14px;float:left;margin-top:4px" (click)="onChangeDD(lbl,sod,'inventory')">{{lbl.label}}</div>
-                                              </div>
-                                          </ng-template>
-                                      </p-dropdown>
-                                  </ng-template>
-                                  <ng-template pTemplate="output">
-                                      {{sod.invDD.label}}
-                                  </ng-template>
-                              </p-cellEditor>
-                          </td>
-                          <td pEditableColumn>
-                              <p-cellEditor>
-                                  <ng-template pTemplate="input">
-                                      <input pInputText type="number" [(ngModel)]="sod.quantity" required name="sod.quantity">
-                                  </ng-template>
-                                  <ng-template pTemplate="output">
-                                      {{sod.quantity}}
-                                  </ng-template>
-                              </p-cellEditor>
-                          </td>
-                          <td pEditableColumn>
-                              <p-cellEditor>
-                                  <ng-template pTemplate="input">
-                                      <input pInputText type="number" [(ngModel)]="sod.unitPrice" name="sod.unitPrice" (blur)="onCalculate(sod)">
-                                  </ng-template>
-                                  <ng-template pTemplate="output">
-                                      {{sod.unitPrice}}
-                                  </ng-template>
-                              </p-cellEditor>
-                          </td>
-                          <td pEditableColumn>
-                              <p-cellEditor>
-                                  <ng-template pTemplate="input">
-                                      <p-dropdown [options]="model.coas" [(ngModel)]="sod.coaDD.value" [style]="{'width':'150px'}" filter="true" name="sod.coaDD.value">
-                                          <ng-template let-item pTemplate="selectedItem">
-                                              <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
-                                          </ng-template>
-                                          <ng-template let-lbl pTemplate="item">
-                                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                                                  <div style="font-size:14px;float:left;margin-top:4px" (click)="onChangeDD(lbl,sod,'coa')" >{{lbl.label}}</div>
-                                              </div>
-                                          </ng-template>
-                                      </p-dropdown>
-                                  </ng-template>
-                                  <ng-template pTemplate="output">
-                                      {{sod.coaDD.label}}
-                                  </ng-template>
-                              </p-cellEditor>
-                          </td>
-                          <td pEditableColumn>
-                              <p-cellEditor>
-                                  <ng-template pTemplate="input">
-                                      <p-dropdown [options]="model.taxes" [(ngModel)]="sod.taxDD.value" [style]="{'width':'150px'}" filter="true" name="sod.taxDD.value">
-                                          <ng-template let-item pTemplate="selectedItem">
-                                              <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
-                                          </ng-template>
-                                          <ng-template let-lbl pTemplate="item">
-                                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                                                  <div style="font-size:14px;float:left;margin-top:4px" (click)="onChangeDD(lbl,sod,'tax')" >{{lbl.label}}</div>
-                                              </div>
-                                          </ng-template>
-                                      </p-dropdown>
-                                  </ng-template>
-                                  <ng-template pTemplate="output">
-                                      {{sod.taxDD.label}}
-                                  </ng-template>
-                              </p-cellEditor>
-                          </td>
-                          <td pEditableColumn>
-                              <p-cellEditor>
-                                  <ng-template pTemplate="input">
-                                      <input pInputText type="text" [(ngModel)]="sod.txnAmount" name="sod.txnAmount">
-                                  </ng-template>
-                                  <ng-template pTemplate="output">
-                                      {{sod.txnAmount}}
-                                  </ng-template>
-                              </p-cellEditor>
-                          </td>
-                          <td pEditableColumn class="td-action">      
-                              <div class="div-action">                       
-                                <a class="a-action"  href="#"><i class="nb-edit"></i></a>
-                                <a class="a-action" (click)="onRemoveSod()"><i class="nb-trash"></i></a>
-                             </div>  
-                          </td>
-                      </tr>
-                  </ng-template>
-                  <ng-template pTemplate="footer" let-columns>
-                      <tr>
-                          <td colspan="4" align="right">Total :</td>                          
-                          <td>{{model.totalTaxAmount}}</td>
-                          <td>{{subTotal}}</td>
-                          <td>{{model.totalAmount}}</td>
-                      </tr>
-                  </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th style="width:20%">Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Account</th>
+                    <th>Tax</th>
+                    <th>Ammount</th>
+                    <th style="width:100px">Action</th>
+                  </tr>
+                  <tr>
+                    <th *ngFor="let col of columns" [ngSwitch]="col.type">
+                      <input *ngSwitchCase="'txt'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                        style="width:100%">
+                      <button *ngSwitchCase="'btn'" type="button" pButton icon="pi pi-plus" (click)="onAddSod()" style="width:100%"></button>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-sod let-columns="columns">
+                  <tr style="height: 20px">
+                    <td pEditableColumn style="width:20%">
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <p-dropdown [options]="model.inventories" [(ngModel)]="sod.invDD.value" [style]="{'width':'100%'}"
+                            filter="true" name="sod.invDD.value">
+                            <ng-template let-item pTemplate="selectedItem">
+                              <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
+                            </ng-template>
+                            <ng-template let-lbl pTemplate="item">
+                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px" (click)="onChangeDD(lbl,sod,'inventory')">{{lbl.label}}</div>
+                              </div>
+                            </ng-template>
+                          </p-dropdown>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{sod.invDD.label}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <input pInputText type="number" [(ngModel)]="sod.quantity" required name="sod.quantity">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{sod.quantity}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <input pInputText type="number" [(ngModel)]="sod.unitPrice" name="sod.unitPrice" (blur)="onCalculate()">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{sod.unitPrice | currency:environment.currency}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <p-dropdown [options]="model.coas" [(ngModel)]="sod.coaDD.value" [style]="{'width':'150px'}"
+                            filter="true" name="sod.coaDD.value">
+                            <ng-template let-item pTemplate="selectedItem">
+                              <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
+                            </ng-template>
+                            <ng-template let-lbl pTemplate="item">
+                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px" (click)="onChangeDD(lbl,sod,'coa')">{{lbl.label}}</div>
+                              </div>
+                            </ng-template>
+                          </p-dropdown>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{sod.coaDD.label}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <p-dropdown [options]="model.taxes" [(ngModel)]="sod.taxDD.value" [style]="{'width':'150px'}"
+                            filter="true" name="sod.taxDD.value">
+                            <ng-template let-item pTemplate="selectedItem">
+                              <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
+                            </ng-template>
+                            <ng-template let-lbl pTemplate="item">
+                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                                <div style="font-size:14px;float:left;margin-top:4px" (click)="onChangeDD(lbl,sod,'tax')">{{lbl.label}}</div>
+                              </div>
+                            </ng-template>
+                          </p-dropdown>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{sod.taxDD.label}}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                        {{sod.txnAmount | currency:environment.currency}}
+                    </td>
+                    <td pEditableColumn class="td-action">
+                      <div class="div-action">
+                        <a class="a-action" href="#"><i class="nb-edit"></i></a>
+                        <a class="a-action" (click)="onRemoveSod()"><i class="nb-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="footer" let-columns>
+                  <tr>
+                    <td colspan="4" align="right">Total :</td>
+                    <td>{{model.totalTaxAmount | currency:environment.currency}}</td>
+                    <td>{{model.totalAmount | currency:environment.currency}}</td>
+                    <td></td>
+                  </tr>
+                </ng-template>
               </p-table>
-          </div>          
-      </div>
-                <!--
-      <div class="form-group row">
-        <div class="col-sm-12">
-          <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (custom)="onCustom($event)">
-          </ng2-smart-table>
-        </div>
-      </div>
-           <div class="form-group row">
-        <div class="col-sm-2">
-          <div class="dropdown btn-group" ngbDropdown>
-            <button type="button" class="btn btn-primary">Create</button>
-            <button type="button" class="btn btn-primary" ngbDropdownToggle></button>
-            <ul class="dropdown-menu" ngbDropdownMenu>
-              <li class="dropdown-item" (click)="onSave()">Save</li>
-              <li class="dropdown-item" (click)="onAwaitApprove()">Submit</li>
-              <li class="dropdown-item" (click)="onApprove()">Approve</li>
-              <li class="dropdown-item" (click)="onApproveNew()">Approve & Add New</li>
-            </ul>
+            </div>
           </div>
-        </div>
-        <div class="col-sm-2">
-          <button type="button" class="btn btn" (click)="onAddSod()" id="newBtn" style="display: none">
-          </button>
-        </div>
-      </div>
-    -->
-    <div class="form-group row" style="padding-top:15px;text-align: right">
-      <div class="col-sm-12">
-          <div style="padding:5px;float:right"> <p-button icon="pi pi-check" (click)="onApproveNew()" label="Approve & Add New"></p-button></div>
-          <div style="padding:5px;float:right"> <p-button icon="pi pi-check" (click)="onApprove()" label="Approve"></p-button></div>
-          <div style="padding:5px;float:right"> <p-button icon="pi pi-check" (click)="onAwaitApprove()" label="Submit"></p-button></div>
-        <div style="padding:5px;float:right"> <p-button icon="pi pi-check" (click)="onSave()" label="Save"></p-button></div>
-       </div>
-    </div>
-    </form>
-  </nb-card-body>
-</nb-card>
-
-<ng-template #modal let-c="close" let-d="dismiss">
-  <form #soForm="ngForm">
-    <nb-card>
-      <nb-card-header>Supplier</nb-card-header>
-      <nb-card-body>
-        <div class="form-group row">
-          <div class="col-md-12">
-            <!--
-            <ngx-select-dropdown [config]="config" [options]="model.inventories" [multiple]="false" (change)="selectionChanged($event,'inv')"></ngx-select-dropdown>
-            -->
+          <div class="form-group row" style="padding-top:15px;text-align: right">
+            <div class="col-sm-12">
+              <div style="padding:5px;float:right">
+                  <p-splitButton label="Save" icon="pi pi-file" (onClick)="save('info')" [model]="items" styleClass="ui-button-info"></p-splitButton>
+              </div>
+              <div style="padding:5px;float:right">
+                <p-button (click)="onReset()" label="New"></p-button>                
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-md-3">
-            <input class="form-control" type="number" placeholder="Qty" [(ngModel)]="modelSod.quantity" name="modelSod.quantity">
-          </div>
-          <div class="col-md-5">
-            <input class="form-control" type="number" placeholder="Price" [(ngModel)]="modelSod.unitPrice" name="modelSod.unitPrice"
-              (blur)="onCalculateTrxn()">
-          </div>
-          <div class="col-md-4">
-            <input class="form-control" type="number" placeholder="Tax" [(ngModel)]="modelSod.taxAmount" name="modelSod.taxAmount"
-              (blur)="onCalculateTrxn()">
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-md-8">
-            <input class="form-control" type="number" placeholder="Amount" [(ngModel)]="modelSod.txnAmount" name="modelSod.txnAmount">
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-md-12">
-            <button class="btn btn-primary btn-block" (click)="onSubmitSod();d('Cross click');">Submit</button>
-          </div>
-        </div>
-      </nb-card-body>
-    </nb-card>
-  </form>
-</ng-template>
+        </form>
+</p-panel>

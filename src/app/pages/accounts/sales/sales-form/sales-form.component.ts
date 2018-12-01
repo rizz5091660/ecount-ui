@@ -6,12 +6,12 @@ import { SalesService } from '../../../../service/sales.service';
 import { Observable } from 'rxjs/Observable';
 import { HttpResponseWS } from '../../../../class/htt_response_ws';
 import { Stage } from '../../../../class/stage';
-import { CustomerSupplier } from '../../../../class/supplier_customer';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { LocalDataSource } from 'ng2-smart-table';
-import { Address } from '../../../../class/address';
 import { SelectItem } from '../../../../class/selectitem';
+import { environment } from '../../../../../environments/environment';
+import { MenuItem, MessageService, Message } from '../../../../components/common/api';
 
 @Component({
   selector: 'sales-form',
@@ -21,8 +21,6 @@ import { SelectItem } from '../../../../class/selectitem';
 export class SalesFormComponent implements OnInit {
   @ViewChild('modal') modal: ElementRef;
   model: SalesOrder = new SalesOrder();
-  modelSod: SalesOrderDetail = new SalesOrderDetail();
-  subTotal: number=0;
   obHttp: Observable<HttpResponseWS>;
   obSo: Observable<SalesOrder>;
   obSalesTyp: Observable<string>;
@@ -31,140 +29,46 @@ export class SalesFormComponent implements OnInit {
   mode: string;
   soFormTitle: string;
   cols: any[];
-  constructor(private service: SalesService, private route: ActivatedRoute, private modalService: NgbModal) {
+  environment = environment;
+  items: MenuItem[];
+  msgs: Message[] = [];
+
+  constructor(private service: SalesService, private route: ActivatedRoute, private messageService: MessageService) {
   }
 
-  config = {
-    displayKey: "name", //if objects array passed which key to be displayed defaults to description,
-    search: true, //enables the search plugin to search in the list
-    multiple: false
-  };
-
-  settings = {
-    //mode : 'external',
-    actions: {
-      add: true,
-      //    edit: false,
-      //    delete: false,
-      // custom: [{ name: 'onEdit', title: '<i class="nb-edit"></i>' },{ name: 'onDelete', title: '<i class="nb-trash"></i>' }],
-      position: 'right',
-    },
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      name: {
-        title: 'Name',
-        type: 'string',
-      },
-      quantity: {
-        title: 'Quantity',
-        type: 'number',
-      },
-      unitPrice: {
-        title: 'Price',
-        type: 'number',
-      },
-      coaId: {
-        title: 'Account',
-        type: 'number',
-      },
-      taxAmount: {
-        title: 'Tax',
-        type: 'number',
-      },
-      txnAmount: {
-        title: 'Amount',
-        type: 'number',
-      },
-    },
-  };
 
   ngOnInit() {
-
-    this.modelSod = new SalesOrderDetail();
-    this.model.sods =[];
-    /*
-    this.model.sods = [
+    this.model = new SalesOrder();
+    this.model.sods = [];
+    this.items = [
       {
-        id:null,
-        name:null,
-        description:null,   
-        quantity:null,
-        unitPrice:null,
-        taxAmount:null,
-        txnAmount:null,
-        discount:null,
-        inventoryId:null,
-        coaId:null,
-      },{
-        id:null,
-        name:null,
-        description:null,   
-        quantity:null,
-        unitPrice:null,
-        taxAmount:null,
-        txnAmount:null,
-        discount:null,
-        inventoryId:null,
-        coaId:null,
+        label: 'Submit for Approval', icon: 'pi pi-refresh', command: () => {
+          // this.update();
+        }
       },
       {
-        id:null,
-        name:null,
-        description:null,   
-        quantity:null,
-        unitPrice:null,
-        taxAmount:null,
-        txnAmount:null,
-        discount:null,
-        inventoryId:null,
-        coaId:null,
-      },
-      {
-        id:null,
-        name:null,
-        description:null,   
-        quantity:null,
-        unitPrice:null,
-        taxAmount:null,
-        txnAmount:null,
-        discount:null,
-        inventoryId:null,
-        coaId:null,
+        label: 'Approve', icon: 'pi pi-check', command: () => {
+          //  this.delete();
+        }
       },
     ];
-    
-    this.source.load(this.model.sods);
-    */
 
     this.obSo = this.service.init();
     this.obSo.subscribe((observable) => {
       this.model.custSupps = observable.custSupps;
       this.model.inventories = observable.inventories;
       this.model.coas = observable.coas;
-      this.model.taxes= observable.taxes;
+      this.model.taxes = observable.taxes;
     });
 
     this.cols = [
-      { field: 'name', header: 'Name', type:'txt' },
-      { field: 'quantity', header: 'Quantity', type:'txt' },
-      { field: 'unitPrice', header: 'Price', type:'txt' },
-      { field: 'coaId', header: 'Account', type:'txt' },
-      { field: 'taxAmount', header: 'Tax', type:'txt'},
-      { field: 'txnAmount', header: 'Ammount', type:'txt' },
-      { field: '', header: 'Action', type:'btn' },
+      { field: 'name', header: 'Name', type: 'txt' },
+      { field: 'quantity', header: 'Quantity', type: 'txt' },
+      { field: 'unitPrice', header: 'Price', type: 'txt' },
+      { field: 'coaId', header: 'Account', type: 'txt' },
+      { field: 'taxAmount', header: 'Tax', type: 'txt' },
+      { field: 'txnAmount', header: 'Ammount', type: 'txt' },
+      { field: '', header: 'Action', type: 'btn' },
     ];
 
     this.model.custId = 16;
@@ -184,68 +88,68 @@ export class SalesFormComponent implements OnInit {
     this.modelSod = new SalesOrderDetail();
     this.openModal();
   }*/
-  onAddSod(){
-    let sod:SalesOrderDetail = new SalesOrderDetail();
-    sod.coaDD=new SelectItem();
-    sod.invDD=new SelectItem();
-    sod.taxDD=new SelectItem();
+  onAddSod() {
+    let sod: SalesOrderDetail = new SalesOrderDetail();
+    sod.coaDD = new SelectItem();
+    sod.invDD = new SelectItem();
+    sod.taxDD = new SelectItem();
     this.model.sods.push(sod);
   }
 
-  onChangeDD(option:SelectItem,sod:SalesOrderDetail,type:string){
-    if(type=="inventory"){
-      sod.invDD=option;
-    }else if(type=="coa"){
-      sod.coaDD=option;
-    }else if(type=="tax"){
-      sod.taxDD=option;
+  onChangeDD(option: SelectItem, sod: SalesOrderDetail, type: string) {
+    if (type == "inventory") {
+      sod.invDD = option;
+    } else if (type == "coa") {
+      sod.coaDD = option;
+    } else if (type == "tax") {
+      sod.taxDD = option;
+      this.onCalculate();
     }
   }
 
-  onEdit(modelSod) {
-    this.mode = "edit";
-    this.modelSod = modelSod;
-    this.openModal();
-  }
+  o
   onSubmitSod() {
     if (this.mode == "add") {
-      this.modelSod.id = this.model.sods.length + 1;
-      this.model.sods.push(this.modelSod);
+     // this.modelSod.id = this.model.sods.length + 1;
+     // this.model.sods.push(this.modelSod);
       this.source.load(this.model.sods);
     } else if (this.mode == "edit") {
-      let sod: SalesOrderDetail = this.model.sods.find(sod => sod.id == this.modelSod.id, 1);
-      sod = this.modelSod;
+      //let sod: SalesOrderDetail = this.model.sods.find(sod => sod.id == this.modelSod.id, 1);
+      //sod = this.modelSod;
       this.source.load(this.model.sods);
     }
   }
   onRemoveSod(sod: SalesOrderDetail) {
     this.model.sods.splice(this.model.sods.indexOf(sod), 1);
-    //this.onCalculateTrxn();
+    this.onCalculate();
   }
 
-  onCalculate(sod: SalesOrderDetail){
-    sod.txnAmount=sod.unitPrice * sod.quantity;
-    this.subTotal = this.subTotal+sod.txnAmount;
-    
-
-  }
-  onCalculateTrxn() {
-    this.subTotal = 0;
-    let subTotalTemp: number = 0;
-    let taxTotal: number = 0;
-    this.modelSod.txnAmount = this.modelSod.unitPrice * this.modelSod.quantity;
-    if (this.modelSod.unitPrice != null && this.modelSod.quantity != null) {
-      this.modelSod.txnAmount = this.modelSod.unitPrice * this.modelSod.quantity;
-    }
-    if (this.modelSod.txnAmount != null) {
-      subTotalTemp = subTotalTemp + this.modelSod.txnAmount;
-      if (this.modelSod.taxAmount != null) {
-        taxTotal = taxTotal + (this.modelSod.taxAmount / 100 * this.modelSod.txnAmount);
+  onCalculate() {
+    this.model.totalTaxAmount = 0;
+    this.model.totalAmount=0;
+    let taxSod = 0;
+    let totalAmount:number=0;
+    let totalTaxAmount:number=0;
+    this.model.sods.filter(function (sod) {
+      sod.txnAmount = sod.quantity * sod.unitPrice;
+      if (sod.taxDD != null) {
+        sod.taxDD.value2 = parseInt(sod.taxDD.value2);
+        if (sod.taxDD.value2 > 0) {
+          taxSod = (sod.txnAmount * sod.taxDD.value2 / 100);
+          sod.txnAmount = sod.txnAmount - taxSod;
+        }
       }
-    }
-    this.model.totalTaxAmount = taxTotal;
-    this.subTotal = subTotalTemp;
-    this.model.totalAmount = (this.model.totalTaxAmount + this.subTotal);
+      totalAmount = totalAmount+ sod.txnAmount;
+      totalTaxAmount = totalTaxAmount + taxSod;
+    });
+    this.model.totalAmount = totalAmount;
+    this.model.totalTaxAmount = totalTaxAmount;
+
+  }
+
+  save(severity: string) {
+    this.msgs = [];
+    this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
   }
 
   onAwaitApprove() {
@@ -256,28 +160,17 @@ export class SalesFormComponent implements OnInit {
     this.onCreate(3);
   }
 
-  onApproveNew() {
-    this.onCreate(3);
-    this.modelSod = new SalesOrderDetail();
-    this.model.sods = [];
+
+  onReset() {
+     this.model = new SalesOrder();
+     this.model.sods = [];
   }
 
   onSave() {
     this.onCreate(1);
   }
+
   onCreate(stageId: number) {
-    /*
-    this.model.trxnDate = new Date();
-    this.model.trxnDate.setDate(this.trxnDtNgb.day);
-    this.model.trxnDate.setMonth(this.trxnDtNgb.month);
-    this.model.trxnDate.setFullYear(this.trxnDtNgb.year);
-
-    this.model.estDeliveryDate = new Date();
-    this.model.estDeliveryDate.setDate(this.dueDtNgb.day);
-    this.model.estDeliveryDate.setMonth(this.dueDtNgb.month);
-    this.model.estDeliveryDate.setFullYear(this.dueDtNgb.year);
-    */
-
     this.model.stage = new Stage();
     this.model.stage.id = stageId;
     console.log(this.model.sods);
@@ -287,21 +180,4 @@ export class SalesFormComponent implements OnInit {
     });
   }
 
-  onCustom(event: any) {
-    this.modelSod = event.data;
-    if (event.action == "onEdit") {
-      this.onEdit(this.modelSod);
-    }
-    else if (event.action == "onDelete") {
-      //this.onDelete(this.model);
-    }
-  }
-
-  openModal() {
-    this.modalService.open(this.modal).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed`;
-    });
-  }
 }

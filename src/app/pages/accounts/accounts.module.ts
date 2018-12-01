@@ -13,14 +13,21 @@ import { DropdownModule } from '../../components/dropdown/dropdown';
 import { ButtonModule } from '../../components/button/button';
 import { CalendarModule } from '../../components/calendar/calendar';
 import { InputTextModule } from '../../components/inputtext/inputtext';
+import { SplitButtonModule } from '../../components/splitbutton/splitbutton';
+import { MessageService } from '../../components/common/api';
+import { MessageModule } from '../../components/message/message';
+import { MessagesModule } from '../../components/messages/messages';
+import { PanelModule } from '../../components/panel/panel';
+
 
 
 @NgModule({
   imports: [ 
     CommonModule,AccountsRoutingModule,ThemeModule,Ng2SmartTableModule,
-    TableModule,DropdownModule,ButtonModule,CalendarModule,InputTextModule
+    TableModule,DropdownModule,ButtonModule,CalendarModule,InputTextModule,SplitButtonModule,
+    MessagesModule,MessageModule,PanelModule
   ],
-  providers: [SalesService,PurchaseService,SmartTableService],
+  providers: [SalesService,PurchaseService,SmartTableService,MessageService],
   declarations: [...routedComponents, SalesFormComponent, PurchaseFormComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA ]
 })
