@@ -32,6 +32,7 @@ export class SalesFormComponent implements OnInit {
   environment = environment;
   items: MenuItem[];
   msgs: Message[] = [];
+  invId:number;
 
   constructor(private service: SalesService, private route: ActivatedRoute, private messageService: MessageService) {
   }
@@ -59,6 +60,7 @@ export class SalesFormComponent implements OnInit {
       this.model.inventories = observable.inventories;
       this.model.coas = observable.coas;
       this.model.taxes = observable.taxes;
+      this.model.inventories2 = observable.inventories2;
     });
 
     this.cols = [
@@ -99,15 +101,31 @@ export class SalesFormComponent implements OnInit {
   onChangeDD(option: SelectItem, sod: SalesOrderDetail, type: string) {
     if (type == "inventory") {
       sod.invDD = option;
+      sod.unitPrice=sod.invDD.value2;
+      this.model.taxes.filter(
+        function(tax){
+          if(tax.value==sod.invDD.value4){
+            sod.taxDD = tax;
+          }
+        }
+      );
+
+      this.model.coas.filter(
+        function(coa){
+          if(coa.value==sod.invDD.value3){
+            sod.coaDD = coa;
+          }
+        }
+      );
     } else if (type == "coa") {
       sod.coaDD = option;
     } else if (type == "tax") {
       sod.taxDD = option;
       this.onCalculate();
     }
+    console.log(sod.coaDD.value+" "+sod.taxDD.value);
   }
 
-  o
   onSubmitSod() {
     if (this.mode == "add") {
      // this.modelSod.id = this.model.sods.length + 1;
@@ -136,11 +154,11 @@ export class SalesFormComponent implements OnInit {
         sod.taxDD.value2 = parseInt(sod.taxDD.value2);
         if (sod.taxDD.value2 > 0) {
           taxSod = (sod.txnAmount * sod.taxDD.value2 / 100);
-          sod.txnAmount = sod.txnAmount - taxSod;
+          //sod.txnAmount = sod.txnAmount - taxSod;
         }
       }
-      totalAmount = totalAmount+ sod.txnAmount;
       totalTaxAmount = totalTaxAmount + taxSod;
+      totalAmount = totalAmount+ sod.txnAmount+totalTaxAmount;
     });
     this.model.totalAmount = totalAmount;
     this.model.totalTaxAmount = totalTaxAmount;

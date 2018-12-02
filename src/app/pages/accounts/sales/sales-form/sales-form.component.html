@@ -25,7 +25,6 @@
                 <input type="text" pInputText [(ngModel)]="model.referrence" style="width:100%" name="model.referrence" />
               </div>
           </div>
-    
           <div class="row">
             <div class="col-sm-4">
               <label for="trxnDate" class="col-form-label">Date</label><br />
@@ -79,8 +78,8 @@
                               <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
                             </ng-template>
                             <ng-template let-lbl pTemplate="item">
-                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                                <div style="font-size:14px;float:left;margin-top:4px" (click)="onChangeDD(lbl,sod,'inventory')">{{lbl.label}}</div>
+                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;" (click)="onChangeDD(lbl,sod,'inventory')">
+                                <div style="font-size:14px;float:left;margin-top:4px">{{lbl.label}}</div>
                               </div>
                             </ng-template>
                           </p-dropdown>
@@ -119,8 +118,8 @@
                               <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
                             </ng-template>
                             <ng-template let-lbl pTemplate="item">
-                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                                <div style="font-size:14px;float:left;margin-top:4px" (click)="onChangeDD(lbl,sod,'coa')">{{lbl.label}}</div>
+                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;" (click)="onChangeDD(lbl,sod,'coa')">
+                                <div style="font-size:14px;float:left;margin-top:4px">{{lbl.label}}</div>
                               </div>
                             </ng-template>
                           </p-dropdown>
@@ -139,8 +138,8 @@
                               <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
                             </ng-template>
                             <ng-template let-lbl pTemplate="item">
-                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-                                <div style="font-size:14px;float:left;margin-top:4px" (click)="onChangeDD(lbl,sod,'tax')">{{lbl.label}}</div>
+                              <div class="ui-helper-clearfix" style="position: relative;height: 25px;"(click)="onChangeDD(lbl,sod,'tax')">
+                                <div style="font-size:14px;float:left;margin-top:4px">{{lbl.label}}</div>
                               </div>
                             </ng-template>
                           </p-dropdown>

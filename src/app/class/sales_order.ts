@@ -4,6 +4,7 @@ import { Stage } from "./stage";
 import { CustomerSupplier } from "./supplier_customer";
 import { DropDownModel } from "./drop_down";
 import { SelectItem } from "./selectitem";
+import { Inventory } from "./inventory";
 
 export class SalesOrder extends Model{
     soCode:string;
@@ -31,6 +32,7 @@ export class SalesOrder extends Model{
     salesIds:number[];    
     custSupps:SelectItem[];
     inventories:SelectItem[];
+    inventories2:Inventory[];
     coas:SelectItem[];
     taxes:SelectItem[];
     soType:string;
