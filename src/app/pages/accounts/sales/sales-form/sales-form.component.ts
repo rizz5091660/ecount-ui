@@ -100,6 +100,7 @@ export class SalesFormComponent implements OnInit {
 
   onChangeDD(option: SelectItem, sod: SalesOrderDetail, type: string) {
     if (type == "inventory") {
+      sod.quantity=1;
       sod.invDD = option;
       sod.unitPrice=sod.invDD.value2;
       this.model.taxes.filter(
@@ -121,9 +122,8 @@ export class SalesFormComponent implements OnInit {
       sod.coaDD = option;
     } else if (type == "tax") {
       sod.taxDD = option;
-      this.onCalculate();
     }
-    console.log(sod.coaDD.value+" "+sod.taxDD.value);
+    this.onCalculate();
   }
 
   onSubmitSod() {
@@ -191,10 +191,9 @@ export class SalesFormComponent implements OnInit {
   onCreate(stageId: number) {
     this.model.stage = new Stage();
     this.model.stage.id = stageId;
-    console.log(this.model.sods);
     this.obHttp = this.service.create(this.model);
     this.obHttp.subscribe((observable) => {
-      //this.model= observable;
+      console.log(observable);
     });
   }
 
