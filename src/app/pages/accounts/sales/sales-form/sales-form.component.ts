@@ -63,6 +63,7 @@ export class SalesFormComponent implements OnInit {
       this.model.coas = observable.coas;
       this.model.taxes = observable.taxes;
       this.model.inventories2 = observable.inventories2;
+      this.model.soCode = observable.soCode;
     });
 
     this.cols = [
