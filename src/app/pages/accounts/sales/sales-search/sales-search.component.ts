@@ -4,7 +4,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { SalesOrder } from '../../../../class/sales_order';
 import { Observable } from 'rxjs';
 import { SalesService } from '../../../../service/sales.service';
-import { HttpResponseWS } from '../../../../class/htt_response_ws';
+import { HttpResponseWS } from '../../../../class/http_response_ws';
 import { LocalDataSource } from 'ng2-smart-table';
 import { DomSanitizer } from '@angular/platform-browser';
 

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { CustomerSupplier } from '../../../class/supplier_customer';
 import { Address } from '../../../class/address';
 import { ModalComponent } from '../../shares/modals/modal/modal.component';
-import { HttpResponseWS } from '../../../class/htt_response_ws';
+import { HttpResponseWS } from '../../../class/http_response_ws';
 import * as $ from "jquery";
 
 

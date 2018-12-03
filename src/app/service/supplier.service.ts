@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { CustomerSupplier } from '../class/supplier_customer';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { HttpResponseWS } from '../class/htt_response_ws';
+import { HttpResponseWS } from '../class/http_response_ws';
 import { environment } from '../../environments/environment';
 
 

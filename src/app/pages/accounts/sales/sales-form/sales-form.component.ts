@@ -4,14 +4,15 @@ import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SalesOrderDetail } from '../../../../class/sales_order_detail';
 import { SalesService } from '../../../../service/sales.service';
 import { Observable } from 'rxjs/Observable';
-import { HttpResponseWS } from '../../../../class/htt_response_ws';
+//import { HttpResponseWS } from '../../../../class/htt_response_ws';
 import { Stage } from '../../../../class/stage';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { LocalDataSource } from 'ng2-smart-table';
 import { SelectItem } from '../../../../class/selectitem';
 import { environment } from '../../../../../environments/environment';
 import { MenuItem, MessageService, Message } from '../../../../components/common/api';
+import { HttpResponseWS } from '../../../../class/http_response_ws';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'sales-form',
@@ -24,7 +25,8 @@ export class SalesFormComponent implements OnInit {
   obHttp: Observable<HttpResponseWS>;
   obSo: Observable<SalesOrder>;
   obSalesTyp: Observable<string>;
-  source: LocalDataSource = new LocalDataSource();
+  httpResponseWS:HttpResponseWS;
+
   closeResult: string;
   mode: string;
   soFormTitle: string;
@@ -84,12 +86,7 @@ export class SalesFormComponent implements OnInit {
       }
     });
   }
-  /*
-  onAddSod() {
-    this.mode = "add";
-    this.modelSod = new SalesOrderDetail();
-    this.openModal();
-  }*/
+
   onAddSod() {
     let sod: SalesOrderDetail = new SalesOrderDetail();
     sod.coaDD = new SelectItem();
@@ -126,17 +123,6 @@ export class SalesFormComponent implements OnInit {
     this.onCalculate();
   }
 
-  onSubmitSod() {
-    if (this.mode == "add") {
-     // this.modelSod.id = this.model.sods.length + 1;
-     // this.model.sods.push(this.modelSod);
-      this.source.load(this.model.sods);
-    } else if (this.mode == "edit") {
-      //let sod: SalesOrderDetail = this.model.sods.find(sod => sod.id == this.modelSod.id, 1);
-      //sod = this.modelSod;
-      this.source.load(this.model.sods);
-    }
-  }
   onRemoveSod(sod: SalesOrderDetail) {
     this.model.sods.splice(this.model.sods.indexOf(sod), 1);
     this.onCalculate();
@@ -145,29 +131,23 @@ export class SalesFormComponent implements OnInit {
   onCalculate() {
     this.model.totalTaxAmount = 0;
     this.model.totalAmount=0;
-    let taxSod = 0;
     let totalAmount:number=0;
     let totalTaxAmount:number=0;
     this.model.sods.filter(function (sod) {
       sod.txnAmount = sod.quantity * sod.unitPrice;
-      if (sod.taxDD != null) {
-        sod.taxDD.value2 = parseInt(sod.taxDD.value2);
+      if (sod.taxDD != null && sod.taxDD.value2!=null ) {
+          sod.taxDD.value2 = parseInt(sod.taxDD.value2);
         if (sod.taxDD.value2 > 0) {
-          taxSod = (sod.txnAmount * sod.taxDD.value2 / 100);
-          //sod.txnAmount = sod.txnAmount - taxSod;
+          sod.taxAmount = (sod.txnAmount * sod.taxDD.value2 / 100);
+        }else{
+          sod.taxAmount =0;
         }
       }
-      totalTaxAmount = totalTaxAmount + taxSod;
+      totalTaxAmount = totalTaxAmount + sod.taxAmount;
       totalAmount = totalAmount+ sod.txnAmount+totalTaxAmount;
     });
     this.model.totalAmount = totalAmount;
     this.model.totalTaxAmount = totalTaxAmount;
-
-  }
-
-  save(severity: string) {
-    this.msgs = [];
-    this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
   }
 
   onAwaitApprove() {
@@ -177,7 +157,6 @@ export class SalesFormComponent implements OnInit {
   onApprove() {
     this.onCreate(3);
   }
-
 
   onReset() {
      this.model = new SalesOrder();
@@ -189,12 +168,17 @@ export class SalesFormComponent implements OnInit {
   }
 
   onCreate(stageId: number) {
+    this.msgs = [];
     this.model.stage = new Stage();
     this.model.stage.id = stageId;
     this.obHttp = this.service.create(this.model);
-    this.obHttp.subscribe((observable) => {
+    this.obHttp.subscribe((observable) => { 
+      this.httpResponseWS=observable;
       console.log(observable);
+      console.log(this.httpResponseWS);
+      if(this.httpResponseWS.status==200){
+        this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
+      }
     });
   }
-
 }

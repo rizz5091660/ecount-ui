@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { HttpResponseWS } from '../class/htt_response_ws';
+import { HttpResponseWS } from '../class/http_response_ws';
 import { Coa } from '../class/coa';
 import { environment } from '../../environments/environment';
 

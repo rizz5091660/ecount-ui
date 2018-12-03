@@ -4,7 +4,7 @@ import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-
 import { Observable } from 'rxjs';
 import { Coa } from '../../../class/coa';
 import { CoaService } from '../../../service/coa.service';
-import { HttpResponseWS } from '../../../class/htt_response_ws';
+import { HttpResponseWS } from '../../../class/http_response_ws';
 import { DropDownModel } from '../../../class/drop_down';
 import { LocalDataSource } from 'ng2-smart-table';
 import * as $ from "jquery";

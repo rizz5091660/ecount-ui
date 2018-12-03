@@ -4,7 +4,7 @@ import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PurchaseOrderDetail } from '../../../../class/purchase_order_detail';
 import { PurchaseService } from '../../../../service/purchase.service';
 import { Observable } from 'rxjs/Observable';
-import { HttpResponseWS } from '../../../../class/htt_response_ws';
+import { HttpResponseWS } from '../../../../class/http_response_ws';
 import { Stage } from '../../../../class/stage';
 import { CustomerSupplier } from '../../../../class/supplier_customer';
 import { DropDownModel } from '../../../../class/drop_down';

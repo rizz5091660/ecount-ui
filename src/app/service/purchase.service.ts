@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { PurchaseOrder } from '../class/purchase_order';
 import { environment } from '../../environments/environment';
-import { HttpResponseWS } from '../class/htt_response_ws';
+import { HttpResponseWS } from '../class/http_response_ws';
 import { Stage } from '../class/stage';
 
 @Injectable({
