@@ -12,7 +12,6 @@ import { SelectItem } from '../../../../class/selectitem';
 import { environment } from '../../../../../environments/environment';
 import { MenuItem, MessageService, Message } from '../../../../components/common/api';
 import { HttpResponseWS } from '../../../../class/http_response_ws';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'sales-form',

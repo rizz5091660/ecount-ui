@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
+import { MenuItem } from '../../../../components/common/api';
 
 @Component({
   selector: 'sales-dashboard',
@@ -22,11 +23,23 @@ export class SalesDashboardComponent implements OnInit {
   environment = environment;
   countries: any[];
   selectedCountry: any;
-
+  items: MenuItem[];
 
   constructor(private service:SalesService,private router: Router,private calendar: NgbCalendar) { }
 
   ngOnInit() {
+    this.items = [
+      {
+        label: 'Invoice', icon: 'pi pi-file', command: () => {
+          this.onAddNew('I');
+        }
+      },
+      {
+        label: 'Quotation', icon: 'pi pi-refresh', command: () => {
+          this.onAddNew('Q'); 
+        }
+      },
+    ];
     this.model = new SalesOrder();
     this.loadDashboard();
   }

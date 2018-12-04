@@ -4,30 +4,17 @@
   </nb-card-header>
   <nb-card-body>
     <div class="form-group row">
-      <div style="padding: 5px">
-        <div class="dropdown btn-group" ngbDropdown>
-          <button type="button" class="btn btn-primary">New</button>
-          <button type="button" class="btn btn-primary" ngbDropdownToggle></button>
-          <ul class="dropdown-menu" ngbDropdownMenu>
-            <li class="dropdown-item" (click)="onAddNew('I')">Invoice</li>
-            <li class="dropdown-item" (click)="onAddNew('Q')">Quote</li>
-          </ul>
-        </div>
+      <div style="padding: 5px;padding-left: 15px;">
+          <p-splitButton label="New" icon="pi pi-file"  [model]="items" styleClass="ui-button-info"></p-splitButton>
       </div>
       <div style="padding: 5px">
         <button pButton type="button" label="Send Statment" ></button>
       </div>
       <div style="padding: 5px">
-        <button type="button" class="btn btn-primary">
-          <i class="nb-home"></i>
-          <span>import</span>
-        </button>
+        <button pButton type="button" label="import" ></button>
       </div>
       <div style="padding: 5px">
-        <button type="button" class="btn btn-primary">
-          <i class="nb-home"></i>
-          <span>Search</span>
-        </button>
+        <button pButton type="button" label="Search" ></button>
       </div>
     </div>
     <div class="form-group row">
