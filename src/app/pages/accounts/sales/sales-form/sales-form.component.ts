@@ -67,11 +67,11 @@ export class SalesFormComponent implements OnInit {
     });
 
     this.cols = [
-      { field: 'name', header: 'Name', type: 'txt' },
+      { field: 'invDD.label', header: 'Name', type: 'txt' },
       { field: 'quantity', header: 'Quantity', type: 'txt' },
       { field: 'unitPrice', header: 'Price', type: 'txt' },
-      { field: 'coaId', header: 'Account', type: 'txt' },
-      { field: 'taxAmount', header: 'Tax', type: 'txt' },
+      { field: 'coaDD.label', header: 'Account', type: 'txt' },
+      { field: 'taxDD.label', header: 'Tax', type: 'txt' },
       { field: 'txnAmount', header: 'Ammount', type: 'txt' },
       { field: '', header: 'Action', type: 'btn' },
     ];

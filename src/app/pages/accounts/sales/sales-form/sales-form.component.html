@@ -48,7 +48,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <p-table [columns]="cols" [value]="model.sods" [paginator]="true" [rows]="10">
+              <p-table #dt [columns]="cols" [value]="model.sods" [paginator]="true" [rows]="10">
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th style="width:20%">Name</th>
@@ -60,14 +60,14 @@
                     <th style="width:100px">Action</th>
                   </tr>
                   <tr>
-                    <th *ngFor="let col of columns" [ngSwitch]="col.type">
+                    <th *ngFor="let col of cols" [ngSwitch]="col.type">
                       <input *ngSwitchCase="'txt'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
                         style="width:100%">
                       <button *ngSwitchCase="'btn'" type="button" pButton icon="pi pi-plus" (click)="onAddSod()" style="width:100%"></button>
                     </th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-sod let-columns="columns">
+                <ng-template pTemplate="body" let-sod let-columns="cols">
                   <tr style="height: 20px">
                     <td pEditableColumn style="width:20%">
                       <p-cellEditor>
