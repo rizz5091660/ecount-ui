@@ -20,6 +20,9 @@ export class SalesDashboardComponent implements OnInit {
   ngbDateStruct: NgbDateStruct;
   date: {year: number, month: number};
   environment = environment;
+  countries: any[];
+  selectedCountry: any;
+
 
   constructor(private service:SalesService,private router: Router,private calendar: NgbCalendar) { }
 

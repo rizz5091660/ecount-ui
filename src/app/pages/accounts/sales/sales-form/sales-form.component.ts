@@ -33,6 +33,7 @@ export class SalesFormComponent implements OnInit {
   cols: any[];
   environment = environment;
   items: MenuItem[];
+  itemSteps: MenuItem[];
   msgs: Message[] = [];
   invId:number;
 
@@ -42,6 +43,8 @@ export class SalesFormComponent implements OnInit {
 
   ngOnInit() {
     this.model = new SalesOrder();
+    this.model.stage= new Stage();
+    this.model.stage.id=0;
     this.model.sods = [];
     this.items = [
       {
@@ -60,7 +63,20 @@ export class SalesFormComponent implements OnInit {
         }
       },
     ];
-
+    this.itemSteps = [
+      {
+        label: 'Draft', icon: 'pi pi-file', command: () => {
+        }
+      },
+      {
+        label: 'Submit for Approval', icon: 'pi pi-refresh', command: () => {
+        }
+      },
+      {
+        label: 'Approve', icon: 'pi pi-check', command: () => {
+        }
+      },
+    ];
     this.obSo = this.service.init();
     this.obSo.subscribe((observable) => {
       this.model.custSupps = observable.custSupps;

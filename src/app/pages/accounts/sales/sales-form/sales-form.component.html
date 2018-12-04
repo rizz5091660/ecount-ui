@@ -1,4 +1,8 @@
-  <p-panel header="New {{soFormTitle}}">
+  <p-panel>
+      <p-header>
+        <label class="col-form-label">New {{soFormTitle}}</label>
+         <p-steps [model]="items" [activeIndex]="model.stage.id"></p-steps>
+      </p-header>
           <p-messages [(value)]="msgs"></p-messages>
         <form #salesForm="ngForm">
           <div class="row">

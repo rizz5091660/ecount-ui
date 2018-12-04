@@ -18,6 +18,7 @@ import { MessageService } from '../../components/common/api';
 import { MessageModule } from '../../components/message/message';
 import { MessagesModule } from '../../components/messages/messages';
 import { PanelModule } from '../../components/panel/panel';
+import { StepsModule } from '../../components/steps/steps';
 
 
 
@@ -25,7 +26,7 @@ import { PanelModule } from '../../components/panel/panel';
   imports: [ 
     CommonModule,AccountsRoutingModule,ThemeModule,Ng2SmartTableModule,
     TableModule,DropdownModule,ButtonModule,CalendarModule,InputTextModule,SplitButtonModule,
-    MessagesModule,MessageModule,PanelModule
+    MessagesModule,MessageModule,PanelModule,StepsModule
   ],
   providers: [SalesService,PurchaseService,SmartTableService,MessageService],
   declarations: [...routedComponents, SalesFormComponent, PurchaseFormComponent],
