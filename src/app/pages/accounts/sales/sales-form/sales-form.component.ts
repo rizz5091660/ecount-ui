@@ -45,13 +45,18 @@ export class SalesFormComponent implements OnInit {
     this.model.sods = [];
     this.items = [
       {
+        label: 'Draft', icon: 'pi pi-file', command: () => {
+          this.onSaveDraft();
+        }
+      },
+      {
         label: 'Submit for Approval', icon: 'pi pi-refresh', command: () => {
-          // this.update();
+          this.onAwaitApprove(); 
         }
       },
       {
         label: 'Approve', icon: 'pi pi-check', command: () => {
-          //  this.delete();
+          this.onApprove();
         }
       },
     ];
@@ -151,22 +156,24 @@ export class SalesFormComponent implements OnInit {
     this.model.totalTaxAmount = totalTaxAmount;
   }
 
+  onSave(){
+    let stageId:number=(this.model.stage.id==0)?0:this.model.stage.id;
+    this.onCreate(stageId);
+  }
+  onSaveDraft() {
+    this.onCreate(1);
+  }
   onAwaitApprove() {
     this.onCreate(2);
   }
-
   onApprove() {
     this.onCreate(3);
   }
-
   onReset() {
      this.model = new SalesOrder();
      this.model.sods = [];
   }
 
-  onSave() {
-    this.onCreate(1);
-  }
 
   onCreate(stageId: number) {
     this.msgs = [];
