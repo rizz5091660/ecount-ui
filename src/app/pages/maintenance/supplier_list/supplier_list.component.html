@@ -1,3 +1,124 @@
+<p-panel>
+  <p-header>
+    <label class="col-form-label">List of Supplier</label>
+  </p-header>
+  <p-messages [(value)]="msgs"></p-messages>
+  <p-table #dt [columns]="cols" [value]="customerSuppliers" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width:20%">Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Street</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip</th>
+        <th>Country</th>
+        <th style="width:100px">Action</th>
+      </tr>
+      <tr>
+        <th *ngFor="let col of cols" [ngSwitch]="col.type">
+          <input *ngSwitchCase="'txt'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+            style="width:100%">
+          <button *ngSwitchCase="'btn'" type="button" pButton icon="pi pi-plus" (click)="onAdd()" style="width:100%"></button>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cust let-columns="cols">
+      <tr style="height: 20px">
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cust.name" required name="cust.name">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cust.name}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cust.phone" required name="cust.phone">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cust.phone}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cust.email" required name="cust.email">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cust.email}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="cust.address.street" required name="cust.address.street">
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{cust.address.street}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td pEditableColumn>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="text" [(ngModel)]="cust.address.city" required name="cust.address.city">
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{cust.address.city}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" [(ngModel)]="cust.address.state" required name="cust.address.state">
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{cust.address.state}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td pEditableColumn>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" [(ngModel)]="cust.address.zip" required name="cust.address.zip">
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{cust.address.zip}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="cust.address.country" required name="cust.address.country">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{cust.address.country}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td pEditableColumn class="td-action">
+          <div class="div-action">
+            <a class="a-action" href="#"><i class="nb-edit"></i></a>
+            <a class="a-action" (click)="onRemoveSod()"><i class="nb-trash"></i></a>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-panel>
+
+
+
 <nb-card>
   <nb-card-header>
     List of Supplier
@@ -6,7 +127,7 @@
     <button type="button" class="btn btn" (click)="openModalAdd()" id="newBtn" style="display: none">
     </button>
     <div class="form-group row">
-        <div class="col-md-12">
+      <div class="col-md-12">
         <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (custom)="onCustom($event)">
         </ng2-smart-table>
       </div>

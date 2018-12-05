@@ -13,7 +13,7 @@ import { environment } from '../../../../../environments/environment';
 import { MenuItem, MessageService, Message } from '../../../../components/common/api';
 import { HttpResponseWS } from '../../../../class/http_response_ws';
 
-@Component({
+@Component({ 
   selector: 'sales-form',
   templateUrl: './sales-form.component.html',
   styleUrls: ['./sales-form.component.scss']

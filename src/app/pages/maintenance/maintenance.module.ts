@@ -8,13 +8,19 @@ import { ModalComponent } from '../shares/modals/modal/modal.component';
 import { SharesModule } from '../shares/shares.module';
 import { CoaService } from '../../service/coa.service';
 import { TaxComponent } from './tax/tax.component';
+import { PanelModule } from '../../components/panel/panel';
+import { MessagesModule } from '../../components/messages/messages';
+import { MessageModule } from '../../components/message/message';
+import { TableModule } from '../../components/table/table';
+import { ButtonModule } from '../../components/button/button';
 
 @NgModule({
-    imports:[MaintenanceRoutingModule,ThemeModule,Ng2SmartTableModule,SharesModule], 
+    imports:[MaintenanceRoutingModule,ThemeModule,Ng2SmartTableModule,SharesModule,PanelModule,MessagesModule,MessageModule,
+        TableModule,ButtonModule], 
     declarations:[...routedComponents, TaxComponent],
     providers: [SupplierService,CoaService,SmartTableService],
     entryComponents: [
-        ModalComponent,
+        ModalComponent, 
       ],
 })
 export class MaintenanceModule{

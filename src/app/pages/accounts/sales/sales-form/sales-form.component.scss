@@ -1,16 +1,4 @@
-:host /deep/ ng2-smart-table tbody > tr > td:last-child { 
-    padding: 0;
-   // height: 1px;
-   height: 100%;
-  }
-  :host /deep/ ng2-smart-table tbody > tr> td > ng2-st-tbody-custom {
-    display: flex;
-    height: 100%;
-  }
-
-
-
-  .a-action {
+ .a-action {
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;

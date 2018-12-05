@@ -9,7 +9,8 @@ import { Address } from '../../../class/address';
 import { ModalComponent } from '../../shares/modals/modal/modal.component';
 import { HttpResponseWS } from '../../../class/http_response_ws';
 import * as $ from "jquery";
-
+import { Message } from '../../../components/common/api';
+ 
 
 @Component({ 
   selector: 'list',
@@ -25,6 +26,9 @@ export class SupplierListComponent implements OnInit {
   httpRespObservable:Observable<HttpResponseWS>;
   source:LocalDataSource = new LocalDataSource();
 
+  msgs: Message[] = [];
+  cols: any[];
+
   ngOnInit() {
     $(document).ready(function(){
     $(".ng2-smart-action-add-add").click(function(){
@@ -33,8 +37,22 @@ export class SupplierListComponent implements OnInit {
     });
     this.model.address = new Address();
     this.loadListSupplier();
-  }
 
+
+    this.cols = [
+      { field: 'name', header: 'Name', type: 'txt' },
+      { field: 'phone', header: 'Phone', type: 'txt' },
+      { field: 'email', header: 'Email', type: 'txt' },
+      { field: 'address.street', header: 'Street', type: 'txt' },
+      { field: 'address.city', header: 'City', type: 'txt' },
+      { field: 'address.state', header: 'State', type: 'txt' },
+      { field: 'address.zip', header: 'Zip', type: 'txt' },
+      { field: 'address.country', header: 'Country', type: 'txt' },
+      { field: '', header: 'Action', type: 'btn' },
+    ];
+
+
+  }
   constructor(private router: Router, private service: SupplierService, private modalService: NgbModal, private supplierService: SupplierService) {}
 
   settings = {
@@ -78,6 +96,10 @@ export class SupplierListComponent implements OnInit {
       },
     },
   };
+
+  onAdd(){
+
+  }
 
   loadListSupplier() {
     this.listObservable = this.service.getSupplierAll('0');
