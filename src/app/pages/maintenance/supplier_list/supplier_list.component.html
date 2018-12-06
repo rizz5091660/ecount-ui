@@ -2,6 +2,7 @@
   <p-header>
     <label class="col-form-label">List of Supplier</label>
   </p-header>
+  <p-confirmDialog></p-confirmDialog>
   <p-messages [(value)]="msgs"></p-messages>
   <p-table #dt [columns]="cols" [value]="customerSuppliers" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header" let-columns>
@@ -109,7 +110,7 @@
         <td pEditableColumn class="td-action">
           <div class="div-action">
             <a class="a-action" href="#"><i class="nb-edit"></i></a>
-            <a class="a-action" (click)="onRemoveSod()"><i class="nb-trash"></i></a>
+            <a class="a-action" (click)="onDeleteConfirm(cust.id)"><i class="nb-trash"></i></a>
           </div>
         </td>
       </tr>
@@ -117,23 +118,54 @@
   </p-table>
 </p-panel>
 
-
-
-<nb-card>
-  <nb-card-header>
-    List of Supplier
-  </nb-card-header>
-  <nb-card-body>
-    <button type="button" class="btn btn" (click)="openModalAdd()" id="newBtn" style="display: none">
-    </button>
-    <div class="form-group row">
-      <div class="col-md-12">
-        <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (custom)="onCustom($event)">
-        </ng2-smart-table>
-      </div>
+<p-dialog header="Add Supplier" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+<div class="form-group row">
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label for="soCode" class="col-form-label">Name</label><br />
+                <input type="text" pInputText [(ngModel)]="model.name" name="model.name"  style="width:100%" />
+              </div>
+              <div class="col-sm-12">
+                  <label for="soCode" class="col-form-label">Phone</label><br />
+                  <input type="text" pInputText [(ngModel)]="model.phone" name="model.phone"  style="width:100%" />
+                </div>
+                <div class="col-sm-12">
+                    <label for="soCode" class="col-form-label">Email</label><br />
+                    <input type="text" pInputText [(ngModel)]="model.email" name="model.email"  style="width:100%" />
+                  </div>
+          </div>
     </div>
-  </nb-card-body>
-</nb-card>
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <label for="soCode" class="col-form-label">Street</label><br />
+                <input type="text" pInputText [(ngModel)]="model.address.street" name="model.address.street"  style="width:100%" />
+              </div>
+              <div class="col-sm-12">
+                  <label for="soCode" class="col-form-label">Phone</label><br />
+                  <input type="text" pInputText [(ngModel)]="model.address.city" name="model.address.city"  style="width:100%" />
+                </div>
+                <div class="col-sm-12">
+                    <label for="soCode" class="col-form-label">Email</label><br />
+                    <input type="text" pInputText [(ngModel)]="model.address.state" name="model.address.state"  style="width:100%" />
+                  </div>
+                  <div class="col-sm-12">
+                      <label for="soCode" class="col-form-label">Zip</label><br />
+                      <input type="text" pInputText [(ngModel)]="model.address.zip" name="model.address.zip"  style="width:100%" />
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="soCode" class="col-form-label">Country</label><br />
+                        <input type="text" pInputText [(ngModel)]="model.address.country" name="model.address.country"  style="width:100%" />
+                      </div>
+          </div>
+    </div>
+</div>
+<p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="display=false" label="Yes"></button>
+    <button type="button" pButton icon="pi pi-close" (click)="display=false" label="No" class="ui-button-secondary"></button>
+</p-footer>
+</p-dialog>
 
 <ng-template #modal let-c="close" let-d="dismiss">
   <div class="row">

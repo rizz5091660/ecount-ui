@@ -45,8 +45,8 @@ export class SupplierService {
     }
 
     /** DELETE: delete supplier from database */
-    delete(suppCust: CustomerSupplier):Observable<HttpResponseWS>{
-        return this.http.post<HttpResponseWS>(environment.delete_customer_supplier,suppCust);
+    delete(id: number):Observable<HttpResponseWS>{
+        return this.http.post<HttpResponseWS>(environment.delete_customer_supplier,id);
     }
 
 

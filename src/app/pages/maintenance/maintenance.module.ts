@@ -13,12 +13,15 @@ import { MessagesModule } from '../../components/messages/messages';
 import { MessageModule } from '../../components/message/message';
 import { TableModule } from '../../components/table/table';
 import { ButtonModule } from '../../components/button/button';
+import { ConfirmDialogModule } from '../../components/confirmdialog/confirmdialog';
+import { ConfirmationService } from '../../components/common/api';
+import { DialogModule } from '../../components/dialog/dialog';
 
 @NgModule({
     imports:[MaintenanceRoutingModule,ThemeModule,Ng2SmartTableModule,SharesModule,PanelModule,MessagesModule,MessageModule,
-        TableModule,ButtonModule], 
+        TableModule,ButtonModule,ConfirmDialogModule,DialogModule], 
     declarations:[...routedComponents, TaxComponent],
-    providers: [SupplierService,CoaService,SmartTableService],
+    providers: [SupplierService,CoaService,SmartTableService,ConfirmationService],
     entryComponents: [
         ModalComponent, 
       ],
