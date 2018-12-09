@@ -36,7 +36,10 @@ export class SalesService {
       so.stage=stg;
       return this.http.post<HttpResponseWS>(environment.update_so_stage_path,so);
     }
-    create(so:SalesOrder): Observable<HttpResponseWS>{    
+    create(so:SalesOrder,stageId:number): Observable<HttpResponseWS>{    
+      let stg:Stage = new Stage();
+      stg.id = stageId;
+      so.stage=stg;
       return this.http.post<HttpResponseWS>(environment.create_so_path,so,httpOptions);
     }
     init():Observable<SalesOrder>{

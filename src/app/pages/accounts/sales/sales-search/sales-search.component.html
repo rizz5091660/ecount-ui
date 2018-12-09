@@ -1,35 +1,59 @@
-<nb-card>
-  <nb-card-header></nb-card-header>
-  <nb-card-body>
-    <div class="form-group row">
-      <div class="col-md-12"> <a href="#">Paid</a><br />
-        <b>Invoice</b>
-        <nb-tabset fullWidth (changeTab)="onTabChange($event)">
-          <nb-tab *ngFor="let tab of tabs" [tabTitle]="tab.title" [active]="tab.active">
-          </nb-tab>
-        </nb-tabset> <br />
-      </div>
+<p-panel>
+  <p-header>
+    <label class="col-form-label">Search</label>
+  </p-header>
+  <div class="form-group row">
+    <div class="col-md-12">
+      <nb-tabset fullWidth (changeTab)="onTabChange($event)">
+        <nb-tab *ngFor="let tab of tabs" [tabTitle]="tab.title" [active]="tab.active">
+        </nb-tab>
+      </nb-tabset> <br />
     </div>
-    <div class="form-group row">
-      <div class="col-md-12">
-        <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (custom)="onCustomAction()"
-          (userRowSelect)="onRowSelected($event)">
-        </ng2-smart-table>
-      </div>
-    </div>
-    <div class="form-group row">
-      <div style="padding: 5px;padding-left: 15px">
-          <button type="button" (click)="onUpdateStage(1)" class="btn btn-primary btn-rectangle">Draft</button>
-      </div>
-      <div style="padding: 5px;">
-          <button type="button" (click)="onUpdateStage(2)" class="btn btn-primary btn-rectangle">Submit fo Approval</button>
-      </div>
-      <div style="padding: 5px">
-          <button type="button" (click)="onUpdateStage(3)" class="btn btn-primary btn-rectangle">Approve</button>
-      </div>
-      <div style="padding: 5px">
-          <button type="button" (click)="onUpdateStage(4)" class="btn btn-primary btn-rectangle">Receive Payment</button>
-      </div>
   </div>
-  </nb-card-body>
-</nb-card>
+  <div class="form-group row">
+    <div class="col-md-12">
+        <p-toolbar>
+            <div class="ui-toolbar-group-left">
+                <button pButton type="button" label="New"icon="pi pi-plus" style="margin-right:10px"></button>
+                <button pButton type="button" label="Submit for Approval"  class="ui-button-warning" style="margin-right:10px" (click)="onUpdateStage(2)" ></button>
+                <button pButton type="button" label="Aprove" class="ui-button-success" style="margin-right:10px" (click)="onUpdateStage(3)"></button>      
+                <button pButton type="button" label="Reject" class="ui-button-success" style="margin-right:10px" (click)="onUpdateStage(1)"></button>                  
+            </div>
+            
+            <div class="ui-toolbar-group-right">
+                <button pButton type="button" icon="pi pi-search"></button>
+                <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button>
+                <button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button>
+            </div>
+        </p-toolbar>
+      <p-table #dt [columns]="cols" [value]="this.saless" [(selection)]="selectedSaless" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+              <th style="width: 3em">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+            <th *ngFor="let col of cols" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+            </th>
+          </tr>
+          <tr>
+            <th></th>
+            <th *ngFor="let col of cols">
+              <input pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                style="width:100%">
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-sales let-columns="cols">
+          <tr [pSelectableRow]="sales">
+            <td><p-tableCheckbox [value]="sales"></p-tableCheckbox></td>
+            <td *ngFor="let col of cols">
+                {{sales[col.field]}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</p-panel>

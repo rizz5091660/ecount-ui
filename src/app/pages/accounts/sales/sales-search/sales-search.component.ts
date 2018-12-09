@@ -7,6 +7,7 @@ import { SalesService } from '../../../../service/sales.service';
 import { HttpResponseWS } from '../../../../class/http_response_ws';
 import { LocalDataSource } from 'ng2-smart-table';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MenuItem } from '../../../../components/common/menuitem';
 
 @Component({
   selector: 'sales-search',
@@ -17,6 +18,7 @@ export class SalesSearchComponent implements OnInit {
   type: string;
   stageId: number;
   saless: SalesOrder[];
+  selectedSaless: SalesOrder[]=[];
   salessUpdId: number[];
   sales: SalesOrder;
   obsSo: Observable<SalesOrder>;
@@ -24,93 +26,44 @@ export class SalesSearchComponent implements OnInit {
   obString: Observable<String>;
   obsHttpWS: Observable<HttpResponseWS>;
   httpResponseWS: HttpResponseWS;
-  source: LocalDataSource = new LocalDataSource();
 
+  cols:any[]  ;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private salesService: SalesService,
-    private _sanitizer: DomSanitizer
+    private salesService: SalesService
   ) { }
 
-  input: string = '<input type="checkbox"></input>';
-  settings = {
-    selectMode: 'multi',
-    actions: {
-      edit: false,
-      add: false,
-      delete: false,
-      //custom: [{ name: 'customAction', title: '<i class="ion-document"></i>' }],
-      position: 'right',
-      select: true,
-    },
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      soCode: {
-        title: 'Number',
-        type: 'string',
-      },
-      referrence: {
-        title: 'Referrence',
-        type: 'string',
-      },
-      custName: {
-        title: 'To',
-        type: 'string',
-      },
-      trxnDate: {
-        title: 'Date',
-        type: 'date',
-      },
-      estDeliveryDate: {
-        title: 'Due Date',
-        type: 'date',
-      },
-      totalAmount: {
-        title: 'Amount',
-        type: 'number',
-      },
-      select: {
-
-      }
-    },
-  };
 
   tabs = [];
   ngOnInit() {
-
     this.tabs = [{ title: 'All', active: false }, { title: 'Draft', active: false }, { title: 'Awaiting Approval', active: false }, { title: 'Awaiting Payment', active: false }, { title: 'Paid', active: false }];
-
     this.obString = this.route.queryParamMap.pipe(map(params => params.get('type')));
     this.obString.subscribe((obString) => {
       this.type = obString.toString();
     });
-
     this.obString = this.route.queryParamMap.pipe(map(params => params.get('stage')));
     this.obString.subscribe((obString) => {
       this.stageId = parseInt(obString.toString());
     });
+
+    this.cols = [
+      { field: 'soCode', header: 'Number', type: 'txt' },
+      { field: 'referrence', header: 'Referrence', type: 'txt' },
+      { field: 'custName', header: 'To', type: 'txt' },
+      { field: 'trxnDate', header: 'Date', type: 'txt' },
+      { field: 'estDeliveryDate', header: 'Due Date', type: 'txt' },
+      { field: 'totalAmount', header: 'Ammount', type: 'txt' }
+    ]
+
     this.loadSearch(this.stageId, this.type);
   }
+
 
   loadSearch(stageId: number,type: string) {
     this.obsSos = this.salesService.getSalesOrderAll(stageId, type);
     this.obsSos.subscribe((obsSos) => {
       this.saless = obsSos;
-      this.source.load(this.saless);
     });
     for (var i = 0; i < this.tabs.length; i++) {
       if (stageId == i) {
@@ -119,17 +72,39 @@ export class SalesSearchComponent implements OnInit {
     }
   }
 
+  constuctTableColumns(stageId:number){
+    if(stageId==0){
+      this.cols = [
+        { field: 'soCode', header: 'Number', type: 'txt' },
+        { field: 'referrence', header: 'Referrence', type: 'txt' },
+        { field: 'custName', header: 'To', type: 'txt' },
+        { field: 'trxnDate', header: 'Date', type: 'txt' },
+        { field: 'estDeliveryDate', header: 'Due Date', type: 'txt' },
+        { field: 'totalAmount', header: 'Ammount', type: 'txt' },
+        { field: 'stage.id', header: 'Stage', type: 'txt' },
+      ];
+    }else{
+      this.cols = [
+        { field: 'soCode', header: 'Number', type: 'txt' },
+        { field: 'referrence', header: 'Referrence', type: 'txt' },
+        { field: 'custName', header: 'To', type: 'txt' },
+        { field: 'trxnDate', header: 'Date', type: 'txt' },
+        { field: 'estDeliveryDate', header: 'Due Date', type: 'txt' },
+        { field: 'totalAmount', header: 'Ammount', type: 'txt' },
+      ];
+
+    }
+  } 
+
   onUpdateStage(stageId: number) {
     this.salessUpdId = [];
-    for (var i = 0; i < this.saless.length; i++) {
-      if (this.saless[i].selected) {
-        let so: SalesOrder = this.saless[i];
-        this.salessUpdId.push(so.id);
-      }
+    for (var i = 0; i < this.selectedSaless.length; i++) {
+        this.salessUpdId.push(this.selectedSaless[i].id);
     }
      this.obsHttpWS = this.salesService.updateSalesOrderStage(this.salessUpdId, stageId);
      this.obsHttpWS.subscribe((obsHttpWS) => {
        this.httpResponseWS = obsHttpWS;
+       this.selectedSaless=[];
        this.loadSearch(this.stageId, this.type);
      });
   }
@@ -185,6 +160,7 @@ export class SalesSearchComponent implements OnInit {
     else if (event.tabTitle == "Paid") {
       this.stageId = 4;
     }
+    this.constuctTableColumns(this.stageId);
     this.loadSearch(this.stageId,this.type);
   }
 }

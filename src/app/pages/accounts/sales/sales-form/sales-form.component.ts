@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SalesOrder } from '../../../../class/sales_order';
-import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SalesOrderDetail } from '../../../../class/sales_order_detail';
 import { SalesService } from '../../../../service/sales.service';
 import { Observable } from 'rxjs/Observable';
-//import { HttpResponseWS } from '../../../../class/htt_response_ws';
 import { Stage } from '../../../../class/stage';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -12,6 +10,7 @@ import { SelectItem } from '../../../../class/selectitem';
 import { environment } from '../../../../../environments/environment';
 import { MenuItem, MessageService, Message } from '../../../../components/common/api';
 import { HttpResponseWS } from '../../../../class/http_response_ws';
+import { AWAIT_PAYMENT_STAGE } from '../../../../common/ecount_const';
 
 @Component({ 
   selector: 'sales-form',
@@ -161,19 +160,31 @@ export class SalesFormComponent implements OnInit {
   onAwaitApprove() {
     this.onCreate(2);
   }
-  onApprove() {
-    this.onCreate(3);
-  }
+  
   onReset() {
      this.model = new SalesOrder();
      this.model.sods = [];
   }
 
+  onApprove() {
+    this.msgs = [];
+    this.model.salesIds = [];
+    this.model.salesIds.push(this.model.id);
+    this.obHttp = this.service.updateSalesOrderStage(this.model.salesIds,AWAIT_PAYMENT_STAGE);
+    this.obHttp.subscribe((observable) => { 
+      this.httpResponseWS=observable;
+        this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
+    },
+    error => {
+      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
+    });
+
+
+  }
+
   onCreate(stageId: number) {
     this.msgs = [];
-    this.model.stage = new Stage();
-    this.model.stage.id = stageId;
-    this.obHttp = this.service.create(this.model);
+    this.obHttp = this.service.create(this.model,stageId);
     this.obHttp.subscribe((observable) => { 
       this.httpResponseWS=observable;
         this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });

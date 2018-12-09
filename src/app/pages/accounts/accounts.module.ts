@@ -19,6 +19,7 @@ import { MessageModule } from '../../components/message/message';
 import { MessagesModule } from '../../components/messages/messages';
 import { PanelModule } from '../../components/panel/panel';
 import { StepsModule } from '../../components/steps/steps';
+import { ToolbarModule } from '../../components/toolbar/toolbar';
 
 
 
@@ -26,7 +27,7 @@ import { StepsModule } from '../../components/steps/steps';
   imports: [ 
     CommonModule,AccountsRoutingModule,ThemeModule,Ng2SmartTableModule,
     TableModule,DropdownModule,ButtonModule,CalendarModule,InputTextModule,SplitButtonModule,
-    MessagesModule,MessageModule,PanelModule,StepsModule
+    MessagesModule,MessageModule,PanelModule,StepsModule,ToolbarModule
   ],
   providers: [SalesService,PurchaseService,SmartTableService,MessageService],
   declarations: [...routedComponents, SalesFormComponent, PurchaseFormComponent],
