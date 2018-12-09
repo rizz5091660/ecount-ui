@@ -46,36 +46,16 @@ export class SalesFormComponent implements OnInit {
     this.model.stage.id=0;
     this.model.sods = [];
     this.items = [
-      {
-        label: 'Draft', icon: 'pi pi-file', command: () => {
-          this.onSaveDraft();
-        }
-      },
-      {
-        label: 'Submit for Approval', icon: 'pi pi-refresh', command: () => {
-          this.onAwaitApprove(); 
-        }
-      },
-      {
-        label: 'Approve', icon: 'pi pi-check', command: () => {
-          this.onApprove();
-        }
-      },
+      { label: 'Draft', icon: 'pi pi-file', command: () => { this.onSaveDraft();}},
+      {label: 'Submit for Approval', icon: 'pi pi-refresh', command: () => {this.onAwaitApprove();}},
+      {label: 'Approve', icon: 'pi pi-check', command: () => {this.onApprove();}},
     ];
     this.itemSteps = [
-      {
-        label: 'Draft', icon: 'pi pi-file', command: () => {
-        }
-      },
-      {
-        label: 'Submit for Approval', icon: 'pi pi-refresh', command: () => {
-        }
-      },
-      {
-        label: 'Approve', icon: 'pi pi-check', command: () => {
-        }
-      },
+      {label: 'Draft', icon: 'pi pi-file', command: () => {}},
+      {label: 'Submit for Approval', icon: 'pi pi-refresh', command: () => {}},
+      {label: 'Approve', icon: 'pi pi-check', command: () => {}},
     ];
+
     this.obSo = this.service.init();
     this.obSo.subscribe((observable) => {
       this.model.custSupps = observable.custSupps;
@@ -189,7 +169,6 @@ export class SalesFormComponent implements OnInit {
      this.model.sods = [];
   }
 
-
   onCreate(stageId: number) {
     this.msgs = [];
     this.model.stage = new Stage();
@@ -197,11 +176,10 @@ export class SalesFormComponent implements OnInit {
     this.obHttp = this.service.create(this.model);
     this.obHttp.subscribe((observable) => { 
       this.httpResponseWS=observable;
-      console.log(observable);
-      console.log(this.httpResponseWS);
-      if(this.httpResponseWS.status==200){
         this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
-      }
+    },
+    error => {
+      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
     });
   }
 }

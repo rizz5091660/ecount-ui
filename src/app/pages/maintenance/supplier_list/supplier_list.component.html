@@ -1,250 +1,104 @@
 <p-panel>
   <p-header>
-    <label class="col-form-label">List of Supplier</label>
+    <label class="col-form-label">Contact</label>
   </p-header>
   <p-confirmDialog></p-confirmDialog>
   <p-messages [(value)]="msgs"></p-messages>
-  <p-table #dt [columns]="cols" [value]="customerSuppliers" [paginator]="true" [rows]="10">
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th style="width:20%">Name</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Street</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Zip</th>
-        <th>Country</th>
-        <th style="width:100px">Action</th>
-      </tr>
-      <tr>
-        <th *ngFor="let col of cols" [ngSwitch]="col.type">
-          <input *ngSwitchCase="'txt'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-            style="width:100%">
-          <button *ngSwitchCase="'btn'" type="button" pButton icon="pi pi-plus" (click)="onAdd()" style="width:100%"></button>
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-cust let-columns="cols">
-      <tr style="height: 20px">
-        <td pEditableColumn>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="cust.name" required name="cust.name">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{cust.name}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td pEditableColumn>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="cust.phone" required name="cust.phone">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{cust.phone}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td pEditableColumn>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="cust.email" required name="cust.email">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{cust.email}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td pEditableColumn>
-            <p-cellEditor>
-              <ng-template pTemplate="input">
-                <input pInputText type="text" [(ngModel)]="cust.address.street" required name="cust.address.street">
-              </ng-template>
-              <ng-template pTemplate="output">
-                {{cust.address.street}}
-              </ng-template>
-            </p-cellEditor>
+  <div class="form-group row">
+    <div class="col-sm-2">
+        <p-listbox [options]="  countTypes" [(ngModel)]="selectedItem" (click)="loadContacts()" optionLabel="label"  [style]="{'padding-right':'20px','border':'0px'}"></p-listbox>
+    </div>
+    <div class="col-sm-10">
+  <p-table #dt [columns]="cols" [value]="model.custSupps" [paginator]="true" [rows]="10" >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width:20%">Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th style="width:100px">Action</th>
+        </tr>
+        <tr>
+          <th *ngFor="let col of cols" [ngSwitch]="col.type">
+            <input *ngSwitchCase="'txt'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+              style="width:100%">
+            <button *ngSwitchCase="'btn'" type="button" pButton icon="pi pi-plus" (click)="onAdd()" style="width:100%"></button>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-contact let-columns="cols">
+        <tr style="height: 20px">
+          <td>{{contact.name}} </td>
+          <td>{{contact.phone}}</td>
+          <td>{{contact.email}} </td>
+          <td>{{contact.address.street}}   {{contact.address.city}}  {{contact.address.state}}    {{contact.address.zip}}   {{contact.address.country}} </td>
+          <td pEditableColumn class="td-action">
+            <div class="div-action">
+              <a class="a-action" (click)="onEdit(contact)"><i class="nb-edit"></i></a>
+              <a class="a-action" (click)="onDeleteConfirm(contact.id)"><i class="nb-trash"></i></a>
+            </div>
           </td>
-          <td pEditableColumn>
-              <p-cellEditor>
-                <ng-template pTemplate="input">
-                  <input pInputText type="text" [(ngModel)]="cust.address.city" required name="cust.address.city">
-                </ng-template>
-                <ng-template pTemplate="output">
-                  {{cust.address.city}}
-                </ng-template>
-              </p-cellEditor>
-            </td>
-            <td pEditableColumn>
-                <p-cellEditor>
-                  <ng-template pTemplate="input">
-                    <input pInputText type="text" [(ngModel)]="cust.address.state" required name="cust.address.state">
-                  </ng-template>
-                  <ng-template pTemplate="output">
-                    {{cust.address.state}}
-                  </ng-template>
-                </p-cellEditor>
-              </td>
-              <td pEditableColumn>
-                <p-cellEditor>
-                  <ng-template pTemplate="input">
-                    <input pInputText type="text" [(ngModel)]="cust.address.zip" required name="cust.address.zip">
-                  </ng-template>
-                  <ng-template pTemplate="output">
-                    {{cust.address.zip}}
-                  </ng-template>
-                </p-cellEditor>
-              </td>
-        <td pEditableColumn>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="cust.address.country" required name="cust.address.country">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{cust.address.country}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td pEditableColumn class="td-action">
-          <div class="div-action">
-            <a class="a-action" href="#"><i class="nb-edit"></i></a>
-            <a class="a-action" (click)="onDeleteConfirm(cust.id)"><i class="nb-trash"></i></a>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+        </tr>
+      </ng-template>
+    </p-table>
+      </div>
+  </div>
 </p-panel>
 
-<p-dialog header="Add Supplier" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+<p-dialog header="Add Contact" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
 <div class="form-group row">
-    <div class="col-sm-6">
+    <div class="col-sm-6" style="padding:20px">
         <div class="form-group row">
             <div class="col-sm-12">
-                <label for="soCode" class="col-form-label">Name</label><br />
-                <input type="text" pInputText [(ngModel)]="model.name" name="model.name"  style="width:100%" />
+                <label for="name" class="col-form-label">Name</label><br />
+                <input type="text" id="name" pInputText [(ngModel)]="model.name" name="model.name"  style="width:100%" />
               </div>
               <div class="col-sm-12">
-                  <label for="soCode" class="col-form-label">Phone</label><br />
-                  <input type="text" pInputText [(ngModel)]="model.phone" name="model.phone"  style="width:100%" />
+                  <label for="phone" class="col-form-label">Phone</label><br />
+                  <input type="text" id="phone" pInputText [(ngModel)]="model.phone" name="model.phone"  style="width:100%" />
                 </div>
                 <div class="col-sm-12">
-                    <label for="soCode" class="col-form-label">Email</label><br />
-                    <input type="text" pInputText [(ngModel)]="model.email" name="model.email"  style="width:100%" />
-                  </div>
+                    <label for="email" class="col-form-label">Email</label><br />
+                    <input type="text" id="email" pInputText [(ngModel)]="model.email" name="model.email"  style="width:100%" />
+                </div>
+                <div class="col-sm-12">
+                    <label for="typeContact" class="col-form-label">Type</label><br />
+                    <div class="ui-g" id="typeContact" style="width:250px;margin-bottom:10px">
+                        <div class="ui-g-12"><p-radioButton name="group1" value="c" label="Customer" [(ngModel)]="model.type" inputId="opt1"></p-radioButton></div>
+                        <div class="ui-g-12"><p-radioButton name="group1" value="s" label="Supplier" [(ngModel)]="model.type" inputId="opt2"></p-radioButton></div>
+                        <div class="ui-g-12"><p-radioButton name="group1" value="e" label="Employee" [(ngModel)]="model.type" inputId="opt3"></p-radioButton></div>
+                    </div>
+                </div>
           </div>
     </div>
     <div class="col-sm-6">
         <div class="form-group row">
             <div class="col-sm-12">
-                <label for="soCode" class="col-form-label">Street</label><br />
-                <input type="text" pInputText [(ngModel)]="model.address.street" name="model.address.street"  style="width:100%" />
+                <label for="street" class="col-form-label">Street</label><br />
+                <input type="text" id="street" pInputText [(ngModel)]="model.address.street" name="model.address.street"  style="width:100%" />
               </div>
               <div class="col-sm-12">
-                  <label for="soCode" class="col-form-label">Phone</label><br />
-                  <input type="text" pInputText [(ngModel)]="model.address.city" name="model.address.city"  style="width:100%" />
+                  <label for="phone" class="col-form-label">City</label><br />
+                  <input type="text" id="phone" pInputText [(ngModel)]="model.address.city" name="model.address.city"  style="width:100%" />
                 </div>
                 <div class="col-sm-12">
-                    <label for="soCode" class="col-form-label">Email</label><br />
-                    <input type="text" pInputText [(ngModel)]="model.address.state" name="model.address.state"  style="width:100%" />
+                    <label for="state" class="col-form-label">State</label><br />
+                    <input type="text" id="state" pInputText [(ngModel)]="model.address.state" name="model.address.state"  style="width:100%" />
                   </div>
                   <div class="col-sm-12">
-                      <label for="soCode" class="col-form-label">Zip</label><br />
-                      <input type="text" pInputText [(ngModel)]="model.address.zip" name="model.address.zip"  style="width:100%" />
+                      <label for="zip" class="col-form-label">Zip Code</label><br />
+                      <input type="text" id="zip" pInputText [(ngModel)]="model.address.zip" name="model.address.zip"  style="width:100%" />
                     </div>
                     <div class="col-sm-12">
-                        <label for="soCode" class="col-form-label">Country</label><br />
-                        <input type="text" pInputText [(ngModel)]="model.address.country" name="model.address.country"  style="width:100%" />
+                        <label for="country" class="col-form-label">Country</label><br />
+                        <input type="text" id="country" pInputText [(ngModel)]="model.address.country" name="model.address.country"  style="width:100%" />
                       </div>
           </div>
     </div>
 </div>
 <p-footer>
-    <button type="button" pButton icon="pi pi-check" (click)="display=false" label="Yes"></button>
+    <button type="button" pButton icon="pi pi-check" (click)="onSubmit()" label="Yes"></button>
     <button type="button" pButton icon="pi pi-close" (click)="display=false" label="No" class="ui-button-secondary"></button>
 </p-footer>
 </p-dialog>
 
-<ng-template #modal let-c="close" let-d="dismiss">
-  <div class="row">
-    <div class="col-md-12">
-      <form (ngSubmit)="onSubmit();d('Cross click');" #suppCustForm="ngForm">
-        <nb-card>
-          <nb-card-header>Supplier</nb-card-header>
-          <nb-card-body>
-            <div class="form-group row">
-              <label for="nameId" class="col-sm-3 col-form-label">Name</label>
-              <div class="col-sm-9">
-                <input class="form-control" id="nameId" placeholder="Name" [(ngModel)]="model.name" name="name">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="phoneId" class="col-sm-3 col-form-label">Phone</label>
-              <div class="col-sm-9">
-                <input type="phone" class="form-control" id="phoneId" placeholder="Phone" [(ngModel)]="model.phone"
-                  name="phone">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="phoneId" class="col-sm-3 col-form-label">Email</label>
-              <div class="col-sm-9">
-                <input type="phone" class="form-control" id="emailId" placeholder="Email" [(ngModel)]="model.email"
-                  name="email">
-              </div>
-            </div>
-          </nb-card-body>
-        </nb-card>
-        <nb-card>
-          <nb-card-header>Address</nb-card-header>
-          <nb-card-body>
-            <div class="form-group row">
-              <label for="nameId" class="col-sm-3 col-form-label">Attention</label>
-              <div class="col-sm-9">
-                <input class="form-control" id="attentionId" placeholder="Attention" [(ngModel)]="model.address.attention"
-                  name="attention">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="nameId" class="col-sm-3 col-form-label">Street</label>
-              <div class="col-sm-9">
-                <input class="form-control" id="streetId" placeholder="Street" [(ngModel)]="model.address.street" name="street">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="nameId" class="col-sm-3 col-form-label">City</label>
-              <div class="col-sm-9">
-                <input class="form-control" id="cityId" placeholder="City" [(ngModel)]="model.address.city" name="city">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="nameId" class="col-sm-3 col-form-label">State</label>
-              <div class="col-sm-9">
-                <input class="form-control" id="stateId" placeholder="State" [(ngModel)]="model.address.state" name="state">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="nameId" class="col-sm-3 col-form-label">Postal Code</label>
-              <div class="col-sm-9">
-                <input class="form-control" id="zipId" placeholder="Postal Code" [(ngModel)]="model.address.zip" name="zip">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="nameId" class="col-sm-3 col-form-label">Country</label>
-              <div class="col-sm-9">
-                <input class="form-control" id="countryId" placeholder="Country" [(ngModel)]="model.address.country"
-                  name="country">
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-md-12">
-                <button type="submit" class="btn btn-primary btn-block">Submit</button>
-              </div>
-            </div>
-          </nb-card-body>
-        </nb-card>
-      </form>
-    </div>
-  </div>
-</ng-template>

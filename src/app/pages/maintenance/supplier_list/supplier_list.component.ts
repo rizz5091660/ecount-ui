@@ -1,15 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { LocalDataSource } from 'ng2-smart-table';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { SupplierService } from '../../../service/supplier.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { CustomerSupplier } from '../../../class/supplier_customer';
 import { Address } from '../../../class/address';
-import { ModalComponent } from '../../shares/modals/modal/modal.component';
 import { HttpResponseWS } from '../../../class/http_response_ws';
-import * as $ from "jquery";
 import { Message, ConfirmationService } from '../../../components/common/api';
+import { SelectItem } from '../../../class/selectitem';
+import {OK_RESP} from '../../../common/ecount_const';
 
 
 @Component({
@@ -20,96 +19,98 @@ import { Message, ConfirmationService } from '../../../components/common/api';
 export class SupplierListComponent implements OnInit {
   @ViewChild('modal') modal: ElementRef;
   listObservable: Observable<CustomerSupplier[]>;
-  customerSuppliers: CustomerSupplier[];
+  obs: Observable<CustomerSupplier>;
   closeResult: string;
   model: CustomerSupplier = new CustomerSupplier();
   httpRespObservable: Observable<HttpResponseWS>;
-  source: LocalDataSource = new LocalDataSource();
   id: number;
-
+  selectedItem:SelectItem= new SelectItem();
+  countTypes:SelectItem[];
   msgs: Message[] = [];
   cols: any[];
   display: boolean = false;
 
+  constructor(private router: Router, private service: SupplierService, private supplierService: SupplierService, private confirmationService: ConfirmationService) { }
+  
   ngOnInit() {
     this.model= new CustomerSupplier();
     this.model.address = new Address();
-    this.loadListSupplier();
+    this.selectedItem.value='all';
+    this.init();
     this.cols = [
       { field: 'name', header: 'Name', type: 'txt' },
       { field: 'phone', header: 'Phone', type: 'txt' },
       { field: 'email', header: 'Email', type: 'txt' },
-      { field: 'address.street', header: 'Street', type: 'txt' },
-      { field: 'address.city', header: 'City', type: 'txt' },
-      { field: 'address.state', header: 'State', type: 'txt' },
-      { field: 'address.zip', header: 'Zip', type: 'txt' },
-      { field: 'address.country', header: 'Country', type: 'txt' },
+      { field: 'address.street', header: 'Address', type: 'txt' },
       { field: '', header: 'Action', type: 'btn' },
     ];
-
-
-  }
-  constructor(private router: Router, private service: SupplierService, private modalService: NgbModal, private supplierService: SupplierService, private confirmationService: ConfirmationService) { }
-
-
-  onAdd() {
-    this.display = true;
-    this.model.address = new Address();
   }
 
-  loadListSupplier() {
-    this.listObservable = this.service.getSupplierAll('0');
-    this.listObservable.subscribe((listObservable) => {
-      this.customerSuppliers = listObservable;
-      this.source.load(this.customerSuppliers);
+  init(){
+    this.obs = this.service.init();
+    this.obs.subscribe((obs) => {
+      this.model.custSupps = obs.custSupps;
+      this.countTypes = obs.countTypes;
     })
   }
-
-  onSubmit() {
-    if (this.model.id == null) {
-      this.onCreate();
-    } else {
-      this.onUpdate();
-    }
-    this.loadListSupplier();
-  }
-
-  openModalAdd() {
-    this.openModal(this.modal);
-  }
-
-  openModal(modal) {
+  loadContacts() {
+    this.listObservable = this.service.getSupplierAll(this.selectedItem.value);
+    this.listObservable.subscribe((listObservable) => {
+      this.model.custSupps = listObservable;
+    })
+  }  
+  onAdd() {
+    let custSupps:CustomerSupplier[];
+    custSupps=this.model.custSupps;
     this.model = new CustomerSupplier();
     this.model.address = new Address();
-    this.modalService.open(modal).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.model.custSupps = custSupps; 
+    this.model.id=0;
+    this.display = true;
   }
-
-  onEdit(modal, model) {
-    this.openModal(modal);
+  onEdit(model) {
+    this.model=model;
+    this.display = true;
     this.model = model;
   }
-
+  onSubmit(){
+    if( this.model.id==0){
+      this.onCreate();
+    }else{
+      this.onUpdate();
+    }
+  }
   onCreate() {
     this.httpRespObservable = this.supplierService.create(this.model);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      // console.log(httpRespObservable.status);
-      this.customerSuppliers.push(this.model);
-      this.source.load(this.customerSuppliers);
+      this.onProcessSuccessResponse(httpRespObservable,'Create');      
+    }, 
+    error => {
+      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
     });
-
   }
 
   onUpdate() {
     this.httpRespObservable = this.supplierService.update(this.model);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      console.log(httpRespObservable.status);
+      this.onProcessSuccessResponse(httpRespObservable,'Update');      
+    }, 
+    error => {
+      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
     });
   }
 
+
+  onDelete() {
+    this.httpRespObservable = this.supplierService.delete(this.id);
+    this.httpRespObservable.subscribe((httpRespObservable) => {
+      this.onProcessSuccessResponse(httpRespObservable,'Delete');  
+    }, 
+    error => {
+      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
+    }
+);
+  } 
 
   onDeleteConfirm(id: number) {
     this.id = id;
@@ -118,39 +119,17 @@ export class SupplierListComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'You have accepted' }];
         this.onDelete();
       },
       reject: () => {
-        this.msgs = [{ severity: 'error', summary: 'Rejected', detail: 'You have rejected' }];
+       // this.msgs = [{ severity: 'error', summary: 'Rejected', detail: 'You have rejected' }];
       }
     });
   }
 
-  onDelete() {
-    this.httpRespObservable = this.supplierService.delete(this.id);
-    this.httpRespObservable.subscribe((httpRespObservable) => {
-      console.log(this.httpRespObservable);
-    });
-    this.loadListSupplier();
+  onProcessSuccessResponse(httpRespObservable:HttpResponseWS, type:string){
+      this.display=false;
+      this.init();
+      this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully '+type }];
   }
-
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-
-  showLargeModal() {
-    const activeModal = this.modalService.open(ModalComponent, { size: 'lg', container: 'nb-layout' });
-    activeModal.componentInstance.modalHeader = 'Large Modal';
-  }
-
-  // TODO: Remove this when we're done
-  get diagnostic() { return JSON.stringify(this.model); }
 }

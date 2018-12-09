@@ -24,8 +24,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'ion-clipboard',
     home: true,
     children:[{
-      title:'Supplier',
-      link:'/pages/maintenance/supplier_list',
+      title:'Contact',
+      link:'/pages/maintenance/contact',
     },{
       title:'COA',
       link:'/pages/maintenance/coa',

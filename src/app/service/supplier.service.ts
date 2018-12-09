@@ -22,8 +22,13 @@ export class SupplierService {
     }
     
      /** GET: fetch list of supplier from database */
-    getSupplierAll(isCustomer:string):Observable<CustomerSupplier[]>{
-        return this.http.get<CustomerSupplier[]>(environment.get_customer_supplier_path+"isc="+isCustomer);
+    getSupplierAll(type:string):Observable<CustomerSupplier[]>{
+        return this.http.get<CustomerSupplier[]>(environment.get_customer_supplier_path+"type="+type);
+    }
+
+     /** GET: fetch list of supplier from database */
+     init():Observable<CustomerSupplier>{
+        return this.http.get<CustomerSupplier>(environment.get_customer_supplier_init_path);
     }
 
      /** GET: supplier based on id from database */

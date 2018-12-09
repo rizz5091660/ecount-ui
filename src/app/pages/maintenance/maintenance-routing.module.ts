@@ -9,7 +9,7 @@ const routes: Routes=[{
     component:MaintenanceComponent,
     children:[
         {
-            path:'supplier_list',
+            path:'contact',
             component:SupplierListComponent
         },
         {

@@ -16,10 +16,13 @@ import { ButtonModule } from '../../components/button/button';
 import { ConfirmDialogModule } from '../../components/confirmdialog/confirmdialog';
 import { ConfirmationService } from '../../components/common/api';
 import { DialogModule } from '../../components/dialog/dialog';
+import { ScrollPanelModule } from '../../components/scrollpanel/scrollpanel';
+import { ListboxModule } from '../../components/listbox/listbox';
+import { RadioButtonModule } from '../../components/radiobutton/radiobutton';
 
 @NgModule({
     imports:[MaintenanceRoutingModule,ThemeModule,Ng2SmartTableModule,SharesModule,PanelModule,MessagesModule,MessageModule,
-        TableModule,ButtonModule,ConfirmDialogModule,DialogModule], 
+        TableModule,ButtonModule,ConfirmDialogModule,DialogModule,ScrollPanelModule,ListboxModule,RadioButtonModule], 
     declarations:[...routedComponents, TaxComponent],
     providers: [SupplierService,CoaService,SmartTableService,ConfirmationService],
     entryComponents: [

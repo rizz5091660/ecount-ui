@@ -14,6 +14,8 @@ export const environment = {
   create_customer_supplier_path: ecount_ws_url + "/custsupp/create",
   update_customer_supplier_path: ecount_ws_url +"/custsupp/update",
   get_customer_supplier_path: ecount_ws_url  + "/custsupp/getall?",
+  get_customer_supplier_init_path: ecount_ws_url  + "/custsupp/init",
+ 
   get_customer_supplier_byid :ecount_ws_url + "/custsupp/get?",
   delete_customer_supplier : ecount_ws_url + "/custsupp/delete",
 
