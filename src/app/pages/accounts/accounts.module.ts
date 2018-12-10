@@ -20,6 +20,7 @@ import { MessagesModule } from '../../components/messages/messages';
 import { PanelModule } from '../../components/panel/panel';
 import { StepsModule } from '../../components/steps/steps';
 import { ToolbarModule } from '../../components/toolbar/toolbar';
+import { InputTextareaModule } from '../../components/inputtextarea/inputtextarea';
 
 
 
@@ -27,7 +28,7 @@ import { ToolbarModule } from '../../components/toolbar/toolbar';
   imports: [ 
     CommonModule,AccountsRoutingModule,ThemeModule,Ng2SmartTableModule,
     TableModule,DropdownModule,ButtonModule,CalendarModule,InputTextModule,SplitButtonModule,
-    MessagesModule,MessageModule,PanelModule,StepsModule,ToolbarModule
+    MessagesModule,MessageModule,PanelModule,StepsModule,ToolbarModule,InputTextareaModule
   ],
   providers: [SalesService,PurchaseService,SmartTableService,MessageService],
   declarations: [...routedComponents, SalesFormComponent, PurchaseFormComponent],

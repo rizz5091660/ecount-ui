@@ -31,7 +31,6 @@ export class SalesFormComponent implements OnInit {
   cols: any[];
   environment = environment;
   items: MenuItem[];
-  itemSteps: MenuItem[];
   msgs: Message[] = [];
   invId:number;
 
@@ -48,11 +47,6 @@ export class SalesFormComponent implements OnInit {
       { label: 'Draft', icon: 'pi pi-file', command: () => { this.onSaveDraft();}},
       {label: 'Submit for Approval', icon: 'pi pi-refresh', command: () => {this.onAwaitApprove();}},
       {label: 'Approve', icon: 'pi pi-check', command: () => {this.onApprove();}},
-    ];
-    this.itemSteps = [
-      {label: 'Draft', icon: 'pi pi-file', command: () => {}},
-      {label: 'Submit for Approval', icon: 'pi pi-refresh', command: () => {}},
-      {label: 'Approve', icon: 'pi pi-check', command: () => {}},
     ];
 
     this.obSo = this.service.init();
@@ -151,19 +145,18 @@ export class SalesFormComponent implements OnInit {
   }
 
   onSave(){
-    let stageId:number=(this.model.stage.id==0)?0:this.model.stage.id;
-    this.onCreate(stageId);
+    let stageId:number=(this.model.stage.id!=0)?this.model.stage.id:0;
+    this.onCreate(stageId,'Save');
   }
   onSaveDraft() {
-    this.onCreate(1);
+    this.onCreate(1,'Drafting');
   }
   onAwaitApprove() {
-    this.onCreate(2);
+    this.onCreate(2,'Submit');
   }
   
   onReset() {
-     this.model = new SalesOrder();
-     this.model.sods = [];
+     this.ngOnInit();
   }
 
   onApprove() {
@@ -173,7 +166,8 @@ export class SalesFormComponent implements OnInit {
     this.obHttp = this.service.updateSalesOrderStage(this.model.salesIds,AWAIT_PAYMENT_STAGE);
     this.obHttp.subscribe((observable) => { 
       this.httpResponseWS=observable;
-        this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
+        this.model.stage.id=AWAIT_PAYMENT_STAGE;
+        this.msgs.push({ severity: 'success', summary: 'Successfully', detail: 'Approve' });
     },
     error => {
       this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
@@ -182,12 +176,13 @@ export class SalesFormComponent implements OnInit {
 
   }
 
-  onCreate(stageId: number) {
+  onCreate(stageId: number,type:string) {
     this.msgs = [];
     this.obHttp = this.service.create(this.model,stageId);
     this.obHttp.subscribe((observable) => { 
       this.httpResponseWS=observable;
-        this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
+      this.model.id=this.httpResponseWS.value;
+        this.msgs.push({ severity: 'success', summary: 'Successfully', detail: type });
     },
     error => {
       this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
