@@ -22,6 +22,7 @@ export class SupplierListComponent implements OnInit {
   obs: Observable<CustomerSupplier>;
   closeResult: string;
   model: CustomerSupplier = new CustomerSupplier();
+  custSupps:CustomerSupplier[]=[];
   httpRespObservable: Observable<HttpResponseWS>;
   id: number;
   selectedItem:SelectItem= new SelectItem();
@@ -42,14 +43,14 @@ export class SupplierListComponent implements OnInit {
       { field: 'phone', header: 'Phone', type: 'txt' },
       { field: 'email', header: 'Email', type: 'txt' },
       { field: 'address.street', header: 'Address', type: 'txt' },
-      { field: '', header: 'Action', type: 'btn' },
+     // { field: '', header: 'Action', type: 'btn' },
     ];
   }
 
   init(){
     this.obs = this.service.init();
     this.obs.subscribe((obs) => {
-      this.model.custSupps = obs.custSupps;
+      this.custSupps = obs.custSupps;
       this.countTypes = obs.countTypes;
     })
   }
@@ -68,10 +69,9 @@ export class SupplierListComponent implements OnInit {
     this.model.id=0;
     this.display = true;
   }
-  onEdit(model) {
-    this.model=model;
+  onRowSelect(event) {
+    this.model=event.data;
     this.display = true;
-    this.model = model;
   }
   onSubmit(){
     if( this.model.id==0){
@@ -102,7 +102,7 @@ export class SupplierListComponent implements OnInit {
 
 
   onDelete() {
-    this.httpRespObservable = this.supplierService.delete(this.id);
+    this.httpRespObservable = this.supplierService.delete(this.model.id);
     this.httpRespObservable.subscribe((httpRespObservable) => {
       this.onProcessSuccessResponse(httpRespObservable,'Delete');  
     }, 
@@ -112,8 +112,8 @@ export class SupplierListComponent implements OnInit {
 );
   } 
 
-  onDeleteConfirm(id: number) {
-    this.id = id;
+  onDeleteConfirm() {
+    this.display=false;
     this.confirmationService.confirm({
       message: 'Are you sure that you want to proceed?',
       header: 'Confirmation',

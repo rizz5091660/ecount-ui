@@ -81,7 +81,7 @@ export class SalesSearchComponent implements OnInit {
         { field: 'trxnDate', header: 'Date', type: 'txt' },
         { field: 'estDeliveryDate', header: 'Due Date', type: 'txt' },
         { field: 'totalAmount', header: 'Ammount', type: 'txt' },
-        { field: 'stage.id', header: 'Stage', type: 'txt' },
+        { field: 'stage.name', header: 'Stage', type: 'txt' },
       ];
     }else{
       this.cols = [

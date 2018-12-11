@@ -92,7 +92,7 @@
                       <ng-template let-item pTemplate="selectedItem">
                         <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
                       </ng-template>
-                      <ng-template let-lbl pTemplate="item">
+                      <ng-template let-lbl pTemplate="item  ">
                         <div class="ui-helper-clearfix" style="position: relative;height: 25px;" (click)="onChangeDD(lbl,sod,'inventory')">
                           <div style="font-size:14px;float:left;margin-top:4px">{{lbl.label}}</div>
                         </div>
@@ -176,6 +176,7 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="footer" let-columns>
+           <!-- <tr><td colspan="7" align="center"> <button type="button" class="ui-button-secondary ui-button-rounded"  pButton icon="pi pi-plus" label="Add an item" (click)="onAddSod()" ></button></td> </tr> -->   
             <tr>
               <td colspan="4" align="right">Total :</td>
               <td>{{model.totalTaxAmount | currency:environment.currency}}</td>
@@ -183,17 +184,13 @@
               <td></td>
             </tr>
           </ng-template>
+          <ng-template pTemplate="summary">
+              <div style="text-align:right">
+                  <p-button icon="pi pi-file" (click)="onReset()" label="New"></p-button>
+                  <p-splitButton label="Save"  (onClick)="onSave()" [model]="items" styleClass="ui-button-success"></p-splitButton>
+              </div>
+          </ng-template>      
         </p-table>
-      </div>
-    </div>
-    <div class="form-group row" style="padding-top:15px;text-align: right">
-      <div class="col-sm-12">
-        <div style="padding:5px;float:right">
-          <p-splitButton label="Save" icon="pi pi-file" (onClick)="onSave()" [model]="items" styleClass="ui-button-success"></p-splitButton>
-        </div>
-        <div style="padding:5px;float:right">
-          <p-button (click)="onReset()" label="New"></p-button>
-        </div>
       </div>
     </div>
   </form>

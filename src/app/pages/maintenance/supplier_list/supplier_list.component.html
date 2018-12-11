@@ -9,36 +9,44 @@
         <p-listbox [options]="  countTypes" [(ngModel)]="selectedItem" (click)="loadContacts()" optionLabel="label"  [style]="{'padding-right':'20px','border':'0px'}"></p-listbox>
     </div>
     <div class="col-sm-10">
-  <p-table #dt [columns]="cols" [value]="model.custSupps" [paginator]="true" [rows]="10" >
+  <p-table #dt [columns]="cols" [value]="custSupps" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="model" (onRowSelect)="onRowSelect($event)"  >
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th style="width:20%">Name</th>
           <th>Phone</th>
           <th>Email</th>
           <th>Address</th>
+          <!--
           <th style="width:100px">Action</th>
+          -->
         </tr>
         <tr>
           <th *ngFor="let col of cols" [ngSwitch]="col.type">
             <input *ngSwitchCase="'txt'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
               style="width:100%">
+              <!--
             <button *ngSwitchCase="'btn'" type="button" pButton icon="pi pi-plus" (click)="onAdd()" style="width:100%"></button>
+              -->
           </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-contact let-columns="cols">
-        <tr style="height: 20px">
+        <tr style="height: 20px" [pSelectableRow]="contact">
           <td>{{contact.name}} </td>
           <td>{{contact.phone}}</td>
           <td>{{contact.email}} </td>
           <td>{{contact.address.street}}   {{contact.address.city}}  {{contact.address.state}}    {{contact.address.zip}}   {{contact.address.country}} </td>
+          <!--
           <td pEditableColumn class="td-action">
             <div class="div-action">
-              <a class="a-action" (click)="onEdit(contact)"><i class="nb-edit"></i></a>
               <a class="a-action" (click)="onDeleteConfirm(contact.id)"><i class="nb-trash"></i></a>
             </div>
           </td>
+        -->
         </tr>
+      </ng-template>
+      <ng-template pTemplate="footer" let-columns>
+        <tr><td colspan="4" align="center"> <button type="button" class="ui-button-secondary ui-button-rounded"  pButton icon="pi pi-plus" label="Add a contact" (click)="onAdd()" ></button></td> </tr> 
       </ng-template>
     </p-table>
       </div>
@@ -98,7 +106,7 @@
 </div>
 <p-footer>
     <button type="button" pButton icon="pi pi-check" (click)="onSubmit()" label="Yes"></button>
-    <button type="button" pButton icon="pi pi-close" (click)="display=false" label="No" class="ui-button-secondary"></button>
+    <button type="button" pButton icon="pi pi-close" (click)="onDeleteConfirm()" label="Delete" class="ui-button-secondary"></button>
 </p-footer>
 </p-dialog>
 
