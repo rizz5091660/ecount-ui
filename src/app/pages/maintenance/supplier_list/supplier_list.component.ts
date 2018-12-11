@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { SupplierService } from '../../../service/supplier.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
@@ -8,7 +7,6 @@ import { Address } from '../../../class/address';
 import { HttpResponseWS } from '../../../class/http_response_ws';
 import { Message, ConfirmationService } from '../../../components/common/api';
 import { SelectItem } from '../../../class/selectitem';
-import {OK_RESP} from '../../../common/ecount_const';
 
 
 @Component({
@@ -17,7 +15,6 @@ import {OK_RESP} from '../../../common/ecount_const';
   styleUrls: ['./supplier_list.component.scss']
 })
 export class SupplierListComponent implements OnInit {
-  @ViewChild('modal') modal: ElementRef;
   listObservable: Observable<CustomerSupplier[]>;
   obs: Observable<CustomerSupplier>;
   closeResult: string;

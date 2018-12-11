@@ -19,10 +19,11 @@ import { DialogModule } from '../../components/dialog/dialog';
 import { ScrollPanelModule } from '../../components/scrollpanel/scrollpanel';
 import { ListboxModule } from '../../components/listbox/listbox';
 import { RadioButtonModule } from '../../components/radiobutton/radiobutton';
+import { ToolbarModule } from '../../components/toolbar/toolbar';
 
 @NgModule({
     imports:[MaintenanceRoutingModule,ThemeModule,Ng2SmartTableModule,SharesModule,PanelModule,MessagesModule,MessageModule,
-        TableModule,ButtonModule,ConfirmDialogModule,DialogModule,ScrollPanelModule,ListboxModule,RadioButtonModule], 
+        TableModule,ButtonModule,ConfirmDialogModule,DialogModule,ScrollPanelModule,ListboxModule,RadioButtonModule,ToolbarModule], 
     declarations:[...routedComponents, TaxComponent],
     providers: [SupplierService,CoaService,SmartTableService,ConfirmationService],
     entryComponents: [

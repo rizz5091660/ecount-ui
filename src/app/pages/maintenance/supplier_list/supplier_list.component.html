@@ -12,10 +12,7 @@
   <p-table #dt [columns]="cols" [value]="custSupps" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="model" (onRowSelect)="onRowSelect($event)"  >
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th style="width:20%">Name</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Address</th>
+          <th *ngFor="let col of cols">{{col.header}}</th>
           <!--
           <th style="width:100px">Action</th>
           -->

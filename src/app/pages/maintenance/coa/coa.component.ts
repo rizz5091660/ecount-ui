@@ -1,13 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, ViewChildren, TemplateRef } from '@angular/core';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { Component, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Coa } from '../../../class/coa';
 import { CoaService } from '../../../service/coa.service';
 import { HttpResponseWS } from '../../../class/http_response_ws';
 import { DropDownModel } from '../../../class/drop_down';
-import { LocalDataSource } from 'ng2-smart-table';
-import * as $ from "jquery";
 
 @Component({
   selector: 'coa',
@@ -17,8 +13,6 @@ import * as $ from "jquery";
 
 
 export class CoaComponent implements OnInit {
-  @ViewChild('modal') modal: ElementRef;
-  @ViewChild('ddtRef') private ddtRef: any;
   radioModel = 'all';
   observables: Observable<Coa[]>;
   observable: Observable<Coa>;
@@ -29,73 +23,20 @@ export class CoaComponent implements OnInit {
   closeResult: string;
   httpRespObservable: Observable<HttpResponseWS>;
   coaCode: string;
-  source: LocalDataSource = new LocalDataSource();
   selectedTaxId: string;
+  display: boolean = false;
+  cols: any[];
 
-  constructor(private modalService: NgbModal, private service: CoaService) { }
-
-  settings = {
-    mode: 'external',
-    actions: {
-      edit: false,
-      delete: false,
-      custom: [{ name: 'onEdit', title: '<i class="nb-edit"></i>' }, { name: 'onDelete', title: '<i class="nb-trash"></i>' }],
-      position: 'right',
-    },
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      l1AccountTypName: {
-        title: 'Account Type',
-        type: 'string',
-      },
-      coaCd: {
-        title: 'Code',
-        type: 'string',
-      },
-      name: {
-        title: 'Name',
-        type: 'string',
-      },
-      description: {
-        title: 'Description',
-        type: 'string',
-      },
-      taxName: {
-        title: 'Tax Type',
-        type: 'string',
-      }
-    },
-  };
-
-
-
-  
-
-  config = {
-    displayKey: "name", //if objects array passed which key to be displayed defaults to description,
-    search: true, //enables the search plugin to search in the list
-    multiple: false
-  };
+  constructor(private service: CoaService) { }
 
   ngOnInit() {
-    $(document).ready(function () {
-      $(".ng2-smart-action-add-add").click(function () {
-        $("#newBtn").click();
-      });
-    });
+    this.cols = [
+      { field: 'coaCd', header: 'Code', type: 'txt' },
+      { field: 'name', header: 'Name', type: 'txt' },
+      { field: 'description', header: 'Description', type: 'txt' },
+      { field: 'taxName', header: 'Tax Type', type: 'txt' },
+     // { field: '', header: 'Action', type: 'btn' },
+    ];
     this.loadListCoa('all', '');
     this.loadCoaDD();
   }
@@ -104,7 +45,6 @@ export class CoaComponent implements OnInit {
     this.observables = this.service.getCoaAll(accType, coaCode);
     this.observables.subscribe((listObservable) => {
       this.coas = listObservable;
-      this.source.load(this.coas);
     })
   }
 
@@ -113,6 +53,15 @@ export class CoaComponent implements OnInit {
     this.observable.subscribe((observable) => {
       this.modelDD = observable;
     })
+  }
+
+  onAdd(){
+    this.display = true;
+  }
+
+  onRowSelect(event){
+    this.display = true;
+    this.model= event.data;
   }
 
   onSubmit() {
@@ -133,7 +82,6 @@ export class CoaComponent implements OnInit {
     this.httpRespObservable.subscribe((httpRespObservable) => {
       //console.log(httpRespObservable.status);
       this.coas.push(this.model);
-      this.source.load(this.coas);
     })
   }
 
@@ -153,7 +101,7 @@ export class CoaComponent implements OnInit {
       this.model.taxDD = new DropDownModel();
       this.model.taxDD.id = "1";
       this.model.taxDD.name = "Sales Tax";;
-      this.openModal(this.modal);
+
     }
     else if (event.action == "onDelete") {
       this.onDelete(event.data);
@@ -166,7 +114,6 @@ export class CoaComponent implements OnInit {
     this.httpRespObservable.subscribe((httpRespObservable) => {
       // console.log(httpRespObservable.status);
       this.coas.splice(this.coas.indexOf(coa), 1);
-      this.source.load(this.coas);
     });
   }
 
@@ -195,25 +142,9 @@ export class CoaComponent implements OnInit {
 
   openModalAdd() {
     this.model = new Coa();
-    this.openModal(this.modal);
+ 
   }
 
-  openModal(modal) {
-    this.modalService.open(modal).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 
 }
