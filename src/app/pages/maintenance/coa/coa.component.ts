@@ -50,6 +50,7 @@ export class CoaComponent implements OnInit {
 
   onAdd(){
     this.display = true;
+    this.model = new Coa();
   }
 
   onRowSelect(event){
@@ -96,32 +97,6 @@ export class CoaComponent implements OnInit {
       //this.coas.splice(this.coas.indexOf(coa), 1);
     });
   }
-
-
-  selectionChanged(event: any, type: string) {
-    if (type == 'l1AccountType' && event.value[0] != null) {
-      this.model.l1AccountType = event.value[0].id;
-    }
-    else if (type == 'l2Branch' && event.value[0] != null) {
-      this.model.l2Branch = event.value[0].id;
-    }
-    else if (type == 'l3CustSupp' && event.value[0] != null) {
-      this.model.l3CustSupp = event.value[0].id;
-    }
-    else if (type == 'l4Division' && event.value[0] != null) {
-      this.model.l4Division = event.value[0].id;
-    }
-    else if (type == 'tax' && event.value[0] != null) {
-      this.model.tax = event.value[0].id;
-    }
-  }
-
-
-  openModalAdd() {
-    this.model = new Coa();
- 
-  }
-
 
 
 }

@@ -20,10 +20,11 @@ import { RadioButtonModule } from '../../components/radiobutton/radiobutton';
 import { ToolbarModule } from '../../components/toolbar/toolbar';
 import { InputTextModule } from '../../components/inputtext/inputtext';
 import { DropdownModule } from '../../components/dropdown/dropdown';
+import { InputTextareaModule } from '../../components/inputtextarea/inputtextarea';
 
 @NgModule({
     imports:[MaintenanceRoutingModule,ThemeModule,SharesModule,PanelModule,MessagesModule,MessageModule,
-        TableModule,ButtonModule,ConfirmDialogModule,DialogModule,ScrollPanelModule,ListboxModule,RadioButtonModule,ToolbarModule,InputTextModule,DropdownModule], 
+        TableModule,ButtonModule,ConfirmDialogModule,DialogModule,ScrollPanelModule,ListboxModule,RadioButtonModule,ToolbarModule,InputTextModule,DropdownModule,InputTextareaModule], 
     declarations:[...routedComponents, TaxComponent],
     providers: [SupplierService,CoaService,ConfirmationService],
     entryComponents: [
