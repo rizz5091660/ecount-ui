@@ -6,104 +6,108 @@
   <p-messages [(value)]="msgs"></p-messages>
   <div class="form-group row">
     <div class="col-sm-2">
-        <p-listbox [options]="  countTypes" [(ngModel)]="selectedItem" (click)="loadContacts()" optionLabel="label"  [style]="{'padding-right':'20px','border':'0px'}"></p-listbox>
+      <p-listbox [options]="  countTypes" [(ngModel)]="selectedItem" (click)="loadContacts()" optionLabel="label"
+        [style]="{'padding-right':'20px','border':'0px'}"></p-listbox>
     </div>
     <div class="col-sm-10">
-  <p-table #dt [columns]="cols" [value]="custSupps" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="model" (onRowSelect)="onRowSelect($event)"  >
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of cols">{{col.header}}</th>
-          <!--
+      <p-table #dt [columns]="cols" [value]="custSupps" [paginator]="true" [rows]="10" selectionMode="single"
+        [(selection)]="model" (onRowSelect)="onRowSelect($event)">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of cols">{{col.header}}</th>
+            <!--
           <th style="width:100px">Action</th>
           -->
-        </tr>
-        <tr>
-          <th *ngFor="let col of cols" [ngSwitch]="col.type">
-            <input *ngSwitchCase="'txt'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
-              style="width:100%">
+          </tr>
+          <tr>
+            <th *ngFor="let col of cols" [ngSwitch]="col.type">
+              <input *ngSwitchCase="'txt'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"
+                style="width:100%">
               <!--
             <button *ngSwitchCase="'btn'" type="button" pButton icon="pi pi-plus" (click)="onAdd()" style="width:100%"></button>
               -->
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-contact let-columns="cols">
-        <tr style="height: 20px" [pSelectableRow]="contact">
-          <td>{{contact.name}} </td>
-          <td>{{contact.phone}}</td>
-          <td>{{contact.email}} </td>
-          <td>{{contact.address.street}}   {{contact.address.city}}  {{contact.address.state}}    {{contact.address.zip}}   {{contact.address.country}} </td>
-          <!--
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-contact let-columns="cols">
+          <tr style="height: 20px" [pSelectableRow]="contact">
+            <td>{{contact.name}} </td>
+            <td>{{contact.phone}}</td>
+            <td>{{contact.email}} </td>
+            <td>{{contact.address.street}} {{contact.address.city}} {{contact.address.state}} {{contact.address.zip}}
+              {{contact.address.country}} </td>
+            <!--
           <td pEditableColumn class="td-action">
             <div class="div-action">
               <a class="a-action" (click)="onDeleteConfirm(contact.id)"><i class="nb-trash"></i></a>
             </div>
           </td>
         -->
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="footer" let-columns>
-        <tr><td colspan="4" align="center"> <button type="button" class="ui-button-secondary ui-button-rounded"  pButton icon="pi pi-plus" label="Add a contact" (click)="onAdd()" ></button></td> </tr> 
-      </ng-template>
-    </p-table>
-      </div>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer" let-columns>
+          <tr>
+            <td colspan="4" align="center"> <button type="button" class="ui-button-secondary ui-button-rounded" pButton
+                icon="pi pi-plus" label="Add a contact" (click)="onAdd()"></button></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
 </p-panel>
 
-<p-dialog header="Add Contact" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
-<div class="form-group row">
-    <div class="col-sm-6" style="padding:20px">
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <label for="name" class="col-form-label">Name</label><br />
-                <input type="text" id="name" pInputText [(ngModel)]="model.name" name="model.name"  style="width:100%" />
-              </div>
-              <div class="col-sm-12">
-                  <label for="phone" class="col-form-label">Phone</label><br />
-                  <input type="text" id="phone" pInputText [(ngModel)]="model.phone" name="model.phone"  style="width:100%" />
-                </div>
-                <div class="col-sm-12">
-                    <label for="email" class="col-form-label">Email</label><br />
-                    <input type="text" id="email" pInputText [(ngModel)]="model.email" name="model.email"  style="width:100%" />
-                </div>
-                <div class="col-sm-12">
-                    <label for="typeContact" class="col-form-label">Type</label><br />
-                    <div class="ui-g" id="typeContact" style="width:250px;margin-bottom:10px">
-                        <div class="ui-g-12"><p-radioButton name="group1" value="c" label="Customer" [(ngModel)]="model.type" inputId="opt1"></p-radioButton></div>
-                        <div class="ui-g-12"><p-radioButton name="group1" value="s" label="Supplier" [(ngModel)]="model.type" inputId="opt2"></p-radioButton></div>
-                        <div class="ui-g-12"><p-radioButton name="group1" value="e" label="Employee" [(ngModel)]="model.type" inputId="opt3"></p-radioButton></div>
-                    </div>
-                </div>
-          </div>
+<p-dialog header="Add Contact" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="200"
+  [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+  <div class="form-group row">
+    <div class="col-sm-6">
+      <label for="name" class="col-form-label">Name</label><br />
+      <input type="text" id="name" pInputText [(ngModel)]="model.name" name="model.name" style="width:100%" />
     </div>
     <div class="col-sm-6">
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <label for="street" class="col-form-label">Street</label><br />
-                <input type="text" id="street" pInputText [(ngModel)]="model.address.street" name="model.address.street"  style="width:100%" />
-              </div>
-              <div class="col-sm-12">
-                  <label for="phone" class="col-form-label">City</label><br />
-                  <input type="text" id="phone" pInputText [(ngModel)]="model.address.city" name="model.address.city"  style="width:100%" />
-                </div>
-                <div class="col-sm-12">
-                    <label for="state" class="col-form-label">State</label><br />
-                    <input type="text" id="state" pInputText [(ngModel)]="model.address.state" name="model.address.state"  style="width:100%" />
-                  </div>
-                  <div class="col-sm-12">
-                      <label for="zip" class="col-form-label">Zip Code</label><br />
-                      <input type="text" id="zip" pInputText [(ngModel)]="model.address.zip" name="model.address.zip"  style="width:100%" />
-                    </div>
-                    <div class="col-sm-12">
-                        <label for="country" class="col-form-label">Country</label><br />
-                        <input type="text" id="country" pInputText [(ngModel)]="model.address.country" name="model.address.country"  style="width:100%" />
-                      </div>
-          </div>
+      <label for="street" class="col-form-label">Street</label><br />
+      <input type="text" id="street" pInputText [(ngModel)]="model.address.street" name="model.address.street" style="width:100%" />
     </div>
-</div>
-<p-footer>
+    <div class="col-sm-6">
+      <label for="phone" class="col-form-label">Phone</label><br />
+      <input type="text" id="phone" pInputText [(ngModel)]="model.phone" name="model.phone" style="width:100%" />
+    </div>
+    <div class="col-sm-6">
+      <label for="phone" class="col-form-label">City</label><br />
+      <input type="text" id="phone" pInputText [(ngModel)]="model.address.city" name="model.address.city" style="width:100%" />
+    </div>
+    <div class="col-sm-6">
+      <label for="email" class="col-form-label">Email</label><br />
+      <input type="text" id="email" pInputText [(ngModel)]="model.email" name="model.email" style="width:100%" />
+    </div>
+    <div class="col-sm-6">
+      <label for="state" class="col-form-label">State</label><br />
+      <input type="text" id="state" pInputText [(ngModel)]="model.address.state" name="model.address.state" style="width:100%" />
+    </div>
+
+    <div class="col-sm-6">
+      <label for="typeContact" class="col-form-label">Type</label><br />
+      <div class="ui-g" id="typeContact" style="width:250px;margin-bottom:10px">
+        <div class="ui-g-12">
+          <p-radioButton name="group1" value="c" label="Customer" [(ngModel)]="model.type" inputId="opt1"></p-radioButton>
+        </div>
+        <div class="ui-g-12">
+          <p-radioButton name="group1" value="s" label="Supplier" [(ngModel)]="model.type" inputId="opt2"></p-radioButton>
+        </div>
+        <div class="ui-g-12">
+          <p-radioButton name="group1" value="e" label="Employee" [(ngModel)]="model.type" inputId="opt3"></p-radioButton>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <label for="zip" class="col-form-label">Zip Code</label><br />
+      <input type="text" id="zip" pInputText [(ngModel)]="model.address.zip" name="model.address.zip" style="width:100%" /> <br/>
+      <label for="country" class="col-form-label">Country</label><br />
+      <input type="text" id="country" pInputText [(ngModel)]="model.address.country" name="model.address.country" style="width:100%" />
+    </div>
+  </div>
+  <p-footer>
     <button type="button" pButton icon="pi pi-check" (click)="onSubmit()" label="Yes"></button>
     <button type="button" pButton icon="pi pi-close" (click)="onDeleteConfirm()" label="Delete" class="ui-button-secondary"></button>
-</p-footer>
+  </p-footer>
 </p-dialog>
-

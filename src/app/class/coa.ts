@@ -1,30 +1,31 @@
-import { DropDownModel } from "./drop_down";
 import { Model } from "./model";
+import { SelectItem } from "../components/common/api";
 
 export class Coa{
     id:number;
     name:string;
     description:string; 
     l1AccountType:number;
-    l1AccountTypeDD:DropDownModel;
+    l1AccountTypeDD:SelectItem;
     l2Branch:number;
     l3CustSupp:number;
-    l3CustSuppDD:DropDownModel;
+    l3CustSuppDD:SelectItem;
     l4Division:number;
-    l4DivisionDD:DropDownModel;
+    l4DivisionDD:SelectItem;
     l5Custom:number;
-    l5CustomDD:DropDownModel;
+    l5CustomDD:SelectItem;
     tax:number;
-    taxDD:DropDownModel;
-    taxName:string;
+    taxDD:SelectItem;
+    taxName:string; 
     coaCd:string;
     favorite:string;
     l1AccountTypName:string;
     l1AccountTypGrp:string
-    taxes: DropDownModel[];
-    accountTypes: DropDownModel[];
-    branches: DropDownModel[];
-    custSupps: DropDownModel[];
-    divisions: DropDownModel[];
-    customFields1: DropDownModel[];
+    taxes: SelectItem[];
+    accountTypes: SelectItem[];
+    branches: SelectItem[];
+    custSupps: SelectItem[];
+    divisions: SelectItem[];
+    customFields1: SelectItem[];
+    coas:Coa[];
 }

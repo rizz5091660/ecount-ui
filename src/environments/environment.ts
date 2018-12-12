@@ -19,8 +19,7 @@ export const environment = {
   get_customer_supplier_byid :ecount_ws_url + "/custsupp/get?",
   delete_customer_supplier : ecount_ws_url + "/custsupp/delete",
 
-  get_coa_path: ecount_ws_url  + "/coa/getall?",
-  get_coa_drop_down_path: ecount_ws_url  + "/coa/getdd",
+  get_coa_init_path: ecount_ws_url  + "/coa/init",
   create_coa_path: ecount_ws_url + "/coa/create",
   update_coa_path: ecount_ws_url +"/coa/update",
   delete_coa_path: ecount_ws_url +"/coa/delete?",

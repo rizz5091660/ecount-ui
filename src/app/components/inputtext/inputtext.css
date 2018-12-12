@@ -1,8 +1,17 @@
 .ui-inputtext {
     margin: 0;
-    outline: medium none;
+    outline: medium none; 
     padding: .25em;
     font-weight: normal;
+}
+
+.ui-inputtext-ecount {
+    margin: 0;
+    outline: medium none; 
+    padding: .25em;
+    font-weight: normal;
+    border: 0px;
+    border-bottom: 1px solid #a6a6a6;
 }
 
 .ui-widget-header .ui-inputtext,

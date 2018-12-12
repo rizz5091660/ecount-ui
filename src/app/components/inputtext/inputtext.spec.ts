@@ -37,6 +37,9 @@ describe('InputText', () => {
         expect(inputEl.nativeElement).toBeTruthy();
         expect(inputEl.nativeElement.className).toContain("ui-inputtext");
         expect(inputEl.nativeElement.className).toContain("ui-corner-all");
+        //  expect(inputEl.nativeElement.className).toContain("ui-inputtext-ecount");
+        //  expect(inputEl.nativeElement.className).toContain("ui-corner-all-ecount");
+
         expect(inputEl.nativeElement.className).toContain("ui-state-default");
         expect(inputEl.nativeElement.className).toContain("ui-widget");
 

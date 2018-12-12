@@ -4,6 +4,7 @@ import { Coa } from '../../../class/coa';
 import { CoaService } from '../../../service/coa.service';
 import { HttpResponseWS } from '../../../class/http_response_ws';
 import { DropDownModel } from '../../../class/drop_down';
+import { SelectItem } from '../../../components/common/api';
 
 @Component({
   selector: 'coa',
@@ -16,7 +17,6 @@ export class CoaComponent implements OnInit {
   radioModel = 'all';
   observables: Observable<Coa[]>;
   observable: Observable<Coa>;
-  coas: Coa[];
   accountType: number;
   model: Coa = new Coa();
   modelDD: Coa = new Coa();
@@ -25,31 +25,24 @@ export class CoaComponent implements OnInit {
   coaCode: string;
   selectedTaxId: string;
   display: boolean = false;
-  cols: any[];
+  cols: any[]; 
 
   constructor(private service: CoaService) { }
 
   ngOnInit() {
     this.cols = [
+      { field: 'l1AccountTypName', header: 'Account Type', type: 'txt' },
       { field: 'coaCd', header: 'Code', type: 'txt' },
       { field: 'name', header: 'Name', type: 'txt' },
       { field: 'description', header: 'Description', type: 'txt' },
       { field: 'taxName', header: 'Tax Type', type: 'txt' },
      // { field: '', header: 'Action', type: 'btn' },
     ];
-    this.loadListCoa('all', '');
-    this.loadCoaDD();
+    this.init();
   }
 
-  loadListCoa(accType, coaCode) {
-    this.observables = this.service.getCoaAll(accType, coaCode);
-    this.observables.subscribe((listObservable) => {
-      this.coas = listObservable;
-    })
-  }
-
-  loadCoaDD() {
-    this.observable = this.service.getCoaDropDown();
+  init() {
+    this.observable = this.service.init();
     this.observable.subscribe((observable) => {
       this.modelDD = observable;
     })
@@ -74,15 +67,18 @@ export class CoaComponent implements OnInit {
   }
 
   onCreate() {
-    let typeDD: DropDownModel = this.modelDD.accountTypes.find(i => i.id == String(this.model.l1AccountType));
-    let taxDD: DropDownModel = this.modelDD.taxes.find(i => i.id == String(this.model.tax));
+    /*
+
+    let typeDD: SelectItem = this.modelDD.accountTypes.find(i => i.id == String(this.model.l1AccountType));
+    let taxDD: SelectItem = this.modelDD.taxes.find(i => i.id == String(this.model.tax));
     this.model.l1AccountTypName = typeDD.name;
     this.model.taxName = taxDD.name;
     this.httpRespObservable = this.service.create(this.model);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      //console.log(httpRespObservable.status);
       this.coas.push(this.model);
     })
+
+    */
   }
 
   onUpdate() {
@@ -93,27 +89,11 @@ export class CoaComponent implements OnInit {
   }
 
 
-  onCustom(event: any) {
-    if (event.action == "onEdit") {
-     // this.model = event.data;
-      this.model.tax = event.data.id;
-
-      this.model.taxDD = new DropDownModel();
-      this.model.taxDD.id = "1";
-      this.model.taxDD.name = "Sales Tax";;
-
-    }
-    else if (event.action == "onDelete") {
-      this.onDelete(event.data);
-    }
-  }
-
-
   onDelete(coa: Coa) {
     this.httpRespObservable = this.service.delete(coa.id);
     this.httpRespObservable.subscribe((httpRespObservable) => {
       // console.log(httpRespObservable.status);
-      this.coas.splice(this.coas.indexOf(coa), 1);
+      //this.coas.splice(this.coas.indexOf(coa), 1);
     });
   }
 
@@ -136,9 +116,6 @@ export class CoaComponent implements OnInit {
     }
   }
 
-  onSelectTab(val) {
-    this.loadListCoa(val, '');
-  }
 
   openModalAdd() {
     this.model = new Coa();

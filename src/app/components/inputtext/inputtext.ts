@@ -5,8 +5,8 @@ import {CommonModule} from '@angular/common';
 @Directive({
     selector: '[pInputText]',
     host: {
-        '[class.ui-inputtext]': 'true',
-        '[class.ui-corner-all]': 'true',
+        '[class.ui-inputtext-ecount]': 'true',
+        '[class.ui-corner-all-ecount]': 'true',
         '[class.ui-state-default]': 'true',
         '[class.ui-widget]': 'true',
         '[class.ui-state-filled]': 'filled'
