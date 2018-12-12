@@ -1,0 +1,11 @@
+.col-form-label{
+    position:relative;
+    z-index:1;
+
+    font-family: 'Open Sans', sans-serif;
+    text-transform:uppercase;
+    color:#858585;
+    font-weight:lighter;
+    -webkit-transition:.5s;
+    transition:.5s;
+}
