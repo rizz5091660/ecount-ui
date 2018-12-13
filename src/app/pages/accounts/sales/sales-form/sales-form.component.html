@@ -1,10 +1,14 @@
 <p-panel>
   <p-header>
-    <label class="col-form-label">New {{soFormTitle}}</label>
-    <p-steps [model]="items" [activeIndex]="model.stage.id-1"></p-steps>
+        <label class="col-form-label">{{soFormTitle}}</label>
   </p-header>
   <p-messages [(value)]="msgs"></p-messages>
   <form #salesForm="ngForm">
+    <div class="row">
+      <div class="col-md-12">
+          <p-steps [model]="items" [activeIndex]="model.stage.id-1"></p-steps>
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-4">
         <div class="row">

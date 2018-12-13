@@ -19,32 +19,32 @@ export class SupplierListComponent implements OnInit {
   obs: Observable<CustomerSupplier>;
   closeResult: string;
   model: CustomerSupplier = new CustomerSupplier();
-  custSupps:CustomerSupplier[]=[];
+  custSupps: CustomerSupplier[] = [];
   httpRespObservable: Observable<HttpResponseWS>;
   id: number;
-  selectedItem:SelectItem= new SelectItem();
-  countTypes:SelectItem[];
+  selectedItem: SelectItem = new SelectItem();
+  countTypes: SelectItem[];
   msgs: Message[] = [];
   cols: any[];
   display: boolean = false;
 
   constructor(private router: Router, private service: SupplierService, private supplierService: SupplierService, private confirmationService: ConfirmationService) { }
-  
+
   ngOnInit() {
-    this.model= new CustomerSupplier();
+    this.model = new CustomerSupplier();
     this.model.address = new Address();
-    this.selectedItem.value='all';
+    this.selectedItem.value = 'all';
     this.init();
     this.cols = [
       { field: 'name', header: 'Name', type: 'txt' },
       { field: 'phone', header: 'Phone', type: 'txt' },
       { field: 'email', header: 'Email', type: 'txt' },
       { field: 'address.street', header: 'Address', type: 'txt' },
-     // { field: '', header: 'Action', type: 'btn' },
+      // { field: '', header: 'Action', type: 'btn' },
     ];
   }
 
-  init(){
+  init() {
     this.obs = this.service.init();
     this.obs.subscribe((obs) => {
       this.custSupps = obs.custSupps;
@@ -54,63 +54,60 @@ export class SupplierListComponent implements OnInit {
   loadContacts() {
     this.listObservable = this.service.getSupplierAll(this.selectedItem.value);
     this.listObservable.subscribe((listObservable) => {
-      this.model.custSupps = listObservable;
+      this.custSupps = listObservable;
     })
-  }  
+  }
   onAdd() {
-    let custSupps:CustomerSupplier[];
-    custSupps=this.model.custSupps;
     this.model = new CustomerSupplier();
     this.model.address = new Address();
-    this.model.custSupps = custSupps; 
-    this.model.id=0;
+    this.model.id = 0;
     this.display = true;
   }
   onRowSelect(event) {
-    this.model=event.data;
+    this.model = event.data;
     this.display = true;
   }
-  onSubmit(){
-    if( this.model.id==0){
+  onSubmit() {
+    if (this.model.id == 0) {
       this.onCreate();
-    }else{
+    } else {
       this.onUpdate();
     }
   }
   onCreate() {
     this.httpRespObservable = this.supplierService.create(this.model);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.onProcessSuccessResponse(httpRespObservable,'Create');      
-    }, 
-    error => {
-      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
-    });
+      this.onProcessSuccessResponse(httpRespObservable, 'Create');
+    },
+      error => {
+        this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
+      });
   }
 
   onUpdate() {
     this.httpRespObservable = this.supplierService.update(this.model);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.onProcessSuccessResponse(httpRespObservable,'Update');      
-    }, 
-    error => {
-      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
-    });
+      this.onProcessSuccessResponse(httpRespObservable, 'Update');
+    },
+      error => {
+        this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
+      });
   }
 
 
   onDelete() {
     this.httpRespObservable = this.supplierService.delete(this.model.id);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.onProcessSuccessResponse(httpRespObservable,'Delete');  
-    }, 
-    error => {
-      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
-    }
-);
-  } 
+      this.onProcessSuccessResponse(httpRespObservable, 'Delete');
+    },
+      error => {
+        this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
+      }
+    );
+  }
 
   onDeleteConfirm() {
-    this.display=false;
+    this.display = false;
     this.confirmationService.confirm({
       message: 'Are you sure that you want to proceed?',
       header: 'Confirmation',
@@ -119,14 +116,14 @@ export class SupplierListComponent implements OnInit {
         this.onDelete();
       },
       reject: () => {
-       // this.msgs = [{ severity: 'error', summary: 'Rejected', detail: 'You have rejected' }];
+        // this.msgs = [{ severity: 'error', summary: 'Rejected', detail: 'You have rejected' }];
       }
     });
   }
 
-  onProcessSuccessResponse(httpRespObservable:HttpResponseWS, type:string){
-      this.display=false;
-      this.init();
-      this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully '+type }];
+  onProcessSuccessResponse(httpRespObservable: HttpResponseWS, type: string) {
+    this.display = false;
+    this.init();
+    this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully ' + type }];
   }
 }

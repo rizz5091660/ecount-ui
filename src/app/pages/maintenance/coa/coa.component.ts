@@ -4,7 +4,7 @@ import { Coa } from '../../../class/coa';
 import { CoaService } from '../../../service/coa.service';
 import { HttpResponseWS } from '../../../class/http_response_ws';
 import { DropDownModel } from '../../../class/drop_down';
-import { SelectItem } from '../../../components/common/api';
+import { SelectItem, ConfirmationService, Message } from '../../../components/common/api';
 
 @Component({
   selector: 'coa',
@@ -26,8 +26,9 @@ export class CoaComponent implements OnInit {
   selectedTaxId: string;
   display: boolean = false;
   cols: any[]; 
+  msgs: Message[] = [];
 
-  constructor(private service: CoaService) { }
+  constructor(private service: CoaService,private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     this.cols = [
@@ -51,52 +52,70 @@ export class CoaComponent implements OnInit {
   onAdd(){
     this.display = true;
     this.model = new Coa();
+    this.model.id=0;
   }
 
   onRowSelect(event){
-    this.display = true;
     this.model= event.data;
+    this.display = true;
   }
 
   onSubmit() {
-    if (this.model.id == null) {
-      this.onCreate();
+    if (this.model.id != 0) {
+     this.onUpdate();
     } else {
-      this.onUpdate();
+      this.onCreate();
     }
-
   }
 
   onCreate() {
-    /*
-
-    let typeDD: SelectItem = this.modelDD.accountTypes.find(i => i.id == String(this.model.l1AccountType));
-    let taxDD: SelectItem = this.modelDD.taxes.find(i => i.id == String(this.model.tax));
-    this.model.l1AccountTypName = typeDD.name;
-    this.model.taxName = taxDD.name;
     this.httpRespObservable = this.service.create(this.model);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.coas.push(this.model);
+      this.onProcessSuccessResponse(httpRespObservable, 'Create');
+    }, 
+    error => {
+      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
     })
-
-    */
   }
 
   onUpdate() {
     this.httpRespObservable = this.service.update(this.model);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      // console.log(httpRespObservable.status);
+      this.onProcessSuccessResponse(httpRespObservable, 'Update');
+    }, 
+    error => {
+      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
     })
   }
 
-
-  onDelete(coa: Coa) {
-    this.httpRespObservable = this.service.delete(coa.id);
+  onDelete() {
+    this.httpRespObservable = this.service.delete(this.model.id);
     this.httpRespObservable.subscribe((httpRespObservable) => {
-      // console.log(httpRespObservable.status);
-      //this.coas.splice(this.coas.indexOf(coa), 1);
+      this.onProcessSuccessResponse(httpRespObservable,'Delete');  
+    }, 
+    error => {
+      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
     });
   }
 
+  onDeleteConfirm() {
+    this.display=false;
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to proceed?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.onDelete();
+      },
+      reject: () => {;
+      }
+    });
+  }
+
+  onProcessSuccessResponse(httpRespObservable:HttpResponseWS, type:string){
+    this.display=false;
+    this.init();
+    this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully '+type }];
+}
 
 }

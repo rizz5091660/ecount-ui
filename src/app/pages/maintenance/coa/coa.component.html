@@ -2,6 +2,8 @@
   <p-header>
     <label class="col-form-label">Chart of Account</label>
   </p-header>
+  <p-confirmDialog></p-confirmDialog>
+  <p-messages [(value)]="msgs"></p-messages>
   <div class="form-group row">
     <div class="col-md-12">
       <p-toolbar>
@@ -48,20 +50,19 @@
     </div>
   </div>
 </p-panel>
-
 <p-dialog header="Chat of Accout" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="200"
   [minY]="70" [maximizable]="true" [baseZIndex]="10000">
   <div class="row">
     <div class="col-md-12">
-      <form (ngSubmit)="onSubmit();d('Cross click');" #coaForm="ngForm">
+      <form>
           <div class="form-group row">
               <div class="col-sm-6">
                   <label for="coaCd" class="col-form-label">Code</label><br />
-                  <input type="text" id="coaCd" pInputText [(ngModel)]="model.coaCd" name="coaCd">
+                  <input type="text" id="coaCd" pInputText [(ngModel)]="model.coaCd" name="model.coaCd">
                 </div>  
               <div class="col-sm-6">
                   <label for="name" class="col-form-label">Name</label><br />
-                  <input type="text" id="name" pInputText [(ngModel)]="model.name" name="name">      
+                  <input type="text" id="name" pInputText [(ngModel)]="model.name" name="model.name">      
               </div>
             </div>
         <div class="form-group row">
@@ -81,8 +82,8 @@
           </div>
           <div class="col-sm-6">
             <label for="l2Branch" class="col-form-label">Branch</label><br />
-            <p-dropdown [options]="modelDD.branches" [(ngModel)]="model.branches" [style]="{'width':'100%'}" filter="true"
-              name="model.l1AccountType">
+            <p-dropdown [options]="modelDD.branches" [(ngModel)]="model.l2Branch" [style]="{'width':'100%'}" filter="true"
+              name="model.l2Branch">
               <ng-template let-item pTemplate="selectedItem">
                 <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
               </ng-template>
@@ -98,7 +99,7 @@
           <div class="col-sm-6">
             <label for="l3CustSupp" class="col-form-label">Customer/Supplier</label><br />
             <p-dropdown [options]="modelDD.custSupps" [(ngModel)]="model.l3CustSupp" [style]="{'width':'100%'}" filter="true"
-              name="model.l1AccountType">
+              name="model.l3CustSupp">
               <ng-template let-item pTemplate="selectedItem">
                 <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
               </ng-template>
@@ -112,7 +113,7 @@
           <div class="col-sm-6">
             <label for="l4Division" class="col-form-label">Division</label><br />
             <p-dropdown [options]="modelDD.divisions" [(ngModel)]="model.l4Division" [style]="{'width':'100%'}" filter="true"
-              name="model.l1AccountType">
+              name="model.l4Division">
               <ng-template let-item pTemplate="selectedItem">
                 <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
               </ng-template>
@@ -127,7 +128,7 @@
         <div class="form-group row">
           <div class="col-sm-6">
             <label for="tax" class="col-form-label">Taxes</label><br />
-            <p-dropdown [options]="modelDD.taxes" [(ngModel)]="model.tax" [style]="{'width':'100%'}" filter="true" name="model.l1AccountType">
+            <p-dropdown [options]="modelDD.taxes" [(ngModel)]="model.tax" [style]="{'width':'100%'}" filter="true" name="model.tax">
               <ng-template let-item pTemplate="selectedItem">
                 <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
               </ng-template>
@@ -145,8 +146,8 @@
         </div>
         <div class="form-group row">
           <div class="col-sm-12" align="right">
-            <button  pButton icon="pi pi-check" label="Submit" style="margin-right:10px"></button >             
-              <button pButton icon="pi pi-trash"  type="button" label="Delete" class="ui-button-danger"></button>
+            <button  pButton icon="pi pi-check" label="Submit" style="margin-right:10px" (click)="onSubmit()"></button >             
+            <button pButton icon="pi pi-trash"  type="button" label="Delete" class="ui-button-danger" (click)="onDeleteConfirm()" ></button>
           </div>
         </div>
       </form>
