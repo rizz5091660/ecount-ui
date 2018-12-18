@@ -1,205 +1,207 @@
 <p-panel>
-    <p-header>
-      <label class="col-form-label">Sales</label>
-    </p-header>
-    <div class="form-group row">
-        <div style="padding: 5px;padding-left: 15px;">
-            <p-splitButton label="New" icon="pi pi-file"  [model]="items" styleClass="ui-button-info"></p-splitButton>
-        </div>
-        <div style="padding: 5px">
-          <button pButton type="button" label="Send Statment" ></button>
-        </div>
-        <div style="padding: 5px">
-          <button pButton type="button" label="import" ></button>
-        </div>
-        <div style="padding: 5px">
-          <button pButton type="button" label="Search" ></button>
+  <p-header>
+    <label class="col-form-label">Sales</label>
+  </p-header>
+  <div class="form-group row">
+    <div style="padding: 5px;padding-left: 15px;">
+      <p-splitButton label="New" icon="pi pi-file" [model]="items" styleClass="ui-button-info"></p-splitButton>
+    </div>
+    <div style="padding: 5px">
+      <button pButton type="button" label="Send Statment"></button>
+    </div>
+    <div style="padding: 5px">
+      <button pButton type="button" label="import"></button>
+    </div>
+    <div style="padding: 5px">
+      <button pButton type="button" label="Search"></button>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-12"> <b>Invoices</b> | <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'0'}">See
+        all</a></div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-3">
+      <div class="card widget-circle-progress">
+        <div class="card-body">
+          <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'1'}">
+            <h4 class="text-pale-sky">Draft</h4>
+            <div class="row align-items-center">
+              <div class="col-lg-5 col-7">
+                <div class="circle text-center">
+                  <div><canvas width="110" height="110" id="myCanvas"></canvas></div>
+                  <span class="abs-text text-dpink">({{model.nDraft}})</span>
+                </div>
+              </div>
+              <div class="col-lg-7 col-5 pl-2">
+                <div>
+                  <h4 class="text-dpink"><span>{{model.totalAmtDraft | currency:environment.currency}}</span></h4>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
-      <div class="form-group row">
-          <div class="col-md-12"> <b>Invoices</b> | <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'0'}">See all</a></div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-3">
-                <div class="card widget-circle-progress">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-lg-5 col-7">
-                                <div class="circle text-center">
-                                    <div id="ticket-circle-progress-1"><canvas width="110" height="110" id="myCanvas"></canvas></div>
-                                    <span class="abs-text text-dpink">({{model.nDraft}})</span>
-                                </div>
-                            </div>
-                            <div class="col-lg-7 col-5 pl-2">
-                                <div>
-                                    <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'1'}">
-                                    <h3 class="text-dpink"><span>{{model.totalAmtDraft | currency:environment.currency}}</span></h3>
-                                    </a>
-                                    <p class="text-pale-sky">Total Revenue</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="card widget-circle-progress">
+        <div class="card-body">
+          <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'2'}">
+            <h4 class="text-pale-sky">Wait Approval</h4>
+            <div class="row align-items-center">
+              <div class="col-lg-5 col-7">
+                <div class="circle text-center">
+                  <div><canvas width="110" height="110"></canvas></div>
+                  <span class="abs-text text-dpink">({{model.nAwApproval}})</span>
                 </div>
-            </div>
-            <div class="col-sm-3">
-              <div class="card widget-circle-progress">
-                  <div class="card-body">
-                      <div class="row align-items-center">
-                          <div class="col-lg-5 col-7">
-                              <div class="circle text-center">
-                                  <div id="ticket-circle-progress-1"><canvas width="110" height="110"></canvas></div>
-                                  <span class="abs-text text-dpink">({{model.nAwApproval}})</span>
-                              </div>
-                          </div>
-                          <div class="col-lg-7 col-5 pl-2">
-                              <div>
-                                  <a [routerLink]="['../../sales/sales-search']"  [queryParams]="{type: 'I',stage:'2'}">
-                                  <h3 class="text-dpink">$<span>{{model.totalAmtAwApproval | currency:environment.currency}} </span></h3>
-                                  </a>
-                                  <p class="text-pale-sky">Total Revenue</p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
               </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card widget-circle-progress">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-lg-5 col-7">
-                            <div class="circle text-center">
-                                <div id="ticket-circle-progress-1"><canvas width="110" height="110"></canvas></div>
-                                <span class="abs-text text-dpink">({{model.nAwPayment}})</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-7 col-5 pl-2">
-                            <div>
-                                <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'3'}">
-                                <h3 class="text-dpink"><span>{{model.totalAmtAwPayment | currency:environment.currency}} </span></h3>
-                                </a>
-                                <p class="text-pale-sky">Total Revenue</p>
-                            </div>
-                        </div>
-                    </div>
+              <div class="col-lg-7 col-5 pl-2">
+                <div>
+                  <h4 class="text-dpink"><span>{{model.totalAmtAwApproval | currency:environment.currency}} </span></h4>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="card widget-circle-progress">
-              <div class="card-body">
-                  <div class="row align-items-center">
-                      <div class="col-lg-5 col-7">
-                          <div class="circle text-center">
-                              <div id="ticket-circle-progress-1"><canvas width="110" height="110"></canvas></div>
-                              <span class="abs-text text-dpink">({{model.nOverdue}})</span>
-                          </div>
-                      </div>
-                      <div class="col-lg-7 col-5 pl-2">
-                          <div>
-                              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'5'}">
-                              <h3 class="text-dpink"><span>{{model.totalAmtOverdue | currency:environment.currency}} </span></h3>
-                              </a>
-                              <p class="text-pale-sky">Total Revenue</p>
-                          </div>
-                      </div>
-                  </div>
               </div>
-          </div>
+            </div>
+          </a>
+        </div>
       </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-md-12"> <b>Quotes</b> | <a [routerLink]="['../../sales/sales-search']"  [queryParams]="{type: 'Q',stage:'0'}">See all</a></div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-3">
-                <div class="card widget-circle-progress">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-lg-5 col-7">
-                                <div class="circle text-center">
-                                    <div id="ticket-circle-progress-1"><canvas width="110" height="110" id="myCanvas"></canvas></div>
-                                    <span class="abs-text text-dpink">({{model.nDraftQ}})</span>
-                                </div>
-                            </div>
-                            <div class="col-lg-7 col-5 pl-2">
-                                <div>
-                                    <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'1'}">
-                                    <h3 class="text-dpink"><span>{{model.totalAmtDraftQ | currency:environment.currency}}</span></h3>
-                                    </a>
-                                    <p class="text-pale-sky">Total Revenue</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="card widget-circle-progress">
+        <div class="card-body">
+          <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'3'}">
+            <h4 class="text-pale-sky">Wait Payment</h4>
+            <div class="row align-items-center">
+              <div class="col-lg-5 col-7">
+                <div class="circle text-center">
+                  <div><canvas width="110" height="110"></canvas></div>
+                  <span class="abs-text text-lgreen">({{model.nAwPayment}})</span>
                 </div>
-            </div>
-            <div class="col-sm-3">
-              <div class="card widget-circle-progress">
-                  <div class="card-body">
-                      <div class="row align-items-center">
-                          <div class="col-lg-5 col-7">
-                              <div class="circle text-center">
-                                  <div id="ticket-circle-progress-1"><canvas width="110" height="110"></canvas></div>
-                                  <span class="abs-text text-dpink">({{model.nAwApprovalQ}})</span>
-                              </div>
-                          </div>
-                          <div class="col-lg-7 col-5 pl-2">
-                              <div>
-                                  <a [routerLink]="['../../sales/sales-search']"  [queryParams]="{type: 'Q',stage:'2'}">
-                                  <h3 class="text-dpink">$<span>{{model.totalAmtAwApprovalQ | currency:environment.currency}} </span></h3>
-                                  </a>
-                                  <p class="text-pale-sky">Total Revenue</p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
               </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card widget-circle-progress">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-lg-5 col-7">
-                            <div class="circle text-center">
-                                <div id="ticket-circle-progress-1"><canvas width="110" height="110"></canvas></div>
-                                <span class="abs-text text-dpink">({{model.nAwPaymentQ}})</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-7 col-5 pl-2">
-                            <div>
-                                <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'3'}">
-                                <h3 class="text-dpink"><span>{{model.totalAmtAwPaymentQ | currency:environment.currency}} </span></h3>
-                                </a>
-                                <p class="text-pale-sky">Total Revenue</p>
-                            </div>
-                        </div>
-                    </div>
+              <div class="col-lg-7 col-5 pl-2">
+                <div>
+                  <h4 class="text-lgreen"><span>{{model.totalAmtAwPayment | currency:environment.currency}} </span></h4>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="card widget-circle-progress">
-              <div class="card-body">
-                  <div class="row align-items-center">
-                      <div class="col-lg-5 col-7">
-                          <div class="circle text-center">
-                              <div id="ticket-circle-progress-1"><canvas width="110" height="110"></canvas></div>
-                              <span class="abs-text text-dpink">({{model.nOverdueQ}})</span>
-                          </div>
-                      </div>
-                      <div class="col-lg-7 col-5 pl-2">
-                          <div>
-                              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'5'}">
-                              <h3 class="text-dpink"><span>{{model.totalAmtOverdueQ | currency:environment.currency}} </span></h3>
-                              </a>
-                              <p class="text-pale-sky">Total Revenue</p>
-                          </div>
-                      </div>
-                  </div>
               </div>
-          </div>
+            </div>
+          </a>
+        </div>
       </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="card widget-circle-progress">
+        <div class="card-body">
+          <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'5'}">
+            <h4 class="text-pale-sky">Overdue</h4>
+            <div class="row align-items-center">
+              <div class="col-lg-5 col-7">
+                <div class="circle text-center">
+                  <div><canvas width="110" height="110"></canvas></div>
+                  <span class="abs-text text-warning">({{model.nOverdue}})</span>
+                </div>
+              </div>
+              <div class="col-lg-7 col-5 pl-2">
+                <div>
+                  <h4 class="text-warning"><span>{{model.totalAmtOverdue | currency:environment.currency}} </span></h4>
+                </div>
+              </div>
+            </div>
+          </a>
         </div>
-    </p-panel>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-12"> <b>Quotes</b> | <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'0'}">See
+        all</a></div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-3">
+      <div class="card widget-circle-progress">
+        <div class="card-body">
+          <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'1'}">
+            <h4 class="text-pale-sky">Draft</h4>
+            <div class="row align-items-center">
+              <div class="col-lg-5 col-7">
+                <div class="circle text-center">
+                  <div><canvas width="110" height="110" id="myCanvas"></canvas></div>
+                  <span class="abs-text text-dpink">({{model.nDraftQ}})</span>
+                </div>
+              </div>
+              <div class="col-lg-7 col-5 pl-2">
+                <div>
+                  <h4 class="text-dpink"><span>{{model.totalAmtDraftQ | currency:environment.currency}}</span></h4>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="card widget-circle-progress">
+        <div class="card-body">
+          <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'2'}">
+            <h4 class="text-pale-sky">Wait Approval</h4>
+            <div class="row align-items-center">
+              <div class="col-lg-5 col-7">
+                <div class="circle text-center">
+                  <div><canvas width="110" height="110"></canvas></div>
+                  <span class="abs-text text-dpink">({{model.nAwApprovalQ}})</span>
+                </div>
+              </div>
+              <div class="col-lg-7 col-5 pl-2">
+                <div>
+                  <h4 class="text-dpink"><span>{{model.totalAmtAwApprovalQ | currency:environment.currency}} </span></h4>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="card widget-circle-progress">
+        <div class="card-body">
+          <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'3'}">
+            <h4 class="text-pale-sky">Wait Payment</h4>
+            <div class="row align-items-center">
+              <div class="col-lg-5 col-7">
+                <div class="circle text-center">
+                  <div><canvas width="110" height="110"></canvas></div>
+                  <span class="abs-text text-lgreen">({{model.nAwPaymentQ}})</span>
+                </div>
+              </div>
+              <div class="col-lg-7 col-5 pl-2">
+                <div>
+                  <h4 class="text-lgreen"><span>{{model.totalAmtAwPaymentQ | currency:environment.currency}} </span></h4>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="card widget-circle-progress">
+        <div class="card-body">
+          <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'5'}">
+            <h4 class="text-pale-sky">Overdue</h4>
+            <div class="row align-items-center">
+              <div class="col-lg-5 col-7">
+                <div class="circle text-center">
+                  <div><canvas width="110" height="110"></canvas></div>
+                  <span class="abs-text text-warning">({{model.nOverdueQ}})</span>
+                </div>
+              </div>
+              <div class="col-lg-7 col-5 pl-2">
+                <div>
+                  <h4 class="text-warning"><span>{{model.totalAmtOverdueQ | currency:environment.currency}} </span></h4>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-panel>

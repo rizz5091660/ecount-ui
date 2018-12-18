@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { CustomerSupplier } from '../class/supplier_customer';
-import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { HttpResponseWS } from '../class/http_response_ws';
 import { environment } from '../../environments/environment';
@@ -23,7 +22,7 @@ export class SupplierService {
     
      /** GET: fetch list of supplier from database */
     getSupplierAll(type:string):Observable<CustomerSupplier[]>{
-        return this.http.get<CustomerSupplier[]>(environment.get_customer_supplier_path+"type="+type);
+        return this.http.get<CustomerSupplier[]>(environment.get_all_customer_supplier_path+"type="+type);
     }
 
      /** GET: fetch list of supplier from database */

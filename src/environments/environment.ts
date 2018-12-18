@@ -11,13 +11,13 @@
 const ecount_ws_url: string = 'http://localhost:8080';
 export const environment = {
   production: false,
-  create_customer_supplier_path: ecount_ws_url + "/custsupp/create",
-  update_customer_supplier_path: ecount_ws_url +"/custsupp/update",
-  get_customer_supplier_path: ecount_ws_url  + "/custsupp/getall?",
-  get_customer_supplier_init_path: ecount_ws_url  + "/custsupp/init",
+  create_customer_supplier_path: ecount_ws_url + "/contact/create",
+  update_customer_supplier_path: ecount_ws_url +"/contact/update",
+  get_all_customer_supplier_path: ecount_ws_url  + "/contact/getall?",
+  get_customer_supplier_init_path: ecount_ws_url  + "/contact/init",
  
-  get_customer_supplier_byid :ecount_ws_url + "/custsupp/get?",
-  delete_customer_supplier : ecount_ws_url + "/custsupp/delete",
+  get_customer_supplier_byid :ecount_ws_url + "/contact/get?",
+  delete_customer_supplier : ecount_ws_url + "/contact/delete",
 
   get_coa_init_path: ecount_ws_url  + "/coa/init",
   create_coa_path: ecount_ws_url + "/coa/create",
@@ -35,6 +35,13 @@ export const environment = {
   update_po_stage_path:ecount_ws_url +"/po/update_stg",
   create_po_path: ecount_ws_url  + "/po/create",
   init_po_path: ecount_ws_url + "/po/init",
+
+
+  init_inv_path: ecount_ws_url + "/inv/init",
+  get_all_iventory_path: ecount_ws_url  + "/inv/getall?",
+
+
+  
 
   currency:"USD",
  

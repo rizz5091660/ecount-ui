@@ -49,7 +49,6 @@ export class SalesDashboardComponent implements OnInit {
   }
 
   onSelectTab(type,stage){
-    console.log("Type: "+type+" Stage: "+stage);
     this.router.navigate(["../sales-search"],{ queryParams: { type: type, stage: stage } });
   }
 

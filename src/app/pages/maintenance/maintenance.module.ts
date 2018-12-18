@@ -2,8 +2,6 @@ import {NgModule} from '@angular/core';
 import {MaintenanceRoutingModule,routedComponents} from './maintenance-routing.module';
 import { ThemeModule } from '../../@theme/theme.module';
 import { SupplierService } from '../../service/supplier.service';
-import { ModalComponent } from '../shares/modals/modal/modal.component';
-import { SharesModule } from '../shares/shares.module';
 import { CoaService } from '../../service/coa.service';
 import { TaxComponent } from './tax/tax.component';
 import { PanelModule } from '../../components/panel/panel';
@@ -23,13 +21,10 @@ import { DropdownModule } from '../../components/dropdown/dropdown';
 import { InputTextareaModule } from '../../components/inputtextarea/inputtextarea';
 
 @NgModule({
-    imports:[MaintenanceRoutingModule,ThemeModule,SharesModule,PanelModule,MessagesModule,MessageModule,
+    imports:[MaintenanceRoutingModule,ThemeModule,PanelModule,MessagesModule,MessageModule,
         TableModule,ButtonModule,ConfirmDialogModule,DialogModule,ScrollPanelModule,ListboxModule,RadioButtonModule,ToolbarModule,InputTextModule,DropdownModule,InputTextareaModule], 
     declarations:[...routedComponents, TaxComponent],
     providers: [SupplierService,CoaService,ConfirmationService],
-    entryComponents: [
-        ModalComponent, 
-      ],
 })
 export class MaintenanceModule{
 

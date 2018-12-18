@@ -15,7 +15,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       }, 
       {
         title: 'Inventory',
-        link: '/pages/accounts/chart',
+        link: '/pages/accounts/inventory/inventory-search',
       },
     ] 
   },

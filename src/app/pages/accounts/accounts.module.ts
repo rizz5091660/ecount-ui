@@ -4,8 +4,6 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { AccountsRoutingModule,routedComponents } from './accounts-routing.module';
 import { SalesService } from '../../service/sales.service';
 import { PurchaseService } from '../../service/purchase.service';
-import { SalesFormComponent } from './sales/sales-form/sales-form.component';
-import { PurchaseFormComponent } from './purchase/purchase-form/purchase-form.component';
 import { TableModule } from '../../components/table/table';
 import { DropdownModule } from '../../components/dropdown/dropdown';
 import { ButtonModule } from '../../components/button/button';
@@ -19,17 +17,19 @@ import { PanelModule } from '../../components/panel/panel';
 import { StepsModule } from '../../components/steps/steps';
 import { ToolbarModule } from '../../components/toolbar/toolbar';
 import { InputTextareaModule } from '../../components/inputtextarea/inputtextarea';
-
+import { InventoryService } from '../../service/inventory.service';
+import { DialogModule } from '../../components/dialog/dialog';
+import { CheckboxModule } from '../../components/checkbox/checkbox';
 
 
 @NgModule({
   imports: [ 
     CommonModule,AccountsRoutingModule,ThemeModule,
     TableModule,DropdownModule,ButtonModule,CalendarModule,InputTextModule,SplitButtonModule,
-    MessagesModule,MessageModule,PanelModule,StepsModule,ToolbarModule,InputTextareaModule
+    MessagesModule,MessageModule,PanelModule,StepsModule,ToolbarModule,InputTextareaModule,DialogModule,CheckboxModule
   ],
-  providers: [SalesService,PurchaseService,MessageService],
-  declarations: [...routedComponents, SalesFormComponent, PurchaseFormComponent],
+  providers: [SalesService,PurchaseService,InventoryService,MessageService],
+  declarations: [...routedComponents],
   schemas: [CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AccountsModule { }

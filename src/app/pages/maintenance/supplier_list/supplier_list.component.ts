@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SupplierService } from '../../../service/supplier.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
@@ -16,19 +16,17 @@ import { SelectItem } from '../../../class/selectitem';
 })
 export class SupplierListComponent implements OnInit {
   listObservable: Observable<CustomerSupplier[]>;
-  obs: Observable<CustomerSupplier>;
-  closeResult: string;
+  modelObs: Observable<CustomerSupplier>;
   model: CustomerSupplier = new CustomerSupplier();
   custSupps: CustomerSupplier[] = [];
   httpRespObservable: Observable<HttpResponseWS>;
-  id: number;
   selectedItem: SelectItem = new SelectItem();
   countTypes: SelectItem[];
   msgs: Message[] = [];
   cols: any[];
   display: boolean = false;
 
-  constructor(private router: Router, private service: SupplierService, private supplierService: SupplierService, private confirmationService: ConfirmationService) { }
+  constructor(private router: Router, private supplierService: SupplierService, private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     this.model = new CustomerSupplier();
@@ -45,14 +43,15 @@ export class SupplierListComponent implements OnInit {
   }
 
   init() {
-    this.obs = this.service.init();
-    this.obs.subscribe((obs) => {
+    this.modelObs = this.supplierService.init();
+    this.modelObs.subscribe((obs) => {
       this.custSupps = obs.custSupps;
       this.countTypes = obs.countTypes;
     })
   }
+  
   loadContacts() {
-    this.listObservable = this.service.getSupplierAll(this.selectedItem.value);
+    this.listObservable = this.supplierService.getSupplierAll(this.selectedItem.value);
     this.listObservable.subscribe((listObservable) => {
       this.custSupps = listObservable;
     })
