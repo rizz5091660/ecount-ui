@@ -3,8 +3,7 @@ import { Observable } from 'rxjs';
 import { Coa } from '../../../class/coa';
 import { CoaService } from '../../../service/coa.service';
 import { HttpResponseWS } from '../../../class/http_response_ws';
-import { DropDownModel } from '../../../class/drop_down';
-import { SelectItem, ConfirmationService, Message } from '../../../components/common/api';
+import { ConfirmationService, Message } from '../../../components/common/api';
 
 @Component({
   selector: 'coa',
@@ -15,15 +14,8 @@ import { SelectItem, ConfirmationService, Message } from '../../../components/co
 
 export class CoaComponent implements OnInit {
   radioModel = 'all';
-  observables: Observable<Coa[]>;
-  observable: Observable<Coa>;
-  accountType: number;
   model: Coa = new Coa();
   modelDD: Coa = new Coa();
-  closeResult: string;
-  httpRespObservable: Observable<HttpResponseWS>;
-  coaCode: string;
-  selectedTaxId: string;
   display: boolean = false;
   cols: any[]; 
   msgs: Message[] = [];
@@ -43,8 +35,8 @@ export class CoaComponent implements OnInit {
   }
 
   init() {
-    this.observable = this.service.init();
-    this.observable.subscribe((observable) => {
+    let observable: Observable<Coa> = this.service.init();
+    observable.subscribe((observable) => {
       this.modelDD = observable;
     })
   }
@@ -69,34 +61,31 @@ export class CoaComponent implements OnInit {
   }
 
   onCreate() {
-    this.httpRespObservable = this.service.create(this.model);
-    this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.onProcessSuccessResponse(httpRespObservable, 'Create');
-    }, 
-    error => {
-      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
-    })
+    let httpRespObservable: Observable<HttpResponseWS> = this.service.update(this.model);
+    this.onProcessResponse(httpRespObservable,"Create");
   }
 
   onUpdate() {
-    this.httpRespObservable = this.service.update(this.model);
-    this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.onProcessSuccessResponse(httpRespObservable, 'Update');
+    let httpRespObservable: Observable<HttpResponseWS> = this.service.update(this.model);
+    this.onProcessResponse(httpRespObservable,"Update");
+  }
+
+  onDelete() {
+    let httpRespObservable: Observable<HttpResponseWS> = this.service.delete(this.model.id);
+    this.onProcessResponse(httpRespObservable,"Delete");
+  }
+
+  onProcessResponse(httpRespObservable: Observable<HttpResponseWS>, type:string){
+    httpRespObservable.subscribe((httpRespObservable) => {
+      this.display=false;
+      this.init();
+      this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully '+type }];
     }, 
     error => {
       this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
     })
   }
 
-  onDelete() {
-    this.httpRespObservable = this.service.delete(this.model.id);
-    this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.onProcessSuccessResponse(httpRespObservable,'Delete');  
-    }, 
-    error => {
-      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
-    });
-  }
 
   onDeleteConfirm() {
     this.display=false;
@@ -112,10 +101,6 @@ export class CoaComponent implements OnInit {
     });
   }
 
-  onProcessSuccessResponse(httpRespObservable:HttpResponseWS, type:string){
-    this.display=false;
-    this.init();
-    this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully '+type }];
-}
+
 
 }

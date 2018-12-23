@@ -14,7 +14,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/accounts/purchase/purchase-dashboard',
       }, 
       {
-        title: 'Inventory',
+        title: 'Products & Services',
         link: '/pages/accounts/inventory/inventory-search',
       },
     ] 
@@ -27,7 +27,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       title:'Contact',
       link:'/pages/maintenance/contact',
     },{
-      title:'COA',
+      title:'Accounting',
       link:'/pages/maintenance/coa',
     },
   ]

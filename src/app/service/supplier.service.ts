@@ -37,7 +37,7 @@ export class SupplierService {
 
      /** PUT:  modify supplier from database*/
      update(suppCust:CustomerSupplier):Observable<HttpResponseWS>{
-        return this.http.post<HttpResponseWS>(environment.update_customer_supplier_path,suppCust);
+        return this.http.put<HttpResponseWS>(environment.update_customer_supplier_path,suppCust);
      }
 
     /** POST: add a new supplier to the database */
@@ -50,7 +50,7 @@ export class SupplierService {
 
     /** DELETE: delete supplier from database */
     delete(id: number):Observable<HttpResponseWS>{
-        return this.http.post<HttpResponseWS>(environment.delete_customer_supplier,id);
+        return this.http.delete<HttpResponseWS>(environment.delete_customer_supplier+"id="+id);
     }
 
 

@@ -10,7 +10,7 @@ import { ButtonModule } from '../../components/button/button';
 import { CalendarModule } from '../../components/calendar/calendar';
 import { InputTextModule } from '../../components/inputtext/inputtext';
 import { SplitButtonModule } from '../../components/splitbutton/splitbutton';
-import { MessageService } from '../../components/common/api';
+import { MessageService, ConfirmationService } from '../../components/common/api';
 import { MessageModule } from '../../components/message/message';
 import { MessagesModule } from '../../components/messages/messages';
 import { PanelModule } from '../../components/panel/panel';
@@ -20,15 +20,19 @@ import { InputTextareaModule } from '../../components/inputtextarea/inputtextare
 import { InventoryService } from '../../service/inventory.service';
 import { DialogModule } from '../../components/dialog/dialog';
 import { CheckboxModule } from '../../components/checkbox/checkbox';
+import { SelectButtonModule } from '../../components/selectbutton/selectbutton';
+import { SidebarModule } from '../../components/sidebar/sidebar';
+import { ConfirmDialogModule } from '../../components/confirmdialog/confirmdialog';
 
 
 @NgModule({
   imports: [ 
     CommonModule,AccountsRoutingModule,ThemeModule,
     TableModule,DropdownModule,ButtonModule,CalendarModule,InputTextModule,SplitButtonModule,
-    MessagesModule,MessageModule,PanelModule,StepsModule,ToolbarModule,InputTextareaModule,DialogModule,CheckboxModule
+    MessagesModule,MessageModule,PanelModule,StepsModule,ToolbarModule,InputTextareaModule,
+    DialogModule,CheckboxModule,SelectButtonModule,SidebarModule,ConfirmDialogModule
   ],
-  providers: [SalesService,PurchaseService,InventoryService,MessageService],
+  providers: [SalesService,PurchaseService,InventoryService,MessageService,ConfirmationService],
   declarations: [...routedComponents],
   schemas: [CUSTOM_ELEMENTS_SCHEMA ]
 })

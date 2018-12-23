@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SalesOrder } from '../../../../class/sales_order';
 import { SalesOrderDetail } from '../../../../class/sales_order_detail';
 import { SalesService } from '../../../../service/sales.service';
@@ -18,21 +18,13 @@ import { AWAIT_PAYMENT_STAGE } from '../../../../common/ecount_const';
   styleUrls: ['./sales-form.component.scss']
 })
 export class SalesFormComponent implements OnInit {
-  @ViewChild('modal') modal: ElementRef;
   model: SalesOrder = new SalesOrder();
-  obHttp: Observable<HttpResponseWS>;
-  obSo: Observable<SalesOrder>;
-  obSalesTyp: Observable<string>;
-  httpResponseWS:HttpResponseWS;
-
-  closeResult: string;
   mode: string;
   soFormTitle: string;
   cols: any[];
   environment = environment;
   items: MenuItem[];
   msgs: Message[] = [];
-  invId:number;
 
   constructor(private service: SalesService, private route: ActivatedRoute, private messageService: MessageService) {
   }
@@ -49,8 +41,8 @@ export class SalesFormComponent implements OnInit {
       {label: 'Approve', icon: 'pi pi-check', command: () => {this.onApprove();}},
     ];
 
-    this.obSo = this.service.init();
-    this.obSo.subscribe((observable) => {
+    let obSo: Observable<SalesOrder> = this.service.init();
+    obSo.subscribe((observable) => {
       this.model.custSupps = observable.custSupps;
       this.model.inventories = observable.inventories;
       this.model.coas = observable.coas;
@@ -70,14 +62,14 @@ export class SalesFormComponent implements OnInit {
     ];
 
     this.model.custId = 16;
-    this.obSalesTyp = this.route.queryParamMap.pipe(map(params => params.get('type')));
-    this.obSalesTyp.subscribe((obSalesTyp) => {
+    let obSalesTyp: Observable<string> = this.route.queryParamMap.pipe(map(params => params.get('type')));
+    obSalesTyp.subscribe((obSalesTyp) => {
       this.model.soType = obSalesTyp;
       if ("I" == this.model.soType) {
         this.soFormTitle = "Invoice";
       } else if ("Q" == this.model.soType) {
         this.soFormTitle = "Quotation";
-      }
+      } 
     });
   }
 
@@ -163,29 +155,33 @@ export class SalesFormComponent implements OnInit {
     this.msgs = [];
     this.model.salesIds = [];
     this.model.salesIds.push(this.model.id);
-    this.obHttp = this.service.updateSalesOrderStage(this.model.salesIds,AWAIT_PAYMENT_STAGE);
-    this.obHttp.subscribe((observable) => { 
-      this.httpResponseWS=observable;
-        this.model.stage.id=AWAIT_PAYMENT_STAGE;
-        this.msgs.push({ severity: 'success', summary: 'Successfully', detail: 'Approve' });
-    },
-    error => {
-      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
-    });
-
-
+    let obHttp: Observable<HttpResponseWS> = this.service.updateSalesOrderStage(this.model.salesIds,AWAIT_PAYMENT_STAGE);
+    this.onProcessResponse(obHttp,"Approve");
   }
 
-  onCreate(stageId: number,type:string) {
+  onCreate(stageId: number,type:string) {    
+    let obHttp: Observable<HttpResponseWS> = this.service.create(this.model,stageId);
+    this.onProcessResponse(obHttp,type);
+  }
+
+  onProcessResponse(obHttp: Observable<HttpResponseWS>,type:string){
     this.msgs = [];
-    this.obHttp = this.service.create(this.model,stageId);
-    this.obHttp.subscribe((observable) => { 
-      this.httpResponseWS=observable;
-      this.model.id=this.httpResponseWS.value;
-        this.msgs.push({ severity: 'success', summary: 'Successfully', detail: type });
+    let httpResponseWS:HttpResponseWS;
+    obHttp.subscribe((observable) => { 
+      httpResponseWS=observable;
+      if(type=="Save"||type=="Drafting"||type=="Submit"){
+        this.model.id=httpResponseWS.value;
+      }else if(type=="Approve"){
+        this.model.stage.id=AWAIT_PAYMENT_STAGE;
+      }
+      this.msgs.push({ severity: 'success', summary: 'Successfully', detail: type });
     },
     error => {
       this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
     });
   }
+
+
 }
+
+

@@ -1,19 +1,14 @@
-<p-panel>
-  <p-header>
-    <label class="col-form-label">Sales</label>
-  </p-header>
+<div class="form-group row">
+    <div class="col-md-12">
+      <h4>Sales</h4>
+      </div>
+</div>
+<nb-card>
+  <nb-card-body>
   <div class="form-group row">
-    <div style="padding: 5px;padding-left: 15px;">
-      <p-splitButton label="New" icon="pi pi-file" [model]="items" styleClass="ui-button-info"></p-splitButton>
-    </div>
-    <div style="padding: 5px">
-      <button pButton type="button" label="Send Statment"></button>
-    </div>
-    <div style="padding: 5px">
-      <button pButton type="button" label="import"></button>
-    </div>
-    <div style="padding: 5px">
-      <button pButton type="button" label="Search"></button>
+    <div class="col-sm-12" style="text-align:right">
+        <button pButton type="button" class="ui-button-secondary"    label="Import Transaction" ></button>
+        <p-splitButton label="New Transaction" icon="pi pi-file" [model]="items" styleClass="ui-button-success"></p-splitButton>
     </div>
   </div>
   <div class="form-group row">
@@ -204,4 +199,4 @@
       </div>
     </div>
   </div>
-</p-panel>
+</nb-card-body>

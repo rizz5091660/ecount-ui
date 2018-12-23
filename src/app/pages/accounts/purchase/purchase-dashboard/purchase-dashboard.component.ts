@@ -3,8 +3,9 @@ import { Observable } from 'rxjs';
 import { PurchaseOrder } from '../../../../class/purchase_order';
 import { PurchaseService } from '../../../../service/purchase.service';
 import { Router } from '@angular/router';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../../../../environments/environment';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { MenuItem } from '../../../../components/common/api';
 
 @Component({
   selector: 'purchase-dashboard',
@@ -16,25 +17,30 @@ export class PurchaseDashboardComponent implements OnInit {
   poRadio="all";
   observable:Observable<PurchaseOrder>;
   model:PurchaseOrder;
-  ngbDateStruct: NgbDateStruct;
-  date: {year: number, month: number};
+  environment = environment;
+  items: MenuItem[];
 
   constructor(private service:PurchaseService,private router: Router,private calendar: NgbCalendar) { }
 
   ngOnInit() {
-    console.log("START PO");
+    this.items = [
+      {
+        label: 'Bill', icon: 'pi pi-file', command: () => {
+          this.onAddNew('B');
+        }
+      },
+      {
+        label: 'Purchase Order', icon: 'pi pi-refresh', command: () => {
+          this.onAddNew('P'); 
+        }
+      },
+    ];
     this.model = new PurchaseOrder();
-    console.log("Model Initialized");
     this.loadDashboard();
   }
-
-  selectToday() {
-    this.ngbDateStruct = this.calendar.getToday();
-  }
-
+ 
   onSelectTab(type,stage){
-    console.log("Type: "+type+" Stage: "+stage);
-    this.router.navigate(["../purchase-search"],{ queryParams: { type: type, stage: stage } });
+     this.router.navigate(["../purchase-search"],{ queryParams: { type: type, stage: stage } });
   }
 
   onAddNew(type:string){
@@ -43,7 +49,6 @@ export class PurchaseDashboardComponent implements OnInit {
 
   loadDashboard(){
     this.observable = this.service.getPurchaseOrderByStage();
-    console.log("Observe: "+this.observable);
     this.observable.subscribe((observable) =>{
       this.model= observable;
     }

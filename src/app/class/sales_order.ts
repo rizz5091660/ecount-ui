@@ -1,8 +1,6 @@
 import { Model } from "./model";
 import { SalesOrderDetail } from "./sales_order_detail";
 import { Stage } from "./stage";
-import { CustomerSupplier } from "./supplier_customer";
-import { DropDownModel } from "./drop_down";
 import { SelectItem } from "./selectitem";
 import { Inventory } from "./inventory";
 
@@ -29,7 +27,7 @@ export class SalesOrder extends Model{
     referrence:string;
     selected:boolean;
     stage:Stage;
-    salesIds:number[];    
+    salesIds:number[];     
     custSupps:SelectItem[];
     inventories:SelectItem[];
     inventories2:Inventory[];

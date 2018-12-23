@@ -12,6 +12,7 @@ export class Inventory{
     taxSalesId:number;
     coaPurchaseId:number;
     taxPurchaseId:number;
+    coaInv:Coa;
     coaSales:Coa;
     taxSales:Tax;
     coaPurchase:Coa;
@@ -24,4 +25,9 @@ export class Inventory{
     profitCenters:SelectItem[];
     salesFlag:boolean;
     purchaseFlag:boolean;    
+    type:string;
+    createdBy:string;
+    createdDate:Date;
+    modifiedBy:string;
+    modifiedDate:Date;
 }

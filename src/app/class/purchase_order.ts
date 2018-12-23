@@ -3,6 +3,8 @@ import { PurchaseOrderDetail } from "./purchase_order_detail";
 import { Stage } from "./stage";
 import { CustomerSupplier } from "./supplier_customer";
 import { DropDownModel } from "./drop_down";
+import { SelectItem } from "../components/common/selectitem";
+import { Inventory } from "./inventory";
 
 export class PurchaseOrder extends Model{
     poCode:string;
@@ -20,8 +22,20 @@ export class PurchaseOrder extends Model{
     nOverdue:number;
     referrence:string;
     selected:boolean;
-    stage:Stage;
+    stage:Stage; 
     purchaseIds:number[];    
-    custSupps:DropDownModel[];
-    inventories:DropDownModel[];
+    custSupps:SelectItem[];
+    inventories:SelectItem[];
+    inventories2:Inventory[];
+    coas:SelectItem[];
+    taxes:SelectItem[];
+    soType:string;
+    totalAmtDraft:number;
+    totalAmtAwApproval:number;
+    totalAmtAwPayment:number;
+    totalAmtPaid:number;
+    totalAmtDraftQ:number;
+    totalAmtAwApprovalQ:number;
+    totalAmtAwPaymentQ:number;
+    totalAmtPaidQ:number;
 }   

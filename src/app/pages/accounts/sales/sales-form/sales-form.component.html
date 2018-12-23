@@ -1,17 +1,20 @@
-<p-panel>
-  <p-header>
-        <label class="col-form-label">{{soFormTitle}}</label>
-  </p-header>
+<div class="form-group row">
+    <div class="col-md-12">
+      <h4>{{soFormTitle}}</h4>
+      </div>
+</div>
+<nb-card>
+  <nb-card-body>
   <p-messages [(value)]="msgs"></p-messages>
   <form #salesForm="ngForm">
-    <div class="row">
-      <div class="col-md-12">
+    <div class="form-group row">
+      <div class="col-md-12"> 
           <p-steps [model]="items" [activeIndex]="model.stage.id-1"></p-steps>
       </div>
     </div>
-    <div class="row">
+    <div class="form-group row">
       <div class="col-sm-4">
-        <div class="row">
+        <div class="form-group row">
           <div class="col-sm-12">
             <label for="custId" class="col-form-label">Customer</label><br />
             <p-dropdown [options]="model.custSupps" [(ngModel)]="model.custId" [style]="{'width':'100%'}" filter="true"
@@ -38,7 +41,7 @@
       </div>
 
       <div class="col-sm-4">
-        <div class="row">
+        <div class="form-group row">
           <div class="col-sm-12">
             <label for="soCode" class="col-form-label">{{soFormTitle}} #</label><br />
             <input type="text" pInputText [(ngModel)]="model.soCode" style="width:100%" name="model.soCode" />
@@ -65,7 +68,7 @@
     <div class="form-group row">
       <div class="col-sm-2 col-form-label">Items</div>
     </div>
-    <div class="row">
+    <div class="form-group row">
       <div class="col-md-12">
         <p-table #dt [columns]="cols" [value]="model.sods" [paginator]="true" [rows]="10">
           <ng-template pTemplate="header" let-columns>
@@ -198,4 +201,5 @@
       </div>
     </div>
   </form>
-</p-panel>
+</nb-card-body>
+</nb-card>

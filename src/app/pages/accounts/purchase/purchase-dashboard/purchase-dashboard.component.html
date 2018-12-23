@@ -1,63 +1,201 @@
+<div class="form-group row">
+    <div class="col-md-12">
+      <h4>Purchase</h4>
+      </div>
+</div>
 <nb-card>
-  <nb-card-header>
-    Purchase
-  </nb-card-header>
-  <nb-card-body>
-    <div class="form-group row">
-      <div style="padding: 5px">
-        <div class="dropdown btn-group" ngbDropdown>
-          <button type="button" class="btn btn-primary">New</button>
-          <button type="button" class="btn btn-primary" ngbDropdownToggle></button>
-          <ul class="dropdown-menu" ngbDropdownMenu>
-            <li class="dropdown-item" (click)="onAddNew('bill')">Bill</li>
-            <li class="dropdown-item" (click)="onAddNew('po')">Purchase Order</li>
-          </ul>
-        </div>
-      </div>
-      <div style="padding: 5px">
-        <button type="button" class="btn btn-primary">
-          <i class="nb-home"></i>
-          <span>import</span>
-        </button>
-      </div>
-      <div style="padding: 5px">
-        <button type="button" class="btn btn-primary">
-          <i class="nb-home"></i>
-          <span>Search</span>
-        </button>
-      </div>
-    </div>
+  <nb-card-body> 
+      <div class="form-group row">
+          <div class="col-sm-12" style="text-align:right">
+              <button pButton type="button" class="ui-button-secondary"    label="Import Transaction" ></button>
+              <p-splitButton label="New Transaction" icon="pi pi-file" [model]="items" styleClass="ui-button-success"></p-splitButton>
+          </div>
+        </div>       
     <div class="form-group row">
       <div class="col-md-12"> <b>Bills</b> | <a href="#">Paid</a> | <a href="#">See all</a></div>
     </div>
     <div class="form-group row">
-      <div class="col-md-12">
-        <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
-          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'bill',stage:'1'}">Draft
-            <br> {{model.nDraft}}</a>
-          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'bill',stage:'2'}">Awaiting
-            Approval <br>{{model.nAwApproval}}</a>
-          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'bill',stage:'3'}">Awaiting
-            Payment <br>{{model.nAwPayment}}</a>
-          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'bill',stage:'4'}">
-            Overdue <br> {{model.nOverdue}} </a>
+        <div class="col-sm-3">
+          <div class="card widget-circle-progress">
+            <div class="card-body">
+              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'1'}">
+                <h4 class="text-pale-sky">Draft</h4>
+                <div class="row align-items-center">
+                  <div class="col-lg-5 col-7">
+                    <div class="circle text-center">
+                      <div><canvas width="110" height="110" id="myCanvas"></canvas></div>
+                      <span class="abs-text text-dpink">({{model.nDraft}})</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-7 col-5 pl-2">
+                    <div>
+                      <h4 class="text-dpink"><span>{{model.totalAmtDraft | currency:environment.currency}}</span></h4>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card widget-circle-progress">
+            <div class="card-body">
+              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'2'}">
+                <h4 class="text-pale-sky">Wait Approval</h4>
+                <div class="row align-items-center">
+                  <div class="col-lg-5 col-7">
+                    <div class="circle text-center">
+                      <div><canvas width="110" height="110"></canvas></div>
+                      <span class="abs-text text-dpink">({{model.nAwApproval}})</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-7 col-5 pl-2">
+                    <div>
+                      <h4 class="text-dpink"><span>{{model.totalAmtAwApproval | currency:environment.currency}} </span></h4>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card widget-circle-progress">
+            <div class="card-body">
+              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'3'}">
+                <h4 class="text-pale-sky">Wait Payment</h4>
+                <div class="row align-items-center">
+                  <div class="col-lg-5 col-7">
+                    <div class="circle text-center">
+                      <div><canvas width="110" height="110"></canvas></div>
+                      <span class="abs-text text-lgreen">({{model.nAwPayment}})</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-7 col-5 pl-2">
+                    <div>
+                      <h4 class="text-lgreen"><span>{{model.totalAmtAwPayment | currency:environment.currency}} </span></h4>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card widget-circle-progress">
+            <div class="card-body">
+              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'I',stage:'5'}">
+                <h4 class="text-pale-sky">Overdue</h4>
+                <div class="row align-items-center">
+                  <div class="col-lg-5 col-7">
+                    <div class="circle text-center">
+                      <div><canvas width="110" height="110"></canvas></div>
+                      <span class="abs-text text-warning">({{model.nOverdue}})</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-7 col-5 pl-2">
+                    <div>
+                      <h4 class="text-warning"><span>{{model.totalAmtOverdue | currency:environment.currency}} </span></h4>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
     <div class="form-group row">
       <div class="col-md-12"> <b>Purchase Orders</b> | <a href="#">Billed</a> | <a href="#">See all</a></div>
     </div>
     <div class="form-group row">
-      <div class="col-md-12">
-        <div class="btn-group btn-group-toggle btn-outline-toggle-group btn-group-full-width btn-toggle-radio-group ng-untouched ng-pristine ng-valid">
-          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'po',stage:'1'}">Draft
-            <br> {{model.nDraft}}</a>
-          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'po',stage:'2'}">Awaiting Approval
-            <br>{{model.nAwApproval}}</a>
-          <a [routerLink]="['../../purchases/purchase-search']" class="btn btn-outline-primary" [queryParams]="{type: 'po',stage:'3'}">Approved
-            <br>{{model.nAwPayment}}</a>
+        <div class="col-sm-3">
+          <div class="card widget-circle-progress">
+            <div class="card-body">
+              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'1'}">
+                <h4 class="text-pale-sky">Draft</h4>
+                <div class="row align-items-center">
+                  <div class="col-lg-5 col-7">
+                    <div class="circle text-center">
+                      <div><canvas width="110" height="110" id="myCanvas"></canvas></div>
+                      <span class="abs-text text-dpink">({{model.nDraftQ}})</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-7 col-5 pl-2">
+                    <div>
+                      <h4 class="text-dpink"><span>{{model.totalAmtDraftQ | currency:environment.currency}}</span></h4>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card widget-circle-progress">
+            <div class="card-body">
+              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'2'}">
+                <h4 class="text-pale-sky">Wait Approval</h4>
+                <div class="row align-items-center">
+                  <div class="col-lg-5 col-7">
+                    <div class="circle text-center">
+                      <div><canvas width="110" height="110"></canvas></div>
+                      <span class="abs-text text-dpink">({{model.nAwApprovalQ}})</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-7 col-5 pl-2">
+                    <div>
+                      <h4 class="text-dpink"><span>{{model.totalAmtAwApprovalQ | currency:environment.currency}} </span></h4>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card widget-circle-progress">
+            <div class="card-body">
+              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'3'}">
+                <h4 class="text-pale-sky">Wait Payment</h4>
+                <div class="row align-items-center">
+                  <div class="col-lg-5 col-7">
+                    <div class="circle text-center">
+                      <div><canvas width="110" height="110"></canvas></div>
+                      <span class="abs-text text-lgreen">({{model.nAwPaymentQ}})</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-7 col-5 pl-2">
+                    <div>
+                      <h4 class="text-lgreen"><span>{{model.totalAmtAwPaymentQ | currency:environment.currency}} </span></h4>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card widget-circle-progress">
+            <div class="card-body">
+              <a [routerLink]="['../../sales/sales-search']" [queryParams]="{type: 'Q',stage:'5'}">
+                <h4 class="text-pale-sky">Overdue</h4>
+                <div class="row align-items-center">
+                  <div class="col-lg-5 col-7">
+                    <div class="circle text-center">
+                      <div><canvas width="110" height="110"></canvas></div>
+                      <span class="abs-text text-warning">({{model.nOverdueQ}})</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-7 col-5 pl-2">
+                    <div>
+                      <h4 class="text-warning"><span>{{model.totalAmtOverdueQ | currency:environment.currency}} </span></h4>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
   </nb-card-body>
 </nb-card>

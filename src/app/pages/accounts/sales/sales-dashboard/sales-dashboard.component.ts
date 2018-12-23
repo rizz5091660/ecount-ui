@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { SalesOrder } from '../../../../class/sales_order';
 import { SalesService } from '../../../../service/sales.service';
 import { Router } from '@angular/router';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
 import { MenuItem } from '../../../../components/common/api';
@@ -17,12 +16,8 @@ export class SalesDashboardComponent implements OnInit {
   invoiceRadio ="all";
   quoteRadio="all";
   observable:Observable<SalesOrder>;
-  model:SalesOrder;
-  ngbDateStruct: NgbDateStruct;
-  date: {year: number, month: number};
+  model:SalesOrder; 
   environment = environment;
-  countries: any[];
-  selectedCountry: any;
   items: MenuItem[];
 
   constructor(private service:SalesService,private router: Router,private calendar: NgbCalendar) { }
@@ -42,10 +37,6 @@ export class SalesDashboardComponent implements OnInit {
     ];
     this.model = new SalesOrder();
     this.loadDashboard();
-  }
-
-  selectToday() {
-    this.ngbDateStruct = this.calendar.getToday();
   }
 
   onSelectTab(type,stage){

@@ -13,5 +13,4 @@ export class SalesOrderDetail extends Model{
     invDD:SelectItem;
     coaDD:SelectItem;
     taxDD:SelectItem;
-
 }

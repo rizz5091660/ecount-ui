@@ -1,7 +1,10 @@
-<p-panel>
-  <p-header>
-    <label class="col-form-label">Chart of Account</label>
-  </p-header>
+<div class="form-group row">
+    <div class="col-md-12">
+      <h4>Accounting</h4>
+      </div>
+</div>
+<nb-card>
+  <nb-card-body>
   <p-confirmDialog></p-confirmDialog>
   <p-messages [(value)]="msgs"></p-messages>
   <div class="form-group row">
@@ -49,7 +52,8 @@
       </p-table>
     </div>
   </div>
-</p-panel>
+</nb-card-body>
+</nb-card>
 <p-dialog header="Chat of Accout" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="200"
   [minY]="70" [maximizable]="true" [baseZIndex]="10000">
   <div class="row">

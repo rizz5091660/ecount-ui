@@ -15,11 +15,8 @@ import { SelectItem } from '../../../class/selectitem';
   styleUrls: ['./supplier_list.component.scss']
 })
 export class SupplierListComponent implements OnInit {
-  listObservable: Observable<CustomerSupplier[]>;
-  modelObs: Observable<CustomerSupplier>;
   model: CustomerSupplier = new CustomerSupplier();
   custSupps: CustomerSupplier[] = [];
-  httpRespObservable: Observable<HttpResponseWS>;
   selectedItem: SelectItem = new SelectItem();
   countTypes: SelectItem[];
   msgs: Message[] = [];
@@ -43,16 +40,16 @@ export class SupplierListComponent implements OnInit {
   }
 
   init() {
-    this.modelObs = this.supplierService.init();
-    this.modelObs.subscribe((obs) => {
+    let modelObs: Observable<CustomerSupplier> = this.supplierService.init();
+    modelObs.subscribe((obs) => {
       this.custSupps = obs.custSupps;
       this.countTypes = obs.countTypes;
     })
   }
   
   loadContacts() {
-    this.listObservable = this.supplierService.getSupplierAll(this.selectedItem.value);
-    this.listObservable.subscribe((listObservable) => {
+    let listObservable: Observable<CustomerSupplier[]> = this.supplierService.getSupplierAll(this.selectedItem.value);
+    listObservable.subscribe((listObservable) => {
       this.custSupps = listObservable;
     })
   }
@@ -74,36 +71,32 @@ export class SupplierListComponent implements OnInit {
     }
   }
   onCreate() {
-    this.httpRespObservable = this.supplierService.create(this.model);
-    this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.onProcessSuccessResponse(httpRespObservable, 'Create');
-    },
-      error => {
-        this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
-      });
+    let httpRespObservable: Observable<HttpResponseWS> =  this.supplierService.create(this.model);
+    this.onProcessResponse(httpRespObservable,"Create");
   }
 
   onUpdate() {
-    this.httpRespObservable = this.supplierService.update(this.model);
-    this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.onProcessSuccessResponse(httpRespObservable, 'Update');
-    },
-      error => {
-        this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
-      });
+    let httpRespObservable: Observable<HttpResponseWS> = this.supplierService.update(this.model);
+    this.onProcessResponse(httpRespObservable,"Update");
   }
 
-
   onDelete() {
-    this.httpRespObservable = this.supplierService.delete(this.model.id);
-    this.httpRespObservable.subscribe((httpRespObservable) => {
-      this.onProcessSuccessResponse(httpRespObservable, 'Delete');
+    let httpRespObservable: Observable<HttpResponseWS> = this.supplierService.delete(this.model.id);
+    this.onProcessResponse(httpRespObservable,"Delete");
+  }
+
+  onProcessResponse(httpRespObservable: Observable<HttpResponseWS>,type:string){
+    httpRespObservable.subscribe((httpRespObservable) => {
+      this.display = false;
+      this.init();
+      this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully ' + type }];
     },
       error => {
         this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
       }
     );
   }
+
 
   onDeleteConfirm() {
     this.display = false;
@@ -115,14 +108,9 @@ export class SupplierListComponent implements OnInit {
         this.onDelete();
       },
       reject: () => {
-        // this.msgs = [{ severity: 'error', summary: 'Rejected', detail: 'You have rejected' }];
+        this.display = false;
       }
     });
   }
 
-  onProcessSuccessResponse(httpRespObservable: HttpResponseWS, type: string) {
-    this.display = false;
-    this.init();
-    this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully ' + type }];
-  }
 }

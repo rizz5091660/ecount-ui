@@ -17,7 +17,7 @@ export const environment = {
   get_customer_supplier_init_path: ecount_ws_url  + "/contact/init",
  
   get_customer_supplier_byid :ecount_ws_url + "/contact/get?",
-  delete_customer_supplier : ecount_ws_url + "/contact/delete",
+  delete_customer_supplier : ecount_ws_url + "/contact/delete?",
 
   get_coa_init_path: ecount_ws_url  + "/coa/init",
   create_coa_path: ecount_ws_url + "/coa/create",
@@ -36,12 +36,11 @@ export const environment = {
   create_po_path: ecount_ws_url  + "/po/create",
   init_po_path: ecount_ws_url + "/po/init",
 
-
   init_inv_path: ecount_ws_url + "/inv/init",
   get_all_iventory_path: ecount_ws_url  + "/inv/getall?",
-
-
-  
+  create_inv_path: ecount_ws_url  + "/inv/create",
+  update_inv_path: ecount_ws_url  + "/inv/update",
+  delete_inv_path: ecount_ws_url  + "/inv/delete?",
 
   currency:"USD",
  
