@@ -15,7 +15,7 @@ import { MenuItem } from '../../../../components/common/api';
 export class SalesDashboardComponent implements OnInit {
   invoiceRadio ="all";
   quoteRadio="all";
-  observable:Observable<SalesOrder>;
+  observable:Observable<SalesOrder>; 
   model:SalesOrder; 
   environment = environment;
   items: MenuItem[];

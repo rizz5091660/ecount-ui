@@ -1,31 +1,25 @@
 import { Model } from "./model";
-import { SelectItem } from "../components/common/api";
+import { SelectItem, SelectItemGroup } from "../components/common/api";
+import { AccountType } from "./account_type";
+import { CoaBalance } from "./coa_balance";
+import { AccountDetailType } from "./account_detail_type";
 
 export class Coa{
-    id:number;
+    id:number=0;
     name:string;
     description:string; 
-    l1AccountType:number;
-    l1AccountTypeDD:SelectItem;
-    l2Branch:number;
-    l3CustSupp:number;
-    l3CustSuppDD:SelectItem;
-    l4Division:number;
-    l4DivisionDD:SelectItem;
-    l5Custom:number;
-    l5CustomDD:SelectItem;
     tax:number;
     taxDD:SelectItem;
     taxName:string; 
     coaCd:string;
-    favorite:string;
-    l1AccountTypName:string;
-    l1AccountTypGrp:string
     taxes: SelectItem[];
     accountTypes: SelectItem[];
-    branches: SelectItem[];
-    custSupps: SelectItem[];
-    divisions: SelectItem[];
-    customFields1: SelectItem[];
+    accountDetailTypes: SelectItem[];
     coas:Coa[];
+    accountTypeId:number;
+    accountDetTypeId:number;
+    sigs:SelectItemGroup[];
+    coaBalance:CoaBalance;
+    accountType:AccountType=new AccountType();
+    accountDetailType:AccountDetailType=new AccountDetailType();
 }

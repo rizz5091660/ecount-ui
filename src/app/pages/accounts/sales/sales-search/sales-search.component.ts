@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap, map } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 import { SalesOrder } from '../../../../class/sales_order';
 import { Observable } from 'rxjs';
 import { SalesService } from '../../../../service/sales.service';
 import { HttpResponseWS } from '../../../../class/http_response_ws';
-import { LocalDataSource } from 'ng2-smart-table';
-import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from '../../../../../environments/environment';
 import { MenuItem } from '../../../../components/common/menuitem';
 
 @Component({
@@ -18,95 +17,79 @@ export class SalesSearchComponent implements OnInit {
   type: string;
   stageId: number;
   saless: SalesOrder[];
-  selectedSaless: SalesOrder[]=[];
+  selectedSaless: SalesOrder[] = [];
   salessUpdId: number[];
   sales: SalesOrder;
-  obsSo: Observable<SalesOrder>;
   obsSos: Observable<SalesOrder[]>;
   obString: Observable<String>;
   obsHttpWS: Observable<HttpResponseWS>;
   httpResponseWS: HttpResponseWS;
-
-  cols:any[]  ;
+  model: SalesOrder;
+  environment = environment;
+  cols: any[];
+  stages:any[];
+  stage: any;
+  items:MenuItem[];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private salesService: SalesService
   ) { }
-
-
   tabs = [];
   ngOnInit() {
-    this.tabs = [{ title: 'All', active: false }, { title: 'Draft', active: false }, { title: 'Awaiting Approval', active: false }, { title: 'Awaiting Payment', active: false }, { title: 'Paid', active: false }];
-    this.obString = this.route.queryParamMap.pipe(map(params => params.get('type')));
-    this.obString.subscribe((obString) => {
-      this.type = obString.toString();
-    });
-    this.obString = this.route.queryParamMap.pipe(map(params => params.get('stage')));
-    this.obString.subscribe((obString) => {
-      this.stageId = parseInt(obString.toString());
-    });
+    this.initObject();
+    this.initData(0,"I");
+  }
 
+  initObject(){
+    this.tabs = [{ title: 'Invoice', active: true }, { title: 'Quotation', active: false }];
+    this.model = new SalesOrder();
+    this.items = [
+      {label: 'Invoice', icon: 'pi pi-file', command: () => {  /* this.onAddNew('I'); */} },
+      {label: 'Quotation', icon: 'pi pi-refresh', command: () => {/*this.onAddNew('Q'); */}},
+    ];
     this.cols = [
       { field: 'soCode', header: 'Number', type: 'txt' },
-      { field: 'referrence', header: 'Referrence', type: 'txt' },
       { field: 'custName', header: 'To', type: 'txt' },
       { field: 'trxnDate', header: 'Date', type: 'txt' },
       { field: 'estDeliveryDate', header: 'Due Date', type: 'txt' },
       { field: 'totalAmount', header: 'Ammount', type: 'txt' }
     ]
-
-    this.loadSearch(this.stageId, this.type);
+    this.stages =[
+      {name: 'All', stage:0 },
+      {name: 'Draft',stage:1 },
+      {name: 'Await Approval',stage:2 },
+      {name: 'Await Payment', stage:3 },
+      {name: 'Paid', stage:4 },
+    ];
   }
 
-
-  loadSearch(stageId: number,type: string) {
+  initData(stageId: number, type: string) {
     this.obsSos = this.salesService.getSalesOrderAll(stageId, type);
     this.obsSos.subscribe((obsSos) => {
       this.saless = obsSos;
     });
-    for (var i = 0; i < this.tabs.length; i++) {
-      if (stageId == i) {
-        this.tabs[i].active = true;
-      }
+
+    let obsSo: Observable<SalesOrder> = this.salesService.getSalesOrderByStage();
+     obsSo.subscribe((observable) => {
+      this.model = observable;
+       //riztemp
+    this.model.totalAmtPaid=0;
     }
+    )
   }
-
-  constuctTableColumns(stageId:number){
-    if(stageId==0){
-      this.cols = [
-        { field: 'soCode', header: 'Number', type: 'txt' },
-        { field: 'referrence', header: 'Referrence', type: 'txt' },
-        { field: 'custName', header: 'To', type: 'txt' },
-        { field: 'trxnDate', header: 'Date', type: 'txt' },
-        { field: 'estDeliveryDate', header: 'Due Date', type: 'txt' },
-        { field: 'totalAmount', header: 'Ammount', type: 'txt' },
-        { field: 'stage.name', header: 'Stage', type: 'txt' },
-      ];
-    }else{
-      this.cols = [
-        { field: 'soCode', header: 'Number', type: 'txt' },
-        { field: 'referrence', header: 'Referrence', type: 'txt' },
-        { field: 'custName', header: 'To', type: 'txt' },
-        { field: 'trxnDate', header: 'Date', type: 'txt' },
-        { field: 'estDeliveryDate', header: 'Due Date', type: 'txt' },
-        { field: 'totalAmount', header: 'Ammount', type: 'txt' },
-      ];
-
-    }
-  } 
 
   onUpdateStage(stageId: number) {
     this.salessUpdId = [];
     for (var i = 0; i < this.selectedSaless.length; i++) {
-        this.salessUpdId.push(this.selectedSaless[i].id);
+      this.salessUpdId.push(this.selectedSaless[i].id);
     }
-     this.obsHttpWS = this.salesService.updateSalesOrderStage(this.salessUpdId, stageId);
-     this.obsHttpWS.subscribe((obsHttpWS) => {
-       this.httpResponseWS = obsHttpWS;
-       this.selectedSaless=[];
-       this.loadSearch(this.stageId, this.type);
-     });
+    this.obsHttpWS = this.salesService.updateSalesOrderStage(this.salessUpdId, stageId);
+    this.obsHttpWS.subscribe((obsHttpWS) => {
+      this.httpResponseWS = obsHttpWS;
+      this.selectedSaless = [];
+      this.initData(this.stageId, this.type);
+    });
   }
 
   onDeleteConfirm(event): void {
@@ -123,25 +106,26 @@ export class SalesSearchComponent implements OnInit {
     }
   }
 
-  onCustomAction() {
-    console.log("enter custom action");
-  }
 
   onRowSelected(event: any) {
     let so: SalesOrder = event.data;
     if (so != null) {
       so.selected = event.isSelected;
-    }else{
-      if(event.selected.length==this.saless.length){
-        this.saless.forEach(function(so){
-          so.selected=true;
+    } else {
+      if (event.selected.length == this.saless.length) {
+        this.saless.forEach(function (so) {
+          so.selected = true;
         });
-      }else{
-        this.saless.forEach(function(so){
-          so.selected=false;
+      } else {
+        this.saless.forEach(function (so) {
+          so.selected = false;
         });
       }
     }
+  }
+
+  onStageChange(stage:number,type:string) {
+    this.initData(stage, type);
   }
 
   onTabChange(event: any) {
@@ -160,7 +144,6 @@ export class SalesSearchComponent implements OnInit {
     else if (event.tabTitle == "Paid") {
       this.stageId = 4;
     }
-    this.constuctTableColumns(this.stageId);
-    this.loadSearch(this.stageId,this.type);
+  //  this.initData(this.stageId, this.type);
   }
 }

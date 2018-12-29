@@ -43,5 +43,6 @@ export const environment = {
   delete_inv_path: ecount_ws_url  + "/inv/delete?",
 
   currency:"USD",
+  date:"short",
  
 };

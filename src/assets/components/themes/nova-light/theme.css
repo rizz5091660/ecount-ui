@@ -1250,7 +1250,7 @@ body .ui-togglebutton.ui-state-active.ui-state-focus .ui-button-icon-left {
   color: #ffffff;
 }
 body .ui-selectbutton .ui-button {
-  background-color: #dadada;
+  background-color: #ffffff;
   border: 1px solid #dadada;
   color: #333333;
   -moz-transition: background-color 0.2s, box-shadow 0.2s;
@@ -1279,24 +1279,24 @@ body .ui-selectbutton .ui-button:not(.ui-state-disabled):not(.ui-state-active).u
   color: #212121;
 }
 body .ui-selectbutton .ui-button.ui-state-active {
-  background-color: #007ad9;
-  border-color: #007ad9;
+  background-color: #c8c8c8;
+  border-color: #c8c8c8;
   color: #ffffff;
 }
 body .ui-selectbutton .ui-button.ui-state-active .ui-button-icon-left {
   color: #ffffff;
 }
 body .ui-selectbutton .ui-button.ui-state-active:not(.ui-state-disabled):hover {
-  background-color: #116fbf;
-  border-color: #116fbf;
+  background-color: #c8c8c8;
+  border-color:#c8c8c8;
   color: #ffffff;
 }
 body .ui-selectbutton .ui-button.ui-state-active:not(.ui-state-disabled):hover .ui-button-icon-left {
   color: #ffffff;
 }
 body .ui-selectbutton .ui-button.ui-state-active.ui-state-focus {
-  background-color: #005b9f;
-  border-color: #005b9f;
+  background-color: #c8c8c8;
+  border-color:#c8c8c8;
   color: #ffffff;
 }
 body .ui-selectbutton .ui-button.ui-state-active.ui-state-focus .ui-button-icon-left {
@@ -1338,12 +1338,12 @@ body .ui-splitbutton.ui-buttonset .ui-splitbutton-menubutton .ui-button-icon-lef
 body .ui-button.ui-state-default.ui-button-secondary, body .ui-buttonset.ui-button-secondary > .ui-button.ui-state-default {
   color: #333333;
   background-color: #f4f4f4;
-  border: 1px solid #f4f4f4;
+  border: 1px solid  #333333;
 }
 body .ui-button.ui-state-default.ui-button-secondary:enabled:hover, body .ui-buttonset.ui-button-secondary > .ui-button.ui-state-default:enabled:hover {
   background-color: #c8c8c8;
   color: #333333;
-  border-color: #c8c8c8;
+  border-color:  #333333;
 }
 body .ui-button.ui-state-default.ui-button-secondary:enabled:focus, body .ui-buttonset.ui-button-secondary > .ui-button.ui-state-default:enabled:focus {
   -webkit-box-shadow: 0 0 0 0.2em #8dcdff;
