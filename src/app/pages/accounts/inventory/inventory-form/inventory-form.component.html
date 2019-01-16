@@ -1,111 +1,152 @@
-<p-panel>
-  <p-header>
-    <label class="col-form-label">Product & Services</label>
-  </p-header>
-  <p-confirmDialog></p-confirmDialog>
-  <p-messages [(value)]="msgs"></p-messages>
-  <form #invForm="ngForm">
-    <div class="form-group row">
-        <div class="col-sm-6">
+
+<div class="form-group row">
+    <div class="col-md-12">
+      <h4>Products and Services</h4>
+    </div>
+  </div>
+  <nb-card>
+    <nb-card-body>
+        <p-scrollPanel [style]="{width: '100%', height: '500px'}">
+        <p-confirmDialog></p-confirmDialog>
+        <p-messages [(value)]="msgs"></p-messages>    
+      <form #invForm="ngForm">
+        <div class="form-group row">
+          <div class="col-sm-6">
             <label for="type" class="col-form-label">Type</label><br />
-            <p-selectButton [options]="types" [(ngModel)]="model.type" name="model.type" (onChange)="onChangeOption($event)"></p-selectButton>
+            <p-selectButton [options]="types" [(ngModel)]="model.type" name="model.type" (change)="onChangeOption($event)"></p-selectButton>
+          </div>
+          <div class="col-sm-6"> </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-2">
+            <label for="code" class="col-form-label">Code</label><br />
+            <input type="text" id="code" pInputText [(ngModel)]="model.code" name="model.code" style="width:100%" />
+          </div>
+
+          <div class="col-sm-4">
+            <label for="name" class="col-form-label">Name</label><br />
+            <input type="text" id="name" pInputText [(ngModel)]="model.name" name="model.name" style="width:100%" />
           </div>
           <div class="col-sm-6">
-
+            <label for="street" class="col-form-label">Inventory COA</label><br />
+            <p-dropdown [options]="coas" [(ngModel)]="model.coaInv.id" [style]="{'width':'100%'}" filter="true" name="model.coaInv.id">
+              <ng-template let-coa pTemplate="selectedItem">
+                <span>{{coa.label}}</span>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                  <div style="font-size:14px;float:left;margin-top:4px">{{item.label}}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
           </div>
-      <div class="col-sm-6">
-        <label for="name" class="col-form-label">Name</label><br />
-        <input type="text" id="name" pInputText [(ngModel)]="model.name" name="model.name" style="width:100%"  />
-      </div>
-      <div class="col-sm-6">
-        <label for="code" class="col-form-label">Code</label><br />
-        <input type="text" id="code" pInputText [(ngModel)]="model.code" name="model.code" style="width:100%"  />
-      </div>
-      <div class="col-sm-6" *ngIf="model.type=='I'">
-          <label for="name" class="col-form-label">Initial Quantity</label><br />
-          <input type="number" id="name" pInputText [(ngModel)]="model.invBalance.qty" name="model.invBalance.qty" style="width:100%"  />
-        </div>
-        <div class="col-sm-6" *ngIf="model.type=='I'">
-          <label for="minQty" class="col-form-label">Min Quantity</label><br />
-          <input type="number" id="minQty" pInputText [(ngModel)]="model.invBalance.minQty" name="model.invBalance.minQty" style="width:100%" />
-        </div>
-      <div class="col-sm-6">
-        <label for="salesFlag" class="col-form-label">Sales Information</label><br />
-        <p-checkbox [(ngModel)]="model.salesFlag" name="model.salesFlag" binary="true"></p-checkbox> I sell this
-        product/service to my customers.
-      </div>
-      <div class="col-sm-6">
-        <label for="unitPriceSales" class="col-form-label">Price</label><br />
-        <input type="text" id="unitPriceSales" pInputText [(ngModel)]="model.unitPriceSales" name="model.unitPriceSales"
-          style="width:100%" />
-      </div>
 
-      <div class="col-sm-6">
-        <label for="street" class="col-form-label">Sales COA</label><br />
-        <p-dropdown [options]="model.coas" [(ngModel)]="model.coaSales.id" [style]="{'width':'100%'}" filter="true"
-          name="model.coaSales.id">
-          <ng-template let-coa pTemplate="selectedItem">
-            <span>{{coa.label}}</span>
-          </ng-template>
-          <ng-template let-item pTemplate="item">
-            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-              <div style="font-size:14px;float:left;margin-top:4px">{{item.label}}</div>
-            </div>
-          </ng-template>
-        </p-dropdown>
-      </div>
-      <div class="col-sm-6">
-        <label for="street" class="col-form-label">Sales Tax</label><br />
-        <p-dropdown [options]="model.taxes" [(ngModel)]="model.taxSales.id" [style]="{'width':'100%'}" filter="true"
-          name="model.taxSales.id">
-          <ng-template let-tax pTemplate="selectedItem">
-            <span>{{tax.label}}</span>
-          </ng-template>
-          <ng-template let-item pTemplate="item">
-            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-              <div style="font-size:14px;float:left;margin-top:4px">{{item.label}}</div>
-            </div>
-          </ng-template>
-        </p-dropdown>
-      </div>
-      <div class="col-sm-6">
-        <label for="purchaseFlag" class="col-form-label">Purchase Information</label><br />
-        <p-checkbox [(ngModel)]="model.purchaseFlag" name="model.purchaseFlag" binary="true"></p-checkbox> I purchase
-        this product/service to my customers.
-      </div>
-      <div class="col-sm-6">
-        <label for="unitPricePurchase" class="col-form-label">Price</label><br />
-        <input type="text" id="unitPricePurchase" pInputText [(ngModel)]="model.unitPricePurchase" name="model.unitPricePurchase"
-          style="width:100%" />
-      </div>
-      <div class="col-sm-6">
-        <label for="coaPurchase" class="col-form-label">Purchase COA</label><br />
-        <p-dropdown [options]="model.coas" [(ngModel)]="model.coaPurchase.id" [style]="{'width':'100%'}" filter="true"
-          name="model.coaPurchase.id">
-          <ng-template let-coa pTemplate="selectedItem">
-            <span>{{coa.label}}</span>
-          </ng-template>
-          <ng-template let-item pTemplate="item">
-            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-              <div style="font-size:14px;float:left;margin-top:4px">{{item.label}}</div>
-            </div>
-          </ng-template>
-        </p-dropdown>
-      </div>
-      <div class="col-sm-6">
-        <label for="taxPurchase" class="col-form-label">Purchase Tax</label><br />
-        <p-dropdown [options]="model.coas" [(ngModel)]="model.taxPurchase.id" [style]="{'width':'100%'}" filter="true"
-          name="model.taxPurchase.id">
-          <ng-template let-coa pTemplate="selectedItem">
-            <span>{{coa.label}}</span>
-          </ng-template>
-          <ng-template let-item pTemplate="item">
-            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-              <div style="font-size:14px;float:left;margin-top:4px">{{item.label}}</div>
-            </div>
-          </ng-template>
-        </p-dropdown>
-      </div>
-    </div>
-  </form>
-</p-panel>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-6" *ngIf="model.type=='I'">
+            <label for="name" class="col-form-label">Initial Quantity</label><br />
+            <input type="number" id="name" pInputText [(ngModel)]="model.invBalance.qty" name="model.invBalance.qty"
+              style="width:100%" />
+          </div>
+          <div class="col-sm-6" *ngIf="model.type=='I'">
+            <label for="minQty" class="col-form-label">Min Quantity</label><br />
+            <input type="number" id="minQty" pInputText [(ngModel)]="model.invBalance.minQty" name="model.invBalance.minQty"
+              style="width:100%" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <label for="salesFlag" class="col-form-label">Sales Information</label><br />
+            <p-checkbox [(ngModel)]="model.salesFlag" name="model.salesFlag" binary="true"></p-checkbox> I sell this
+            product/service to my customers.
+          </div>
+          <div class="col-sm-6">
+            <label for="unitPriceSales" class="col-form-label">Price</label><br />
+            <input type="text" id="unitPriceSales" pInputText [(ngModel)]="model.unitPriceSales" name="model.unitPriceSales"
+              style="width:100%" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <label for="street" class="col-form-label">Sales COA</label><br />
+            <p-dropdown [options]="coas" [(ngModel)]="model.coaSales.id" [style]="{'width':'100%'}" filter="true"
+              name="model.coaSales.id">
+              <ng-template let-coa pTemplate="selectedItem">
+                <span>{{coa.label}}</span>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                  <div style="font-size:14px;float:left;margin-top:4px">{{item.label}}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+          <div class="col-sm-6">
+            <label for="street" class="col-form-label">Sales Tax</label><br />
+            <p-dropdown [options]="taxes" [(ngModel)]="model.taxSales.id" [style]="{'width':'100%'}" filter="true"
+              name="model.taxSales.id">
+              <ng-template let-tax pTemplate="selectedItem">
+                <span>{{tax.label}}</span>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                  <div style="font-size:14px;float:left;margin-top:4px">{{item.label}}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <label for="purchaseFlag" class="col-form-label">Purchase Information</label><br />
+            <p-checkbox [(ngModel)]="model.purchaseFlag" name="model.purchaseFlag" binary="true"></p-checkbox> I
+            purchase
+            this product/service to my customers.
+          </div>
+          <div class="col-sm-6">
+            <label for="unitPricePurchase" class="col-form-label">Price</label><br />
+            <input type="text" id="unitPricePurchase" pInputText [(ngModel)]="model.unitPricePurchase" name="model.unitPricePurchase"
+              style="width:100%" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <label for="coaPurchase" class="col-form-label">Purchase COA</label><br />
+            <p-dropdown [options]="coas" [(ngModel)]="model.coaPurchase.id" [style]="{'width':'100%'}" filter="true"
+              name="model.coaPurchase.id">
+              <ng-template let-coa pTemplate="selectedItem">
+                <span>{{coa.label}}</span>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                  <div style="font-size:14px;float:left;margin-top:4px">{{item.label}}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+          <div class="col-sm-6">
+            <label for="taxPurchase" class="col-form-label">Purchase Tax</label><br />
+            <p-dropdown [options]="taxes" [(ngModel)]="model.taxPurchase.id" [style]="{'width':'100%'}" filter="true"
+              name="model.taxPurchase.id">
+              <ng-template let-coa pTemplate="selectedItem">
+                <span>{{coa.label}}</span>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                  <div style="font-size:14px;float:left;margin-top:4px">{{item.label}}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-12" style="text-align:right">
+            <p-button *ngIf="model.id > 0" icon="pi pi-trash" (click)="onDeleteConfirm()" label="Delete" styleClass="ui-button-danger"></p-button>
+            <p-button *ngIf="model.id==null" (click)="onCancel()" label="Cancel" styleClass="ui-button-secondary"></p-button>
+            <p-button icon="pi pi-check" label="Save" (onClick)="onSave()" styleClass="ui-button-success"></p-button>
+          </div>
+        </div>
+      </form>
+    </p-scrollPanel>
+    </nb-card-body>
+  </nb-card>

@@ -4,6 +4,7 @@
   </div>
   <div class="col-sm-8" style="text-align:right">
       <button pButton type="button" class="ui-button-secondary"  label="Run Report" ></button>
+      <button type="button" class="ui-button-success" pButton icon="pi pi-plus" label="New" (click)="onAdd()"></button>
   </div>
 </div>
 <nb-card>
@@ -34,12 +35,6 @@
               <td>{{coa.taxName}} </td>
             </tr>
           </ng-template>
-          <ng-template pTemplate="footer" let-columns>
-            <tr>
-              <td colspan="5" align="center"> <button type="button" class="ui-button-secondary ui-button-rounded"
-                  pButton icon="pi pi-plus" label="Add a coa" (click)="onAdd()"></button></td>
-            </tr>
-          </ng-template>
         </p-table>
       </div>
     </div>
@@ -50,15 +45,15 @@
           <div class="col-md-12">
             <h4>Accounting</h4>
           </div>
-        </div>
+        </div> 
   <div class="row">
     <div class="col-md-12">
       <form>
         <div class="form-group row">
           <div class="col-sm-6">
             <label for="model.accountType.id" class="col-form-label">Account Type</label><br />
-            <p-dropdown [options]="accTypeDD" [(ngModel)]="model.accountType.id" [style]="{'width':'100%'}" filter="true"
-              name="model.accountType.id">
+            <p-dropdown [options]="accTypeDD" #accTypDD [(ngModel)]="model.accountType.id" [style]="{'width':'100%'}" filter="true"
+              name="model.accountType.id" (onChange)="onChangeAccTypeDD(accTypDD)">
               <ng-template let-item pTemplate="selectedItem">
                 <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
               </ng-template>
@@ -95,18 +90,19 @@
             <input type="text" pInputText [(ngModel)]="model.description" name="model.description" style="width:100%">
           </div>
         </div>
-        <div class="form-group row" *ngIf="model.id==0">
+        <div class="form-group row">
           <div class="col-sm-6">
             <div class="form-group row">
               <div class="col-sm-6">
-                <label for="model.coaBalance.balance" class="col-form-label">Balance</label><br />
-                <input type="text" pInputText [(ngModel)]="model.coaBalance.balance" name="model.coaBalance.balance"
-                  style="width:100%">
+                <label for="model.balance" class="col-form-label">Balance</label><br />
+                <input *ngIf="model.id==0" type="text" pInputText [(ngModel)]="model.balance" name="model.coaBalance.balance" style="width:100%">
+             
               </div>
               <div class="col-sm-6">
                 <div class="col-sm-6">
-                  <label for="model.coaBalance.asOf" class="col-form-label">As of</label><br />
-                  <p-calendar [(ngModel)]="model.coaBalance.asOf" name="model.coaBalance.asOf"></p-calendar>
+                  <label for="model.asOf" class="col-form-label">As of</label><br />
+                  <p-calendar *ngIf="model.id==0" [(ngModel)]="model.asOf" name="model.asOf"></p-calendar>
+                 
                 </div>
               </div>
             </div>

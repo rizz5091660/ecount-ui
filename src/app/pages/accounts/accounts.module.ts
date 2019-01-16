@@ -23,6 +23,7 @@ import { CheckboxModule } from '../../components/checkbox/checkbox';
 import { SelectButtonModule } from '../../components/selectbutton/selectbutton';
 import { SidebarModule } from '../../components/sidebar/sidebar';
 import { ConfirmDialogModule } from '../../components/confirmdialog/confirmdialog';
+import { ScrollPanelModule } from '../../components/scrollpanel/scrollpanel';
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import { ConfirmDialogModule } from '../../components/confirmdialog/confirmdialo
     CommonModule,AccountsRoutingModule,ThemeModule,
     TableModule,DropdownModule,ButtonModule,CalendarModule,InputTextModule,SplitButtonModule,
     MessagesModule,MessageModule,PanelModule,StepsModule,ToolbarModule,InputTextareaModule,
-    DialogModule,CheckboxModule,SelectButtonModule,SidebarModule,ConfirmDialogModule
+    DialogModule,CheckboxModule,SelectButtonModule,SidebarModule,ConfirmDialogModule,ScrollPanelModule
   ],
   providers: [SalesService,PurchaseService,InventoryService,MessageService,ConfirmationService],
   declarations: [...routedComponents],

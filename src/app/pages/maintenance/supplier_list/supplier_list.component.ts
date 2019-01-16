@@ -86,10 +86,12 @@ export class SupplierListComponent implements OnInit {
   }
 
   onProcessResponse(httpRespObservable: Observable<HttpResponseWS>,type:string){
+    let httpResponseWS:HttpResponseWS;
     httpRespObservable.subscribe((httpRespObservable) => {
+      httpResponseWS = httpRespObservable;
       this.display = false;
+      this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: httpResponseWS.message }];
       this.init();
-      this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully ' + type }];
     },
       error => {
         this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];

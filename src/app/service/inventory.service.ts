@@ -19,7 +19,7 @@ export class InventoryService {
   }
 
   create(inventory:Inventory): Observable<HttpResponseWS>{
-    return this.http.post<HttpResponseWS>(environment.create_inv_path,inventory);
+    return this.http.post<HttpResponseWS>(environment.create_inv_path,inventory); 
   }
 
   update(inventory:Inventory): Observable<HttpResponseWS>{

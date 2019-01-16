@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { SalesOrder } from '../../../../class/sales_order';
 import { Observable } from 'rxjs';
 import { SalesService } from '../../../../service/sales.service';
 import { HttpResponseWS } from '../../../../class/http_response_ws';
 import { environment } from '../../../../../environments/environment';
 import { MenuItem } from '../../../../components/common/menuitem';
+import { Stage } from '../../../../class/stage';
+import { Message } from '../../../../components/common/message';
+import { SalesFormComponent } from '../sales-form/sales-form.component';
 
 @Component({
   selector: 'sales-search',
@@ -30,12 +32,17 @@ export class SalesSearchComponent implements OnInit {
   stages:any[];
   stage: any;
   items:MenuItem[];
+  display:boolean;
+  msgs: Message[] = [];
+  tabs =[];
+  @ViewChild(SalesFormComponent)child:SalesFormComponent;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private salesService: SalesService
   ) { }
-  tabs = [];
+
   ngOnInit() {
     this.initObject();
     this.initData(0,"I");
@@ -45,15 +52,15 @@ export class SalesSearchComponent implements OnInit {
     this.tabs = [{ title: 'Invoice', active: true }, { title: 'Quotation', active: false }];
     this.model = new SalesOrder();
     this.items = [
-      {label: 'Invoice', icon: 'pi pi-file', command: () => {  /* this.onAddNew('I'); */} },
-      {label: 'Quotation', icon: 'pi pi-refresh', command: () => {/*this.onAddNew('Q'); */}},
+      {label: 'Invoice', icon: 'pi pi-file', command: () => {  this.onAdd('I'); } },
+      {label: 'Quotation', icon: 'pi pi-refresh', command: () => {this.onAdd('Q');}},
     ];
     this.cols = [
       { field: 'soCode', header: 'Number', type: 'txt' },
       { field: 'custName', header: 'To', type: 'txt' },
       { field: 'trxnDate', header: 'Date', type: 'txt' },
       { field: 'estDeliveryDate', header: 'Due Date', type: 'txt' },
-      { field: 'totalAmount', header: 'Ammount', type: 'txt' }
+      { field: 'totalAmount', header: 'Amount', type: 'txt' }
     ]
     this.stages =[
       {name: 'All', stage:0 },
@@ -79,6 +86,11 @@ export class SalesSearchComponent implements OnInit {
     )
   }
 
+  onAdd(type:string){
+    this.child.ngOnInit();
+    this.display=true;
+    this.type=type;
+  }
   onUpdateStage(stageId: number) {
     this.salessUpdId = [];
     for (var i = 0; i < this.selectedSaless.length; i++) {
@@ -107,8 +119,13 @@ export class SalesSearchComponent implements OnInit {
   }
 
 
-  onRowSelected(event: any) {
-    let so: SalesOrder = event.data;
+  onRowSelect(event: any) {
+   let so:SalesOrder = event.data;
+   this.child.onRowSelect(so);
+   this.display=true;
+
+
+    /*
     if (so != null) {
       so.selected = event.isSelected;
     } else {
@@ -121,7 +138,8 @@ export class SalesSearchComponent implements OnInit {
           so.selected = false;
         });
       }
-    }
+    }*/
+
   }
 
   onStageChange(stage:number,type:string) {
@@ -145,5 +163,10 @@ export class SalesSearchComponent implements OnInit {
       this.stageId = 4;
     }
   //  this.initData(this.stageId, this.type);
+  }
+
+  loadDataHandler(count:number){
+    this.display=false;
+    this.initData(0,'I');
   }
 }

@@ -1,7 +1,11 @@
 <div class="form-group row">
-    <div class="col-md-12">
+    <div class="col-md-4">
       <h4>Contact</h4>
       </div>
+      <div class="col-sm-8" style="text-align:right">
+          <button pButton type="button" class="ui-button-secondary"    label="Import" ></button>
+          <button pButton type="button" class="ui-button-success"  icon="pi pi-plus"  (click)="onAdd()" label="New" ></button> 
+        </div>
 </div>
 <nb-card>
   <nb-card-body>
@@ -46,12 +50,6 @@
             </div>
           </td>
         -->
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="footer" let-columns>
-          <tr>
-            <td colspan="4" align="center"> <button type="button" class="ui-button-secondary ui-button-rounded" pButton
-                icon="pi pi-plus" label="Add a contact" (click)="onAdd()"></button></td>
           </tr>
         </ng-template>
       </p-table>

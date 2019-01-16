@@ -3,8 +3,9 @@ import { Observable } from 'rxjs';
 import { Coa } from '../../../class/coa';
 import { CoaService } from '../../../service/coa.service';
 import { HttpResponseWS } from '../../../class/http_response_ws';
-import { ConfirmationService, Message, SelectItemGroup, SelectItem } from '../../../components/common/api';
+import { ConfirmationService, Message, SelectItemGroup } from '../../../components/common/api';
 import { CoaBalance } from '../../../class/coa_balance';
+import { SelectItem } from '../../../class/selectitem';
 
 @Component({
   selector: 'coa',
@@ -21,6 +22,7 @@ export class CoaComponent implements OnInit {
   cols: any[]; 
   msgs: Message[] = [];
   accTypeDD: SelectItem[];
+  accDetTypeDDAll: SelectItem[];
   accDetTypeDD: SelectItem[];
   
 
@@ -33,7 +35,6 @@ export class CoaComponent implements OnInit {
 
   initObject(){
     this.model = new Coa();
-    this.model.coaBalance = new CoaBalance();
     this.cols = [
       { field: 'accountType.name', header: 'Account', type: 'txt' },
       { field: 'accountDetailType.name', header: 'Detail Account', type: 'txt' },      
@@ -48,25 +49,42 @@ export class CoaComponent implements OnInit {
     observable.subscribe((observable) => {
       this.coas = observable.coas;
       this.accTypeDD = observable.accountTypes;
-      this.accDetTypeDD = observable.accountDetailTypes;
+      this.accDetTypeDDAll = observable.accountDetailTypes;
     })
   }
 
   onAdd(){
     this.display = true;
     this.model = new Coa();
-    this.model.coaBalance = new CoaBalance();
   }
 
   onRowSelect(event){
     let coaTemp:Coa= new Coa();
+    let accDetTypeDDTmp: SelectItem[] = [];
     this.coas.filter(function(coa){
       if(coa.id==event.data.id)
-      coaTemp = coa;
+        coaTemp = coa;
       }
     );
    this.model= coaTemp;
+   this.accDetTypeDDAll.filter(function(accDet){
+    if(accDet.value2==coaTemp.accountType.id)
+        accDetTypeDDTmp.push(accDet);    
+      }
+    );
+   this.accDetTypeDD = accDetTypeDDTmp;
    this.display=true;
+  }
+
+  onChangeAccTypeDD(accTypeDD:any){
+    let accDetTypeDDTmp: SelectItem[]=[];
+    this.accDetTypeDDAll.filter(function(accDet){
+        if(String(accDet.value2)==String(accTypeDD.value)){
+          accDetTypeDDTmp.push(accDet);
+        }
+      }
+    );
+    this.accDetTypeDD= accDetTypeDDTmp;
   }
 
   onSave() {
@@ -90,14 +108,16 @@ export class CoaComponent implements OnInit {
   }
 
   onProcessResponse(httpRespObservable: Observable<HttpResponseWS>, type:string){
+    let httpResponseWS:HttpResponseWS;
     httpRespObservable.subscribe((httpRespObservable) => {
-      this.display=false;
+      httpResponseWS = httpRespObservable;
+      this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: httpResponseWS.message }];
       this.initData();
-      this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully '+type }];
     }, 
     error => {
       this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
     })
+    this.display=false;
   }
 
 

@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../class/inventory';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { InventoryBalance } from '../../../../class/inventory_balance';
-import { Coa } from '../../../../class/coa';
-import { Tax } from '../../../../class/tax';
-import { HttpResponseWS } from '../../../../class/http_response_ws';
 import { SelectItem } from '../../../../components/common/selectitem';
 import { ConfirmationService, Message } from '../../../../components/common/api';
-
+import { InventoryFormComponent } from '../inventory-form/inventory-form.component';
 
 @Component({
   selector: 'inventory-search',
@@ -23,9 +19,9 @@ export class InventorySearchComponent implements OnInit {
   inventories:Inventory[];
   display:boolean;
   types:any[];
-  httpResponseWS:HttpResponseWS;
   coas:SelectItem[];
   taxes:SelectItem[];
+  @ViewChild(InventoryFormComponent)child:InventoryFormComponent;
 
   constructor(private inventoryService:InventoryService,private confirmationService: ConfirmationService, private router:Router) { }
 
@@ -44,31 +40,13 @@ export class InventorySearchComponent implements OnInit {
       {label: 'Non Inventory', value: 'NI', icon: 'fa fa-fw fa-cc-visa'},
       {label: 'Services', value: 'S', icon: 'fa fa-fw fa-cc-mastercard'}
   ];
-    this.initObject();
     this.initData();
   }
-
-  initObject(){
-    this.model = new Inventory();
-    this.model.invBalance= new InventoryBalance();
-    this.model.coaInv = new Coa();
-    this.model.coaSales = new Coa();
-    this.model.taxSales = new Tax();
-    this.model.coaPurchase = new Coa();
-    this.model.taxPurchase = new Tax();   
-  }
-
+  
   initData(){
     let modelObsList:Observable<Inventory[]>=this.inventoryService.getAll();
     modelObsList.subscribe((obs)=>{
       this.inventories=obs;
-     }
-    );
-
-    let modelObs:Observable<Inventory>=this.inventoryService.init();
-     modelObs.subscribe((obs)=>{
-      this.coas = obs.coas;
-      this.taxes = obs.taxes;
      }
     );
   }
@@ -80,68 +58,13 @@ export class InventorySearchComponent implements OnInit {
           invTemp = inv;
       }
     );
-   this.model= invTemp;
+   this.child.onRowSelect(invTemp);
    this.display=true;
   }
 
-  onAdd(){
-  this.initObject();  
-  this.display=true;
+  loadDataHandler(count:number){
+    this.display=false;
+    this.initData();
   }
 
-  onSave(){
-    if(this.model.id>0){
-      this.onUpdate();
-    }else{
-      this.onCreate();
-    }
-  }
-
-  onCreate(){
-    let httpWSObs:Observable<HttpResponseWS>=this.inventoryService.create(this.model);
-    this.onProcessResponse(httpWSObs,"Create");
-  }
-
-  onUpdate(){
-    let httpWSObs:Observable<HttpResponseWS>=this.inventoryService.update(this.model);
-    this.onProcessResponse(httpWSObs,"Update");
-
-  }
-
-  onDelete(){
-    let httpWSObs:Observable<HttpResponseWS>=this.inventoryService.delete(this.model.id);
-    this.onProcessResponse(httpWSObs,"Delete");
-  }
-
-  onDeleteConfirm() {
-    this.display = false;
-    this.confirmationService.confirm({ 
-      message: 'Are you sure that you want to proceed?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.onDelete();
-      },
-      reject: () => {
-        // this.msgs = [{ severity: 'error', summary: 'Rejected', detail: 'You have rejected' }];
-      }
-    });
-  }
-
-  onProcessResponse(httpWSObs:Observable<HttpResponseWS>,type:string){
-    httpWSObs.subscribe((httpWSObs)=>
-    {
-      this.httpResponseWS = httpWSObs;
-      if(type=="Create"){
-        this.model.id=this.httpResponseWS.value;
-      }
-      this.ngOnInit();
-      this.msgs = [{ severity: 'success', summary: 'Confirmed', detail: 'Successfully ' + type }];
-    },
-    error => {
-      this.msgs = [{ severity: 'error', summary: 'Confirmed', detail: 'System Error' }];
-    }
-  );
-  this.display=false;
-  }
 }
