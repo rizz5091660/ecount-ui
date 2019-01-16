@@ -1,8 +1,6 @@
-import { Model } from "./model";
-import { SelectItem, SelectItemGroup } from "../components/common/api";
 import { AccountType } from "./account_type";
-import { CoaBalance } from "./coa_balance";
 import { AccountDetailType } from "./account_detail_type";
+import { SelectItem } from "./selectitem";
 
 export class Coa{
     id:number=0;
@@ -18,8 +16,8 @@ export class Coa{
     coas:Coa[];
     accountTypeId:number;
     accountDetTypeId:number;
-    sigs:SelectItemGroup[];
-    coaBalance:CoaBalance;
+    balance:number;
+    asOf:Date;
     accountType:AccountType=new AccountType();
     accountDetailType:AccountDetailType=new AccountDetailType();
 }
