@@ -150,4 +150,8 @@ export class PurchaseFormComponent implements OnInit {
     }
   }
 
+  onRowSelect(model:PurchaseOrder){
+    this.model = model;
+  }
+
 }

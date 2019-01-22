@@ -1,4 +1,56 @@
-:host /deep/ ng2-smart-table tbody > tr > td:first-child { 
-  padding: 1.25rem;
-  height: 1px;
+.card, .card-body .accordion .card:hover {
+  box-shadow: 2px 3px 10px 0 rgba(119,119,119,.1);
+}
+
+.align-items-center {
+  align-items: center!important;
+}
+
+.widget-circle-progress .circle {
+  position: relative;
+}
+
+.text-center {
+  text-align: center!important;
+}
+
+.widget-circle-progress .circle .abs-text {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  font-size: 3rem;
+  transform: translate(-50%,-50%);
+}
+.color-dpink, .text-dpink {
+  color: #fe60ad;
+}
+
+.widget-campaign h2, .widget-circle-progress h2 {
+  font-size: 3.4rem;
+}
+.color-dpink, .text-dpink {
+  color: #fe60ad;
+}
+h1, h2, h3, h4 {
+  font-weight: 600;
+}
+h2 {
+  line-height: 3.6rem;
+  font-size: 2.4rem;
+}
+.color-pale-sky, .text-pale-sky {
+  color: #6a707e;
+}
+dl, ol, p, ul {
+  margin-bottom: 1rem;
+}
+dl, h1, h2, h3, h4, h5, h6, ol, p, ul {
+  margin-top: 0;
+}
+
+.color-lgreen, .text-lgreen {
+  color: #43e794;
+}
+.text-warning {
+  color: #ffc107!important;
 }

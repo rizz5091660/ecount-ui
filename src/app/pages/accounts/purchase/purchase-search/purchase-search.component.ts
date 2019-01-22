@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap, map } from 'rxjs/operators';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PurchaseOrder } from '../../../../class/purchase_order';
 import { Observable } from 'rxjs';
 import { PurchaseService } from '../../../../service/purchase.service';
 import { HttpResponseWS } from '../../../../class/http_response_ws';
-import { LocalDataSource } from 'ng2-smart-table';
-import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from '../../../../../environments/environment';
+import { MenuItem } from '../../../../components/common/menuitem';
+import { Stage } from '../../../../class/stage';
+import { Message } from '../../../../components/common/message';
+import { PurchaseFormComponent } from '../purchase-form/purchase-form.component';
 
 @Component({
   selector: 'purchase-search',
@@ -17,121 +19,90 @@ export class PurchaseSearchComponent implements OnInit {
   type: string;
   stageId: number;
   purchases: PurchaseOrder[];
-  salessUpdId: number[];
+  selectedPurchases: PurchaseOrder[] = [];
+  purchasesUpdId: number[];
   purchase: PurchaseOrder;
-  obsPo: Observable<PurchaseOrder>;
-  obsPos: Observable<PurchaseOrder[]>;
+  obsSos: Observable<PurchaseOrder[]>;
   obString: Observable<String>;
   obsHttpWS: Observable<HttpResponseWS>;
   httpResponseWS: HttpResponseWS;
-  source: LocalDataSource = new LocalDataSource();
+  model: PurchaseOrder;
+  environment = environment;
+  cols: any[];
+  stages:any[];
+  stage: any;
+  items:MenuItem[];
+  display:boolean;
+  msgs: Message[] = [];
+  tabs =[];
+  @ViewChild(PurchaseFormComponent)child:PurchaseFormComponent;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private purchaseService: PurchaseService,
-    private _sanitizer: DomSanitizer
+    private purchaseService: PurchaseService
   ) { }
 
-  input: string = '<input type="checkbox"></input>';
-  settings = {
-    selectMode: 'multi',
-    actions: {
-      edit: false,
-      add: false,
-      delete: false,
-      //custom: [{ name: 'customAction', title: '<i class="ion-document"></i>' }],
-      position: 'right',
-      select: true,
-    },
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      soCode: {
-        title: 'Number',
-        type: 'string',
-      },
-      referrence: {
-        title: 'Referrence',
-        type: 'string',
-      },
-      custName: {
-        title: 'To',
-        type: 'string',
-      },
-      trxnDate: {
-        title: 'Date',
-        type: 'date',
-      },
-      estDeliveryDate: {
-        title: 'Due Date',
-        type: 'date',
-      },
-      totalAmount: {
-        title: 'Amount',
-        type: 'number',
-      },
-      select: {
-
-      }
-    },
-  };
-
-  tabs = [];
   ngOnInit() {
-
-    this.tabs = [{ title: 'All', active: false }, { title: 'Draft', active: false }, { title: 'Awaiting Approval', active: false }, { title: 'Awaiting Payment', active: false }, { title: 'Paid', active: false }];
-
-    this.obString = this.route.queryParamMap.pipe(map(params => params.get('type')));
-    this.obString.subscribe((obString) => {
-      this.type = obString.toString();
-    });
-
-    this.obString = this.route.queryParamMap.pipe(map(params => params.get('stage')));
-    this.obString.subscribe((obString) => {
-      this.stageId = parseInt(obString.toString());
-    });
-    this.loadSearch(this.stageId);
+    this.initObject();
+    this.initData(0,"B");
   }
 
-  loadSearch(stageId: number) {
-    this.obsPos = this.purchaseService.getPurchaseOrderAll(stageId, 'bill');
-    this.obsPos.subscribe((obsPos) => {
-      this.purchases = obsPos;
-      this.source.load(this.purchases);
+  initObject(){
+    this.tabs = [{ title: 'Bill', active: true }, { title: 'Purchase Order', active: false }];
+    this.model = new PurchaseOrder();
+    this.items = [
+      {label: 'Bill', icon: 'pi pi-file', command: () => {  this.onAdd('B'); } },
+      {label: 'Purchase Order', icon: 'pi pi-refresh', command: () => {this.onAdd('P');}},
+    ];
+    this.cols = [
+      { field: 'poCode', header: 'Ref', type: 'txt' },
+      { field: 'suppName', header: 'From', type: 'txt' },
+      { field: 'trxnDate', header: 'Date', type: 'txt' },
+      { field: 'estDeliveryDate', header: 'Due Date', type: 'txt' },
+      { field: 'totalAmount', header: 'Paid', type: 'txt' },
+      { field: 'stage', header: 'Status', type: 'txt' }
+    ]
+    this.stages =[
+      {name: 'All', stage:0 },
+      {name: 'Draft',stage:1 },
+      {name: 'Await Approval',stage:2 },
+      {name: 'Await Payment', stage:3 },
+      {name: 'Paid', stage:4 },
+    ];
+  }
+
+  initData(stageId: number, type: string) {
+    this.obsSos = this.purchaseService.getPurchaseOrderAll(stageId, type);
+    this.obsSos.subscribe((obsSos) => {
+      this.purchases = obsSos;
     });
-    for (var i = 0; i < this.tabs.length; i++) {
-      if (stageId == i) {
-        this.tabs[i].active = true;
-      }
+
+    let obsSo: Observable<PurchaseOrder> = this.purchaseService.getPurchaseOrderByStage();
+     obsSo.subscribe((observable) => {
+      this.model = observable;
+       //riztemp
+    this.model.totalAmtPaid=0;
     }
+    )
   }
 
+  onAdd(type:string){
+    this.child.ngOnInit();
+    this.display=true;
+    this.type=type;
+  }
   onUpdateStage(stageId: number) {
-    this.salessUpdId = [];
-    console.log(this.purchases);
-    for (var i = 0; i < this.purchases.length; i++) {
-      if (this.purchases[i].selected) {
-        let po: PurchaseOrder = this.purchases[i];
-        this.salessUpdId.push(po.id);
-      }
+    this.purchasesUpdId = [];
+    for (var i = 0; i < this.selectedPurchases.length; i++) {
+      this.purchasesUpdId.push(this.selectedPurchases[i].id);
     }
-    // this.obsHttpWS = this.salesService.updateSalesOrderStage(this.salessUpdId, stageId);
-    // this.obsHttpWS.subscribe((obsHttpWS) => {
-    //   this.httpResponseWS = obsHttpWS;
-    // });
+    this.obsHttpWS = this.purchaseService.updatePurchaseOrderStage(this.purchasesUpdId, stageId);
+    this.obsHttpWS.subscribe((obsHttpWS) => {
+      this.httpResponseWS = obsHttpWS;
+      this.selectedPurchases = [];
+      this.initData(this.stageId, this.type);
+    });
   }
 
   onDeleteConfirm(event): void {
@@ -148,45 +119,55 @@ export class PurchaseSearchComponent implements OnInit {
     }
   }
 
-  onCustomAction() {
-    console.log("enter custom action");
-  }
 
-  onRowSelected(event: any) {
-    let po: PurchaseOrder = event.data;
-    if (po != null) {
-      po.selected = event.isSelected;
-    }else{
-      if(event.selected.length==this.purchases.length){
-        this.purchases.forEach(function(po){
-          po.selected=true;
+  onRowSelect(event: any) {
+   let po:PurchaseOrder = event.data;
+   this.child.onRowSelect(po);
+   this.display=true;
+
+
+    /*
+    if (so != null) {
+      so.selected = event.isSelected;
+    } else {
+      if (event.selected.length == this.saless.length) {
+        this.saless.forEach(function (so) {
+          so.selected = true;
         });
-      }else{
-        this.purchases.forEach(function(po){
-          po.selected=false;
+      } else {
+        this.saless.forEach(function (so) {
+          so.selected = false;
         });
       }
-    }
+    }*/
+
+  }
+
+  onStageChange(stage:number,type:string) {
+    this.initData(stage, type);
   }
 
   onTabChange(event: any) {
-    console.log("Change tab " + event.tabTitle);
-    let stqgedId: number;
     if (event.tabTitle == "All") {
-      stqgedId = 0;
+      this.stageId = 0;
     }
     else if (event.tabTitle == "Draft") {
-      stqgedId = 1;
+      this.stageId = 1;
     }
     else if (event.tabTitle == "Awaiting Approval") {
-      stqgedId = 2;
+      this.stageId = 2;
     }
     else if (event.tabTitle == "Awaiting Payment") {
-      stqgedId = 3;
+      this.stageId = 3;
     }
     else if (event.tabTitle == "Paid") {
-      stqgedId = 4;
+      this.stageId = 4;
     }
-    this.loadSearch(stqgedId);
+  //  this.initData(this.stageId, this.type);
+  }
+
+  loadDataHandler(count:number){
+    this.display=false;
+    this.initData(0,'B');
   }
 }

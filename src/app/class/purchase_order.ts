@@ -19,11 +19,17 @@ export class PurchaseOrder extends Model{
     nDraft:number;
     nAwApproval:number;
     nAwPayment:number;
+    nPaid:number;
     nOverdue:number;
+    nDraftQ:number;
+    nAwApprovalQ:number;
+    nAwPaymentQ:number;
+    nOverdueQ:number;
+    nPaidQ:number;
     referrence:string;
     selected:boolean;
-    stage:Stage; 
-    purchaseIds:number[];    
+    stage:Stage;
+    purchaseIds:number[];
     custSupps:SelectItem[];
     inventories:SelectItem[];
     inventories2:Inventory[];
@@ -38,4 +44,4 @@ export class PurchaseOrder extends Model{
     totalAmtAwApprovalQ:number;
     totalAmtAwPaymentQ:number;
     totalAmtPaidQ:number;
-}   
+}

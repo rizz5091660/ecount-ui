@@ -8,16 +8,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'Sales',
         link: '/pages/accounts/sales/sales-search',
-      }, 
+      },
       {
         title: 'Purchase',
-        link: '/pages/accounts/purchase/purchase-dashboard',
-      }, 
+        link: '/pages/accounts/purchase/purchase-search',
+      },
       {
         title: 'Products & Services',
         link: '/pages/accounts/inventory/inventory-search',
       },
-    ] 
+    ]
   },
   {
     title: 'Maintenance',
