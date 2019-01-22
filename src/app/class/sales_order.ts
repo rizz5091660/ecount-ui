@@ -13,6 +13,7 @@ export class SalesOrder extends Model{
     shippingCost:number;
     custId:number;
     custName:string;
+    custAddress:string;
     sods:SalesOrderDetail[];
     nDraft:number;
     nAwApproval:number;

@@ -58,7 +58,6 @@ export class SalesFormComponent implements OnInit {
       { field: 'invDD.label', header: 'Name', type: 'txt' },
       { field: 'quantity', header: 'Quantity', type: 'txt' },
       { field: 'unitPrice', header: 'Price', type: 'txt' },
-      { field: 'coaDD.label', header: 'Account', type: 'txt' },
       { field: 'taxDD.label', header: 'Tax', type: 'txt' },
       { field: 'txnAmount', header: 'Ammount', type: 'txt' },
       { field: '', header: 'Action', type: 'btn' },
@@ -101,6 +100,7 @@ export class SalesFormComponent implements OnInit {
       sod.quantity = 1;
       sod.invDD = option;
       sod.unitPrice = sod.invDD.value2;
+    
       this.taxes.filter(
         function (tax) {
           if (tax.value == sod.invDD.value4) {
@@ -121,6 +121,9 @@ export class SalesFormComponent implements OnInit {
     } else if (type == "tax") {
       sod.taxDD = option;
     }
+    else if (type == "contact") {
+     this.model.custAddress = option.value2;
+    }    
     this.onCalculate();
   }
 
